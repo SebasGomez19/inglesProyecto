@@ -1,1216 +1,437 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>YUJUJU 🚀</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --bg: #0f0e17;
-      --surface: #1a1830;
-      --card: #221f38;
-      --accent1: #ff6b6b;
-      --accent2: #ffd93d;
-      --accent3: #6bcb77;
-      --accent4: #4d96ff;
-      --accent5: #c77dff;
-      --text: #fffffe;
-      --muted: #a7a9be;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Nunito', sans-serif;
-      overflow-x: hidden;
-      min-height: 100vh;
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(circle at 20% 20%, #ff6b6b22 0%, transparent 30%),
-        radial-gradient(circle at 80% 80%, #4d96ff22 0%, transparent 30%);
-      z-index: -1;
-    }
-
-    .light-mode {
-      --bg: #f4f7ff;
-      --surface: #ffffff;
-      --card: #ffffff;
-      --text: #111;
-      --muted: #666;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 40px;
-      background: rgba(0, 0, 0, .25);
-      backdrop-filter: blur(10px);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-
-    .logo {
-      font-size: 2rem;
-      font-weight: 900;
-      background: linear-gradient(135deg, var(--accent2), var(--accent1));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .top-controls {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .theme-btn {
-      width: 45px;
-      height: 45px;
-      border: none;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 1rem;
-      background: linear-gradient(135deg, var(--accent5), var(--accent4));
-      color: white;
-    }
-
-    .level-box {
-      padding: 8px 14px;
-      border-radius: 30px;
-      font-weight: 900;
-      background: linear-gradient(135deg, var(--accent2), var(--accent1));
-      color: black;
-    }
-
-    .hero {
-      text-align: center;
-      padding: 80px 20px 50px;
-    }
-
-    .hero h1 {
-      font-size: clamp(2.5rem, 7vw, 5rem);
-      line-height: 1.1;
-      margin-bottom: 20px;
-    }
-
-    .hero h1 span {
-      background: linear-gradient(135deg, var(--accent2), var(--accent1));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .hero p {
-      max-width: 700px;
-      margin: auto;
-      color: var(--muted);
-      font-size: 1.1rem;
-    }
-
-    .dashboard {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      max-width: 1200px;
-      margin: auto;
-      padding: 0 20px 40px;
-    }
-
-    .stat-card {
-      background: var(--card);
-      border-radius: 18px;
-      padding: 24px;
-      text-align: center;
-    }
-
-    .stat-card h2 {
-      font-size: 2rem;
-      color: var(--accent2);
-    }
-
-    .tabs {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      padding: 20px;
-    }
-
-    .tab-btn {
-      border: none;
-      padding: 14px 26px;
-      border-radius: 40px;
-      background: var(--card);
-      color: var(--text);
-      font-weight: 800;
-      cursor: pointer;
-    }
-
-    .tab-btn.active {
-      background: linear-gradient(135deg, var(--accent4), var(--accent5));
-    }
-
-    .section {
-      display: none;
-      max-width: 1100px;
-      margin: auto;
-      padding: 20px;
-    }
-
-    .section.active {
-      display: block;
-    }
-
-    .card {
-      background: var(--card);
-      padding: 28px;
-      border-radius: 20px;
-      margin-bottom: 24px;
-    }
-
-    .card-title {
-      font-size: 1.2rem;
-      font-weight: 900;
-      margin-bottom: 10px;
-    }
-
-    .card-sub {
-      color: var(--muted);
-      margin-bottom: 20px;
-    }
-
-    .skill-tag {
-      background: #ffffff15;
-      padding: 4px 10px;
-      border-radius: 10px;
-      font-size: .75rem;
-    }
-
-    textarea {
-      width: 100%;
-      height: 120px;
-      background: var(--surface);
-      border: none;
-      border-radius: 14px;
-      padding: 16px;
-      color: var(--text);
-      resize: none;
-    }
-
-    .action-btn {
-      border: none;
-      cursor: pointer;
-      padding: 12px 24px;
-      border-radius: 30px;
-      font-weight: 900;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent4), var(--accent5));
-      color: white;
-    }
-
-    .btn-green {
-      background: linear-gradient(135deg, var(--accent3), #39b36b);
-      color: black;
-    }
-
-    .btn-red {
-      background: linear-gradient(135deg, var(--accent1), #ff914d);
-      color: white;
-    }
-
-    .quiz-question {
-      font-weight: 800;
-      margin-bottom: 16px;
-    }
-
-    .options-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .opt-btn {
-      border: none;
-      background: var(--surface);
-      color: var(--text);
-      padding: 14px;
-      border-radius: 14px;
-      cursor: pointer;
-      font-weight: 700;
-    }
-
-    .feedback-msg {
-      display: none;
-      margin-top: 16px;
-      padding: 12px;
-      border-radius: 12px;
-    }
-
-    .feedback-msg.show {
-      display: block;
-    }
-
-    .ok {
-      background: #6bcb7720;
-      color: var(--accent3);
-    }
-
-    .err {
-      background: #ff6b6b20;
-      color: var(--accent1);
-    }
-
-    .audio-player {
-      background: var(--surface);
-      padding: 24px;
-      border-radius: 20px;
-      text-align: center;
-      margin-bottom: 24px;
-    }
-
-    .play-btn {
-      width: 90px;
-      height: 90px;
-      border: none;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent4), var(--accent5));
-      color: white;
-      font-size: 2rem;
-      cursor: pointer;
-    }
-
-    .audio-wave {
-      display: flex;
-      justify-content: center;
-      gap: 5px;
-      margin-top: 20px;
-    }
-
-    .audio-wave span {
-      width: 6px;
-      height: 35px;
-      background: var(--accent4);
-      border-radius: 10px;
-      animation: wave 1s infinite ease-in-out;
-    }
-
-    .audio-wave.paused span {
-      animation-play-state: paused;
-    }
-
-    .audio-wave span:nth-child(2) {
-      animation-delay: .1s;
-    }
-
-    .audio-wave span:nth-child(3) {
-      animation-delay: .2s;
-    }
-
-    .audio-wave span:nth-child(4) {
-      animation-delay: .3s;
-    }
-
-    @keyframes wave {
-
-      0%,
-      100% {
-        transform: scaleY(.4);
-      }
-
-      50% {
-        transform: scaleY(1.2);
-      }
-    }
-
-    .prompt-card {
-      background: var(--surface);
-      padding: 20px;
-      border-radius: 16px;
-      margin-bottom: 20px;
-    }
-
-    .prompt-label {
-      color: var(--accent1);
-      font-weight: 900;
-      margin-bottom: 10px;
-    }
-
-    .prompt-text {
-      font-size: 1.2rem;
-      font-weight: 700;
-    }
-
-    .mic-ring {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent1), #ff914d);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 20px auto;
-      font-size: 2.5rem;
-      cursor: pointer;
-    }
-
-    .mic-ring.recording {
-      animation: pulse 1s infinite;
-    }
-
-    @keyframes pulse {
-      0% {
-        transform: scale(1);
-      }
-
-      50% {
-        transform: scale(1.08);
-      }
-
-      100% {
-        transform: scale(1);
-      }
-    }
-
-    .mic-result {
-      background: var(--surface);
-      padding: 16px;
-      border-radius: 14px;
-      display: none;
-      margin-top: 20px;
-    }
-
-    .mic-result.show {
-      display: block;
-    }
-
-    .xp-toast {
-      position: fixed;
-      right: 30px;
-      bottom: 30px;
-      background: linear-gradient(135deg, var(--accent2), var(--accent1));
-      color: black;
-      padding: 14px 24px;
-      border-radius: 40px;
-      font-weight: 900;
-      display: none;
-    }
-
-    .xp-toast.show {
-      display: block;
-    }
-
-    @media(max-width:700px) {
-
-      .options-grid {
-        grid-template-columns: 1fr;
-      }
-
-      header {
-        padding: 16px;
-      }
-
-    }
-  </style>
-
-</head>
-
-<body>
-
-  <header>
-
-    <div class="logo">
-      YUJUJU 🚀
-    </div>
-
-    <div class="top-controls">
-
-      <button class="theme-btn" onclick="toggleTheme()">
-        🌙
-      </button>
-
-      <div class="level-box" id="levelBox">
-        Beginner
-      </div>
-
-    </div>
-
-  </header>
-
-  <div class="hero">
-
-    <h1>
-      Learn <span>English</span><br>
-      Like a Gamer 🎮
-    </h1>
-
-    <p>
-      Interactive listening, pronunciation, speaking and AI-powered English activities.
-    </p>
-
-  </div>
-
-  <div class="dashboard">
-
-    <div class="stat-card">
-      <p>Total XP</p>
-      <h2 id="dashXP">0</h2>
-    </div>
-
-    <div class="stat-card">
-      <p>Level</p>
-      <h2 id="dashLevel">Beginner</h2>
-    </div>
-
-    <div class="stat-card">
-      <p>Completed</p>
-      <h2 id="completedTasks">0</h2>
-    </div>
-
-  </div>
-
-  <div class="tabs">
-
-    <button class="tab-btn active" onclick="switchTab('listening',this)">
-      🎧 Listening
-    </button>
-
-    <button class="tab-btn" onclick="switchTab('reading',this)">
-      📖 Reading
-    </button>
-
-    <button class="tab-btn" onclick="switchTab('speaking',this)">
-      🎤 Speaking
-    </button>
-
-  </div>
-
-  <!-- LISTENING -->
-
-  <section class="section active" id="listening">
-
-    <div class="card">
-
-      <div class="card-title">
-        🎧 Listening Audio Practice
-      </div>
-
-      <div class="audio-player">
-
-        <button class="play-btn" id="playBtn" onclick="togglePlay()">
-          ▶️
-        </button>
-
-        <div class="audio-wave paused" id="audioWave">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-
-      </div>
-
-    </div>
-
-    <div class="card" id="lq1">
-
-      <div class="card-title">
-        Question 1
-      </div>
+<script>
+/* ============================
+   GLOBAL STATE
+   ============================ */
+let xp = 0;
+let completed = 0;
+let playing = false;
+let playTimer;
+let lScore = 0;
+let lDone = [false,false,false];
+let micTimers = {};
+let micStates = {};
+let rqIndex = 0;
+const synth = window.speechSynthesis;
+
+/* ============================
+   AUDIO CONTEXT FOR SOUNDS
+   ============================ */
+let audioCtx;
+
+function getCtx(){
+  if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+  return audioCtx;
+}
+
+function playBeep(freq,type,duration,vol,delay=0){
+  try{
+    const ctx = getCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, ctx.currentTime + delay);
+
+    gain.gain.setValueAtTime(vol, ctx.currentTime + delay);
+    gain.gain.exponentialRampToValueAtTime(
+      0.001,
+      ctx.currentTime + delay + duration
+    );
+
+    osc.start(ctx.currentTime + delay);
+    osc.stop(ctx.currentTime + delay + duration);
+
+  }catch(e){}
+}
+
+function soundClick(){
+  playBeep(800,'sine',0.08,0.3);
+}
+
+function soundCorrect(){
+  playBeep(523,'sine',0.12,0.4);
+  playBeep(659,'sine',0.12,0.4,0.13);
+  playBeep(784,'sine',0.18,0.5,0.26);
+}
+
+function soundWrong(){
+  playBeep(300,'sawtooth',0.12,0.35);
+  playBeep(220,'sawtooth',0.15,0.35,0.13);
+}
+
+function soundComplete(){
+  [523,587,659,698,784,880].forEach((f,i)=>{
+    playBeep(f,'sine',0.15,0.45,i*0.1);
+  });
+}
+
+function soundXP(){
+  playBeep(880,'sine',0.1,0.4);
+  playBeep(1047,'sine',0.12,0.5,0.12);
+}
+
+function soundClick2(){
+  playBeep(600,'triangle',0.06,0.25);
+}
 
-      <div class="quiz-question">
-        What time does Alex wake up?
-      </div>
+/* ============================
+   CLICK SOUND
+   ============================ */
+document.addEventListener('click', e=>{
+  if(e.target.tagName==='BUTTON') soundClick2();
+});
 
-      <div class="options-grid">
+/* ============================
+   THEME
+   ============================ */
+function toggleTheme(){
+  document.body.classList.toggle('light-mode');
+}
 
-        <button class="opt-btn" onclick="answerL(this,'wrong')">
-          7:00 AM
-        </button>
+/* ============================
+   TABS
+   ============================ */
+function switchTab(id,btn){
+  document.querySelectorAll('.section')
+    .forEach(s=>s.classList.remove('active'));
 
-        <button class="opt-btn" onclick="answerL(this,'correct')">
-          6:30 AM
-        </button>
+  document.querySelectorAll('.tab-btn')
+    .forEach(b=>b.classList.remove('active'));
 
-        <button class="opt-btn" onclick="answerL(this,'wrong')">
-          8:00 AM
-        </button>
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
 
-        <button class="opt-btn" onclick="answerL(this,'wrong')">
-          9:00 AM
-        </button>
+function switchSub(section,id,btn){
 
-      </div>
+  const sec = document.getElementById(section);
 
-      <div class="feedback-msg" id="lFeed1"></div>
+  sec.querySelectorAll('.sub-section')
+    .forEach(s=>s.classList.remove('active'));
 
-    </div>
+  sec.querySelectorAll('.sub-tab-btn')
+    .forEach(b=>b.classList.remove('active'));
 
-    <div class="card" id="lq2" style="display:none;">
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
 
-      <div class="card-title">
-        Question 2
-      </div>
+/* ============================
+   XP & TOAST
+   ============================ */
+function showToast(msg){
 
-      <div class="quiz-question">
-        How does Alex go to school?
-      </div>
+  const t = document.getElementById('toast');
 
-      <div class="options-grid">
+  t.textContent = msg;
 
-        <button class="opt-btn" onclick="answerL2(this,'wrong')">
-          By bike
-        </button>
+  t.classList.add('show');
 
-        <button class="opt-btn" onclick="answerL2(this,'correct')">
-          By bus
-        </button>
+  soundXP();
 
-        <button class="opt-btn" onclick="answerL2(this,'wrong')">
-          Walking
-        </button>
+  setTimeout(()=>{
+    t.classList.remove('show');
+  },2500);
+}
 
-        <button class="opt-btn" onclick="answerL2(this,'wrong')">
-          By car
-        </button>
+function addXP(pts,msg){
 
-      </div>
+  xp += pts;
+  completed++;
 
-      <div class="feedback-msg" id="lFeed2"></div>
+  document.getElementById('dashXP').textContent = xp;
+  document.getElementById('completedTasks').textContent = completed;
 
-    </div>
+  updateLevel();
 
-    <div class="card" id="lq3" style="display:none;">
+  showToast(msg);
 
-      <div class="card-title">
-        Question 3
-      </div>
+  localStorage.setItem('yujujuXP',xp);
+}
 
-      <div class="quiz-question">
-        What does Alex do in the afternoon?
-      </div>
+function updateLevel(){
 
-      <div class="options-grid">
+  let lv='Beginner';
 
-        <button class="opt-btn" onclick="answerL3(this,'correct')">
-          Homework and sports
-        </button>
+  if(xp>=100) lv='Intermediate';
+  if(xp>=250) lv='Advanced';
+  if(xp>=400) lv='Master';
 
-        <button class="opt-btn" onclick="answerL3(this,'wrong')">
-          Watch TV
-        </button>
+  document.getElementById('levelBox').textContent=lv;
+  document.getElementById('dashLevel').textContent=lv;
+}
 
-        <button class="opt-btn" onclick="answerL3(this,'wrong')">
-          Sleep
-        </button>
+/* ============================
+   SPEECH — HUMAN VOICE
+   ============================ */
+function speakText(text, speed = 0.82){
 
-        <button class="opt-btn" onclick="answerL3(this,'wrong')">
-          Play games
-        </button>
+  synth.cancel();
 
-      </div>
+  const u = new SpeechSynthesisUtterance(text);
 
-      <div class="feedback-msg" id="lFeed3"></div>
+  u.lang = 'en-US';
 
-    </div>
+  /* VOICE SETTINGS */
+  u.rate = speed;
+  u.pitch = 1;
+  u.volume = 1;
 
-    <div class="card" id="lComplete" style="display:none;">
+  const voices = synth.getVoices();
 
-      <h2>
-        🎉 Listening Complete!
-      </h2>
+  /* BEST NATURAL VOICES */
+  const preferredVoices = [
 
-      <p>
-        Excellent listening skills!
-      </p>
+    'Google US English',
+    'Google UK English Female',
 
-    </div>
+    'Microsoft Aria Online (Natural)',
+    'Microsoft Jenny Online (Natural)',
 
-  </section>
+    'Samantha',
+    'Karen',
+    'Daniel'
+  ];
 
-  <!-- READING -->
+  let selectedVoice = null;
 
-  <section class="section" id="reading">
+  preferredVoices.forEach(name=>{
 
-    <div class="card">
+    const found = voices.find(v=>v.name===name);
 
-      <div class="card-title">
-        ✍️ Writing Challenge
-      </div>
-
-      <div class="card-sub">
-        Describe your daily routine.
-      </div>
-
-      <textarea id="writingTask"></textarea>
-
-      <br><br>
-
-      <button class="action-btn btn-green" onclick="submitWriting()">
-        Submit Writing
-      </button>
-
-      <div class="feedback-msg" id="writingFeed"></div>
-
-    </div>
-
-  </section>
-
-  <!-- SPEAKING -->
-
-  <section class="section" id="speaking">
-
-    <div class="card">
-
-      <div class="card-title">
-        🎤 Pronunciation Drill
-      </div>
-
-      <div class="prompt-card">
-
-        <div class="prompt-label">
-          Repeat this:
-        </div>
-
-        <div class="prompt-text">
-          "Every morning I practice English and drink coffee."
-        </div>
-
-      </div>
-
-      <button class="action-btn btn-primary"
-        onclick="playPronunciation('Every morning I practice English and drink coffee.')">
-        🔊 Listen
-      </button>
-
-      <div class="mic-ring" id="micRing" onclick="toggleMic()">
-        🎤
-      </div>
-
-      <div class="mic-result" id="micResult"></div>
-
-    </div>
-
-  </section>
-
-  <div class="xp-toast" id="toast">
-    +50 XP
-  </div>
-
-  <script>
-
-    /* GLOBAL */
-
-    let xp = 0;
-    let completed = 0;
-
-    let playing = false;
-    let playTimer;
-
-    let lScore = 0;
-    let lDone = [false, false, false];
-
-    let micOn = false;
-    let micTimer;
-
-    const synth = window.speechSynthesis;
-
-    /* THEME */
-
-    function toggleTheme() {
-      document.body.classList.toggle('light-mode');
-    }
-
-    /* TABS */
-
-    function switchTab(id, btn) {
-
-      document.querySelectorAll('.section')
-        .forEach(s => s.classList.remove('active'));
-
-      document.querySelectorAll('.tab-btn')
-        .forEach(b => b.classList.remove('active'));
-
-      document.getElementById(id)
-        .classList.add('active');
-
-      btn.classList.add('active');
-
-    }
-
-    /* TOAST */
-
-    function showToast(msg) {
-
-      const toast =
-        document.getElementById('toast');
-
-      toast.textContent = msg;
-
-      toast.classList.add('show');
-
-      setTimeout(() => {
-        toast.classList.remove('show');
-      }, 2000);
-
-    }
-
-    /* XP */
-
-    function addXP(points, msg) {
-
-      xp += points;
-      completed++;
-
-      document.getElementById('dashXP')
-        .textContent = xp;
-
-      document.getElementById('completedTasks')
-        .textContent = completed;
-
-      updateLevel();
-
-      showToast(msg);
-
-      localStorage.setItem('yujujuXP', xp);
-
-    }
-
-    /* LEVEL */
-
-    function updateLevel() {
-
-      let level = 'Beginner';
-
-      if (xp >= 100) level = 'Intermediate';
-      if (xp >= 250) level = 'Advanced';
-      if (xp >= 400) level = 'Master';
-
-      document.getElementById('levelBox')
-        .textContent = level;
-
-      document.getElementById('dashLevel')
-        .textContent = level;
-
-    }
-
-    /* VOICE ENGINE */
-
-    function speakText(text, speed = 0.9) {
-
-      synth.cancel();
-
-      const utter = new SpeechSynthesisUtterance(text);
-
-      utter.lang = 'en-US';
-      utter.rate = speed;
-
-      const voices = synth.getVoices();
-
-      const englishVoice =
-        voices.find(v => v.lang.includes('en-US')) ||
-        voices.find(v => v.lang.includes('en-GB'));
-
-      if (englishVoice) {
-        utter.voice = englishVoice;
-      }
-
-      synth.speak(utter);
-
-    }
-
-    /* BUTTON SOUND */
-
-    function clickSound() {
-
-      const sound = new Audio(
-        'https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'
-      );
-
-      sound.volume = 0.25;
-      sound.play();
-
-    }
-
-    document.querySelectorAll('button').forEach(btn => {
-
-      btn.addEventListener('click', clickSound);
-
-    });
-
-    /* SUCCESS SOUND */
-
-    function successSound() {
-
-      const sound = new Audio(
-        'https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3'
-      );
-
-      sound.volume = 0.35;
-      sound.play();
-
-    }
-
-    /* WRONG SOUND */
-
-    function wrongSound() {
-
-      const sound = new Audio(
-        'https://assets.mixkit.co/active_storage/sfx/2955/2955-preview.mp3'
-      );
-
-      sound.volume = 0.3;
-      sound.play();
-
-    }
-
-    /* LISTENING AUDIO */
-
-    function togglePlay() {
-
-      const text = `
-Hi! My name is Alex.
-Every day I wake up at 6:30 in the morning.
-First, I brush my teeth and take a shower.
-Then I eat breakfast, usually cereal and orange juice.
-After that, I go to school by bus.
-Classes start at 8 o'clock.
-In the afternoon, I do my homework and practice sports.
-At night, I read a book before I go to sleep at 10 PM.
-`;
-
-      const btn = document.getElementById('playBtn');
-      const wave = document.getElementById('audioWave');
-
-      if (!playing) {
-
-        playing = true;
-
-        btn.textContent = '⏸';
-
-        wave.classList.remove('paused');
-
-        speakText(text, 0.88);
-
-        playTimer = setTimeout(() => {
-
-          playing = false;
-
-          btn.textContent = '▶️';
-
-          wave.classList.add('paused');
-
-        }, 18000);
-
-      } else {
-
-        playing = false;
-
-        btn.textContent = '▶️';
-
-        wave.classList.add('paused');
-
-        synth.cancel();
-
-        clearTimeout(playTimer);
-
-      }
-
-    }
-
-    /* LISTENING QUIZ */
-
-    function answerL(btn, result) {
-
-      if (lDone[0]) return;
-
-      lDone[0] = true;
-
-      btn.classList.add(result);
-
-      const f = document.getElementById('lFeed1');
-
-      if (result === 'correct') {
-
-        successSound();
-
-        f.textContent =
-          '✅ Correct! Alex wakes up at 6:30 AM.';
-
-        f.className =
-          'feedback-msg show ok';
-
-        lScore++;
-
-      } else {
-
-        wrongSound();
-
-        f.textContent =
-          '❌ Wrong answer.';
-
-        f.className =
-          'feedback-msg show err';
-
-      }
-
-      setTimeout(() => {
-
-        document.getElementById('lq1').style.display = 'none';
-
-        document.getElementById('lq2').style.display = 'block';
-
-      }, 1400);
-
+    if(found && !selectedVoice){
+      selectedVoice = found;
     }
-
-    function answerL2(btn, result) {
-
-      if (lDone[1]) return;
-
-      lDone[1] = true;
-
-      btn.classList.add(result);
+  });
 
-      const f = document.getElementById('lFeed2');
+  /* FALLBACK */
+  if(!selectedVoice){
 
-      if (result === 'correct') {
+    selectedVoice =
+      voices.find(v=>v.lang.includes('en-US')) ||
 
-        successSound();
+      voices.find(v=>v.lang.includes('en'));
+  }
 
-        f.textContent =
-          '✅ Correct! He goes by bus.';
+  if(selectedVoice){
+    u.voice = selectedVoice;
+  }
 
-        f.className =
-          'feedback-msg show ok';
+  /* SMOOTHER SPEECH */
+  u.onstart = ()=>{
+    console.log('Natural voice started...');
+  };
 
-        lScore++;
+  synth.speak(u);
+}
 
-      } else {
+/* ============================
+   LISTENING — AUDIO QUIZ
+   ============================ */
+function togglePlay(){
 
-        wrongSound();
+  const text = `
+  Hi! My name is Alex.
+  Every day I wake up at 6:30 in the morning.
 
-        f.textContent =
-          '❌ Wrong answer.';
+  First, I brush my teeth and take a shower.
 
-        f.className =
-          'feedback-msg show err';
+  Then I eat breakfast,
+  usually cereal and orange juice.
 
-      }
+  After that,
+  I go to school by bus.
 
-      setTimeout(() => {
+  Classes start at 8 o'clock.
 
-        document.getElementById('lq2').style.display = 'none';
+  In the afternoon,
+  I do my homework and practice sports.
 
-        document.getElementById('lq3').style.display = 'block';
+  At night,
+  I read a book before I go to sleep at 10 PM.
+  `;
 
-      }, 1400);
+  const btn=document.getElementById('playBtn');
+  const wave=document.getElementById('audioWave');
 
-    }
-
-    function answerL3(btn, result) {
-
-      if (lDone[2]) return;
-
-      lDone[2] = true;
-
-      btn.classList.add(result);
+  if(!playing){
 
-      const f = document.getElementById('lFeed3');
+    playing=true;
 
-      if (result === 'correct') {
+    btn.textContent='⏸';
 
-        successSound();
+    wave.classList.remove('paused');
 
-        f.textContent =
-          '✅ Correct!';
+    /* NATURAL SPEED */
+    speakText(text,0.82);
 
-        f.className =
-          'feedback-msg show ok';
+    playTimer=setTimeout(()=>{
 
-        lScore++;
+      playing=false;
 
-      } else {
+      btn.textContent='▶️';
 
-        wrongSound();
+      wave.classList.add('paused');
 
-        f.textContent =
-          '❌ Wrong answer.';
+    },18000);
 
-        f.className =
-          'feedback-msg show err';
+  }else{
 
-      }
+    playing=false;
 
-      setTimeout(() => {
+    btn.textContent='▶️';
 
-        document.getElementById('lq3').style.display = 'none';
+    wave.classList.add('paused');
 
-        document.getElementById('lComplete').style.display = 'block';
+    synth.cancel();
 
-        successSound();
+    clearTimeout(playTimer);
+  }
+}
 
-        addXP(100, '🎧 Listening Complete! +100 XP');
+/* ============================
+   LISTENING ANSWERS
+   ============================ */
+function answerL(btn,result){
 
-      }, 1400);
+  if(lDone[0]) return;
 
-    }
+  lDone[0]=true;
 
-    /* WRITING */
+  btn.classList.add(result);
 
-    function submitWriting() {
+  const f=document.getElementById('lFeed1');
 
-      const text =
-        document.getElementById('writingTask').value;
+  if(result==='correct'){
 
-      const feed =
-        document.getElementById('writingFeed');
+    soundCorrect();
 
-      if (text.length < 20) {
+    f.textContent='✅ Correct! Alex wakes up at 6:30 AM.';
 
-        feed.textContent =
-          '⚠️ Add more details';
+    f.className='feedback-msg show ok';
 
-        feed.className =
-          'feedback-msg show err';
+  }else{
 
-        return;
+    soundWrong();
 
-      }
+    f.textContent='❌ Wrong. The answer is 6:30 AM.';
 
-      successSound();
+    f.className='feedback-msg show err';
+  }
 
-      feed.textContent =
-        '✍️ Excellent writing!';
+  setTimeout(()=>{
 
-      feed.className =
-        'feedback-msg show ok';
+    document.getElementById('lq1').style.display='none';
 
-      addXP(70, '✍️ Writing +70 XP');
+    document.getElementById('lq2').style.display='block';
 
-    }
+  },1400);
+}
 
-    /* PRONUNCIATION */
+function answerL2(btn,result){
 
-    function playPronunciation(text) {
+  if(lDone[1]) return;
 
-      speakText(text, 0.72);
+  lDone[1]=true;
 
-      showToast('🔊 Pronunciation Playing');
+  btn.classList.add(result);
 
-    }
+  const f=document.getElementById('lFeed2');
 
-    /* MIC */
+  if(result==='correct'){
 
-    function toggleMic() {
+    soundCorrect();
 
-      if (!micOn) {
+    f.textContent='✅ Correct! He goes by bus.';
 
-        micOn = true;
+    f.className='feedback-msg show ok';
 
-        const ring =
-          document.getElementById('micRing');
+  }else{
 
-        const result =
-          document.getElementById('micResult');
+    soundWrong();
 
-        ring.classList.add('recording');
+    f.textContent='❌ Wrong. He goes by bus.';
 
-        result.classList.remove('show');
+    f.className='feedback-msg show err';
+  }
 
-        micTimer = setTimeout(() => {
+  setTimeout(()=>{
 
-          stopMic();
+    document.getElementById('lq2').style.display='none';
 
-        }, 3000);
+    document.getElementById('lq3').style.display='block';
 
-      } else {
+  },1400);
+}
 
-        stopMic();
+function answerL3(btn,result){
 
-      }
+  if(lDone[2]) return;
 
-    }
+  lDone[2]=true;
 
-    function stopMic() {
+  btn.classList.add(result);
 
-      clearTimeout(micTimer);
+  const f=document.getElementById('lFeed3');
 
-      micOn = false;
+  if(result==='correct'){
 
-      const ring =
-        document.getElementById('micRing');
+    soundCorrect();
 
-      const result =
-        document.getElementById('micResult');
+    f.textContent='✅ Correct!';
 
-      ring.classList.remove('recording');
+    f.className='feedback-msg show ok';
 
-      const feedbacks = [
+  }else{
 
-        'Great pronunciation!',
-        'Excellent fluency!',
-        'Very natural English!'
+    soundWrong();
 
-      ];
+    f.textContent='❌ Wrong. Homework and sports.';
 
-      const selected =
-        feedbacks[Math.floor(Math.random() * feedbacks.length)];
+    f.className='feedback-msg show err';
+  }
 
-      result.textContent =
-        '🗣 ' + selected;
+  setTimeout(()=>{
 
-      result.classList.add('show');
+    document.getElementById('lq3').style.display='none';
 
-      speakText(selected, 0.85);
+    document.getElementById('lComplete').style.display='block';
 
-      successSound();
+    soundComplete();
 
-      addXP(50, '🎤 Speaking Practice +50 XP');
+    addXP(100,'🎧 Listening Complete! +100 XP');
 
-    }
+  },1400);
+}
 
-    /* LOAD XP */
+/* ============================
+   INIT
+   ============================ */
+window.onload=()=>{
 
-    window.onload = () => {
+  const saved = localStorage.getItem('yujujuXP');
 
-      const savedXP =
-        localStorage.getItem('yujujuXP');
+  if(saved){
 
-      if (savedXP) {
+    xp=parseInt(saved);
 
-        xp = parseInt(savedXP);
+    document.getElementById('dashXP').textContent=xp;
 
-        document.getElementById('dashXP')
-          .textContent = xp;
+    updateLevel();
+  }
 
-        updateLevel();
+  initDrag();
 
-      }
+  /* LOAD VOICES */
+  speechSynthesis.getVoices();
 
+  if(speechSynthesis.onvoiceschanged !== undefined){
+    speechSynthesis.onvoiceschanged = ()=>{
+      speechSynthesis.getVoices();
     };
-
-  </script>
-
-</body>
-
-</html>
+  }
+};
+</script>
