@@ -200,7 +200,7 @@ textarea{width:100%;height:120px;background:var(--surface);border:none;border-ra
       <div class="card-title">📝 Dictado interactivo</div>
       <div class="card-sub">Escucha el audio y escribe exactamente lo que oyes.</div>
       <div class="audio-player">
-        <button class="play-btn" onclick="speakText('My name is Sarah. I live in New York. Every morning I wake up at seven o clock and drink a cup of coffee before going to work.',0.75)">▶️</button>
+        <button class="play-btn" onclick="speakText('My name is Sarah. I live in New York. Every morning, I wake up at seven o clock, and drink a cup of coffee, before going to work.',0.75)">▶️</button>
         <div class="audio-wave paused" id="dictWave"><span></span><span></span><span></span><span></span></div>
       </div>
       <textarea class="dictation-input" id="dictationInput" placeholder="Write what you hear..."></textarea>
@@ -216,7 +216,7 @@ textarea{width:100%;height:120px;background:var(--surface);border:none;border-ra
       <div class="card-title">🔊 Completar espacios</div>
       <div class="card-sub">Escucha la conversación y completa las palabras que faltan.</div>
       <div class="audio-player">
-        <button class="play-btn" onclick="speakText('Hi Tom, where are you going today? I am going to the supermarket to buy some apples and milk. After that I will visit my friend at the park.',0.78)">▶️</button>
+        <button class="play-btn" onclick="speakText('Hi Tom, where are you going today? I am going to the supermarket, to buy some apples and milk. After that, I will visit my friend at the park.',0.78)">▶️</button>
         <div class="audio-wave paused"><span></span><span></span><span></span><span></span></div>
       </div>
       <div class="reading-text">
@@ -235,7 +235,7 @@ textarea{width:100%;height:120px;background:var(--surface);border:none;border-ra
       <div class="card-title">🖼️ Relacionar audio e imagen</div>
       <div class="card-sub">Escucha la descripción y elige la imagen correcta.</div>
       <div class="audio-player">
-        <button class="play-btn" onclick="speakText('A young woman is sitting on a bench in a sunny park, reading a book and drinking coffee.',0.78)">▶️</button>
+        <button class="play-btn" onclick="speakText('A young woman is sitting on a bench, in a sunny park, reading a book, and drinking coffee.',0.78)">▶️</button>
         <div class="audio-wave paused"><span></span><span></span><span></span><span></span></div>
       </div>
       <div class="image-grid" id="imageGrid">
@@ -425,7 +425,7 @@ textarea{width:100%;height:120px;background:var(--surface);border:none;border-ra
       <div class="card-title">🎤 Pronunciation Drill</div>
       <div class="prompt-card">
         <div class="prompt-label">Repeat this:</div>
-        <div class="prompt-text" id="drillText">"Every morning I practice English and drink coffee."</div>
+        <div class="prompt-text" id="drillText">"Every morning, I practice English and drink coffee."</div>
       </div>
       <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;">
         <button class="action-btn btn-primary" onclick="playPronunciation(document.getElementById('drillText').textContent)">🔊 Listen</button>
@@ -650,17 +650,17 @@ function updateLevel(){
 }
 
 /* ============================
-   SPEECH (HUMANIZED)
+   SPEECH (HUMANIZED & NEURAL PREFERED)
    ============================ */
 function speakText(text,speed=0.85){
   synth.cancel();
   const u = new SpeechSynthesisUtterance(text);
   u.lang = 'en-US'; 
-  u.rate = speed; // Ajustado para un ritmo pedagógico más fluido y natural
+  u.rate = speed; 
   u.pitch = 1;
 
   const voices = synth.getVoices();
-  // Busca voces premium/neurales del navegador en inglés
+  // Busca voces premium/neurales del navegador en inglés para mayor realismo
   const mejorVoz = voices.find(v => v.lang.includes('en-US') && (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Neural')))
                    || voices.find(v => v.lang.includes('en-US'))
                    || voices.find(v => v.lang.includes('en'));
@@ -678,12 +678,12 @@ if (typeof speechSynthesis !== 'undefined' && speechSynthesis.onvoiceschanged !=
    LISTENING — AUDIO QUIZ
    ============================ */
 function togglePlay(){
-  const text=`Hi! My name is Alex. Every day I wake up at 6:30 in the morning. First, I brush my teeth and take a shower. Then I eat breakfast, usually cereal and orange juice. After that, I go to school by bus. Classes start at 8 o'clock. In the afternoon, I do my homework and practice sports. At night, I read a book before I go to sleep at 10 PM.`;
+  const text=`Hi! My name is Alex. Every day, I wake up at 6:30 in the morning. First, I brush my teeth, and take a shower. Then, I eat breakfast, usually cereal and orange juice. After that, I go to school by bus. Classes start at 8 o'clock. In the afternoon, I do my homework, and practice sports. At night, I read a book, before I go to sleep at 10 PM.`;
   const btn=document.getElementById('playBtn');
   const wave=document.getElementById('audioWave');
   if(!playing){
     playing=true; btn.textContent='⏸'; wave.classList.remove('paused');
-    speakText(text,0.82); // Ritmo sutilmente más pausado para simular pausas de lectura reales
+    speakText(text,0.82); // Ritmo fluido y con mejores pausas interpretativas
     playTimer=setTimeout(()=>{playing=false;btn.textContent='▶️';wave.classList.add('paused');},21000);
   }else{
     playing=false; btn.textContent='▶️'; wave.classList.add('paused');
@@ -927,9 +927,9 @@ function submitImageDesc(){
    SPEAKING — PRONUNCIATION
    ============================ */
 const drillPhrases=[
-  '"Every morning I practice English and drink coffee."',
+  '"Every morning, I practice English and drink coffee."',
   '"She sells seashells by the seashore."',
-  '"How much wood would a woodchuck chuck?"',
+  '"How much wood, would a woodchuck chuck?"',
   '"The weather is wonderful today."',
   '"I would like to improve my English pronunciation."',
 ];
@@ -966,7 +966,7 @@ function nextQA(){
    ============================ */
 const rolePlays={
   restaurant:'You are at a restaurant. The waiter asks: "Good evening, are you ready to order?" — Respond naturally, order your meal and ask about the specials.',
-  interview:'You are in a job interview. The interviewer says: "Tell me about yourself and why you want this position." — Give a confident, professional answer.',
+  interview:'You are in a job interview. The interviewer says: "Tell me about yourself, and why you want this position." — Give a confident, professional answer.',
   airport:'You are at the airport. The agent says: "May I see your passport and boarding pass? What is the purpose of your trip?" — Respond appropriately.',
 };
 function startRolePlay(btn,scenario){
