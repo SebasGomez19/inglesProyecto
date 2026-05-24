@@ -1331,109 +1331,185 @@
   </section>
   <div class="xp-toast" id="toast">+50 XP</div>
   <script>
+    /* ============================
+       GLOBAL STATE
+    ============================ */
     let xp = 0;
     let completed = 0;
+
     let playing = false;
     let playTimer;
-    let lScore = 0;
+
     let lDone = [false, false, false];
+
     let micTimers = {};
     let micStates = {};
+
     let rqIndex = 0;
-    const synth = window.speechSynthesis;
+    let rqDone = [];
+
     let aqDone = [false, false, false, false, false];
     let aqCount = 0;
 
+    const synth = window.speechSynthesis;
+
     /* ============================
-       AUDIO CONTEXT FOR SOUNDS
+       AUDIO CONTEXT
     ============================ */
     let audioCtx;
 
     function getCtx() {
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
       return audioCtx;
     }
 
     function playBeep(freq, type, duration, vol, delay = 0) {
       try {
         const ctx = getCtx();
+
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
+
         osc.connect(gain);
         gain.connect(ctx.destination);
+
         osc.type = type;
+
         osc.frequency.setValueAtTime(freq, ctx.currentTime + delay);
+
         gain.gain.setValueAtTime(vol, ctx.currentTime + delay);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + delay + duration);
+
+        gain.gain.exponentialRampToValueAtTime(
+          0.001,
+          ctx.currentTime + delay + duration
+        );
+
         osc.start(ctx.currentTime + delay);
         osc.stop(ctx.currentTime + delay + duration);
-      } catch (e) { }
+
+      } catch (e) {
+        console.log(e);
+      }
     }
 
-    function soundClick() { playBeep(800, 'sine', 0.08, 0.3); }
-    function soundCorrect() { playBeep(523, 'sine', 0.12, 0.4); playBeep(659, 'sine', 0.12, 0.4, 0.13); playBeep(784, 'sine', 0.18, 0.5, 0.26); }
-    function soundWrong() { playBeep(300, 'sawtooth', 0.12, 0.35); playBeep(220, 'sawtooth', 0.15, 0.35, 0.13); }
-    function soundComplete() { [523, 587, 659, 698, 784, 880].forEach((f, i) => { playBeep(f, 'sine', 0.15, 0.45, i * 0.1); }); }
-    function soundXP() { playBeep(880, 'sine', 0.1, 0.4); playBeep(1047, 'sine', 0.12, 0.5, 0.12); }
-    function soundClick2() { playBeep(600, 'triangle', 0.06, 0.25); }
+    function soundClick() {
+      playBeep(800, "sine", 0.08, 0.3);
+    }
 
-    document.addEventListener('click', e => {
-      if (e.target.tagName === 'BUTTON') soundClick2();
+    function soundCorrect() {
+      playBeep(523, "sine", 0.12, 0.4);
+      playBeep(659, "sine", 0.12, 0.4, 0.13);
+      playBeep(784, "sine", 0.18, 0.5, 0.26);
+    }
+
+    function soundWrong() {
+      playBeep(300, "sawtooth", 0.12, 0.35);
+      playBeep(220, "sawtooth", 0.15, 0.35, 0.13);
+    }
+
+    function soundComplete() {
+      [523, 587, 659, 698, 784, 880].forEach((f, i) => {
+        playBeep(f, "sine", 0.15, 0.45, i * 0.1);
+      });
+    }
+
+    function soundXP() {
+      playBeep(880, "sine", 0.1, 0.4);
+      playBeep(1047, "sine", 0.12, 0.5, 0.12);
+    }
+
+    function soundClick2() {
+      playBeep(600, "triangle", 0.06, 0.25);
+    }
+
+    document.addEventListener("click", (e) => {
+      if (e.target.tagName === "BUTTON") {
+        soundClick2();
+      }
     });
 
     /* ============================
        THEME
     ============================ */
     function toggleTheme() {
-      document.body.classList.toggle('light-mode');
+      document.body.classList.toggle("light-mode");
     }
 
     /* ============================
        TABS
     ============================ */
     function switchTab(id, btn) {
-      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-      btn.classList.add('active');
+      document.querySelectorAll(".section").forEach((s) => {
+        s.classList.remove("active");
+      });
+
+      document.querySelectorAll(".tab-btn").forEach((b) => {
+        b.classList.remove("active");
+      });
+
+      document.getElementById(id).classList.add("active");
+      btn.classList.add("active");
     }
 
     function switchSub(section, id, btn) {
       const sec = document.getElementById(section);
-      sec.querySelectorAll('.sub-section').forEach(s => s.classList.remove('active'));
-      sec.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-      if (btn) btn.classList.add('active');
+
+      sec.querySelectorAll(".sub-section").forEach((s) => {
+        s.classList.remove("active");
+      });
+
+      sec.querySelectorAll(".sub-tab-btn").forEach((b) => {
+        b.classList.remove("active");
+      });
+
+      document.getElementById(id).classList.add("active");
+
+      if (btn) {
+        btn.classList.add("active");
+      }
     }
 
     /* ============================
        TOAST & XP
     ============================ */
     function showToast(msg) {
-      const t = document.getElementById('toast');
+      const t = document.getElementById("toast");
+
       t.textContent = msg;
-      t.classList.add('show');
+      t.classList.add("show");
+
       soundXP();
-      setTimeout(() => t.classList.remove('show'), 2500);
+
+      setTimeout(() => {
+        t.classList.remove("show");
+      }, 2500);
     }
 
     function addXP(pts, msg) {
       xp += pts;
       completed++;
-      document.getElementById('dashXP').textContent = xp;
-      document.getElementById('completedTasks').textContent = completed;
+
+      document.getElementById("dashXP").textContent = xp;
+      document.getElementById("completedTasks").textContent = completed;
+
       updateLevel();
+
       showToast(msg);
-      localStorage.setItem('yujujuXP', xp);
+
+      localStorage.setItem("yujujuXP", xp);
     }
 
     function updateLevel() {
-      let lv = 'Beginner';
-      if (xp >= 100) lv = 'Intermediate';
-      if (xp >= 250) lv = 'Advanced';
-      if (xp >= 400) lv = 'Master';
-      document.getElementById('levelBox').textContent = lv;
-      document.getElementById('dashLevel').textContent = lv;
+      let lv = "Beginner";
+
+      if (xp >= 100) lv = "Intermediate";
+      if (xp >= 250) lv = "Advanced";
+      if (xp >= 400) lv = "Master";
+
+      document.getElementById("levelBox").textContent = lv;
+      document.getElementById("dashLevel").textContent = lv;
     }
 
     /* ============================
@@ -1441,108 +1517,195 @@
     ============================ */
     function speakText(text, speed = 0.85) {
       synth.cancel();
+
       const u = new SpeechSynthesisUtterance(text);
-      u.lang = 'en-US';
+
+      u.lang = "en-US";
       u.rate = speed;
       u.pitch = 1;
+
       const voices = synth.getVoices();
+
       const best =
-        voices.find(v => v.lang.includes('en-US') && (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Neural'))) ||
-        voices.find(v => v.lang.includes('en-US')) ||
-        voices.find(v => v.lang.includes('en'));
-      if (best) u.voice = best;
+        voices.find(
+          (v) =>
+            v.lang.includes("en-US") &&
+            (
+              v.name.includes("Google") ||
+              v.name.includes("Natural") ||
+              v.name.includes("Neural")
+            )
+        ) ||
+        voices.find((v) => v.lang.includes("en-US")) ||
+        voices.find((v) => v.lang.includes("en"));
+
+      if (best) {
+        u.voice = best;
+      }
+
       synth.speak(u);
     }
 
-    if (typeof speechSynthesis !== 'undefined' && speechSynthesis.onvoiceschanged !== undefined) {
-      speechSynthesis.onvoiceschanged = () => synth.getVoices();
+    if (
+      typeof speechSynthesis !== "undefined" &&
+      speechSynthesis.onvoiceschanged !== undefined
+    ) {
+      speechSynthesis.onvoiceschanged = () => {
+        synth.getVoices();
+      };
     }
 
     /* ============================
        LISTENING
     ============================ */
     function togglePlay() {
-      const text = "Hi! My name is Alex. Every day I wake up at 6:30 in the morning. First, I brush my teeth and take a shower. Then I eat breakfast, usually cereal and orange juice. After that, I go to school by bus. Classes start at 8 o'clock. In the afternoon, I do my homework and practice sports. At night, I read a book before I go to sleep at 10 PM.";
-      const btn = document.getElementById('playBtn');
-      const wave = document.getElementById('audioWave');
+
+      const text = `
+Hi! My name is Alex.
+
+Every day I wake up at 6:30 in the morning.
+First, I brush my teeth and take a shower.
+
+Then I eat breakfast, usually cereal and orange juice.
+
+After that, I go to school by bus.
+Classes start at 8 o'clock.
+
+In the afternoon, I do my homework and practice sports.
+
+At night, I read a book before I go to sleep at 10 PM.
+`;
+
+      const btn = document.getElementById("playBtn");
+      const wave = document.getElementById("audioWave");
+
       if (!playing) {
+
         playing = true;
-        btn.textContent = '⏸';
-        wave.classList.remove('paused');
+
+        btn.textContent = "⏸";
+        wave.classList.remove("paused");
+
         speakText(text, 0.82);
+
         playTimer = setTimeout(() => {
           playing = false;
-          btn.textContent = '▶️';
-          wave.classList.add('paused');
+          btn.textContent = "▶️";
+          wave.classList.add("paused");
         }, 21000);
+
       } else {
+
         playing = false;
-        btn.textContent = '▶️';
-        wave.classList.add('paused');
+
+        btn.textContent = "▶️";
+        wave.classList.add("paused");
+
         synth.cancel();
+
         clearTimeout(playTimer);
       }
     }
 
+    /* ============================
+       LISTENING QUESTIONS
+    ============================ */
     function answerL(btn, result) {
+
       if (lDone[0]) return;
+
       lDone[0] = true;
+
       btn.classList.add(result);
-      const f = document.getElementById('lFeed1');
-      if (result === 'correct') {
+
+      const f = document.getElementById("lFeed1");
+
+      if (result === "correct") {
+
         soundCorrect();
-        f.textContent = '✅ Correct! Alex wakes up at 6:30 AM.';
-        f.className = 'feedback-msg show ok';
+
+        f.textContent = "✅ Correct! Alex wakes up at 6:30 AM.";
+        f.className = "feedback-msg show ok";
+
       } else {
+
         soundWrong();
-        f.textContent = '❌ Wrong. The answer is 6:30 AM.';
-        f.className = 'feedback-msg show err';
+
+        f.textContent = "❌ Wrong. The answer is 6:30 AM.";
+        f.className = "feedback-msg show err";
       }
+
       setTimeout(() => {
-        document.getElementById('lq1').style.display = 'none';
-        document.getElementById('lq2').style.display = 'block';
+        document.getElementById("lq1").style.display = "none";
+        document.getElementById("lq2").style.display = "block";
       }, 1400);
     }
 
     function answerL2(btn, result) {
+
       if (lDone[1]) return;
+
       lDone[1] = true;
+
       btn.classList.add(result);
-      const f = document.getElementById('lFeed2');
-      if (result === 'correct') {
+
+      const f = document.getElementById("lFeed2");
+
+      if (result === "correct") {
+
         soundCorrect();
-        f.textContent = '✅ Correct! He goes by bus.';
-        f.className = 'feedback-msg show ok';
+
+        f.textContent = "✅ Correct! He goes by bus.";
+        f.className = "feedback-msg show ok";
+
       } else {
+
         soundWrong();
-        f.textContent = '❌ Wrong. He goes by bus.';
-        f.className = 'feedback-msg show err';
+
+        f.textContent = "❌ Wrong. He goes by bus.";
+        f.className = "feedback-msg show err";
       }
+
       setTimeout(() => {
-        document.getElementById('lq2').style.display = 'none';
-        document.getElementById('lq3').style.display = 'block';
+        document.getElementById("lq2").style.display = "none";
+        document.getElementById("lq3").style.display = "block";
       }, 1400);
     }
 
     function answerL3(btn, result) {
+
       if (lDone[2]) return;
+
       lDone[2] = true;
+
       btn.classList.add(result);
-      const f = document.getElementById('lFeed3');
-      if (result === 'correct') {
+
+      const f = document.getElementById("lFeed3");
+
+      if (result === "correct") {
+
         soundCorrect();
-        f.textContent = '✅ Correct!';
-        f.className = 'feedback-msg show ok';
+
+        f.textContent = "✅ Correct!";
+        f.className = "feedback-msg show ok";
+
       } else {
+
         soundWrong();
-        f.textContent = '❌ Wrong. Homework and sports.';
-        f.className = 'feedback-msg show err';
+
+        f.textContent = "❌ Wrong. Homework and sports.";
+        f.className = "feedback-msg show err";
       }
+
       setTimeout(() => {
-        document.getElementById('lq3').style.display = 'none';
-        document.getElementById('lComplete').style.display = 'block';
+
+        document.getElementById("lq3").style.display = "none";
+        document.getElementById("lComplete").style.display = "block";
+
         soundComplete();
-        addXP(100, '🎧 Listening Complete! +100 XP');
+
+        addXP(100, "🎧 Listening Complete! +100 XP");
+
       }, 1400);
     }
 
@@ -1550,518 +1713,70 @@
        DICTATION
     ============================ */
     function checkDictation() {
-      const ans = document.getElementById('dictationInput').value.toLowerCase().trim();
-      const f = document.getElementById('dictFeed');
-      const keywords = ['sarah', 'new york', 'seven', 'coffee'];
-      const found = keywords.filter(k => ans.includes(k)).length;
+
+      const ans = document
+        .getElementById("dictationInput")
+        .value
+        .toLowerCase()
+        .trim();
+
+      const f = document.getElementById("dictFeed");
+
+      const keywords = [
+        "sarah",
+        "new york",
+        "seven",
+        "coffee"
+      ];
+
+      const found = keywords.filter((k) => ans.includes(k)).length;
+
       if (found >= 3) {
+
         soundCorrect();
-        f.textContent = '✅ Excellent! You got the main ideas!';
-        f.className = 'feedback-msg show ok';
-        addXP(60, '📝 Dictation +60 XP');
+
+        f.textContent =
+          "✅ Excellent! You got the main ideas!";
+
+        f.className = "feedback-msg show ok";
+
+        addXP(60, "📝 Dictation +60 XP");
+
       } else if (found >= 1) {
+
         soundWrong();
-        f.textContent = `⚠️ Partial! You got ${found}/4 key words. Try again!`;
-        f.className = 'feedback-msg show err';
+
+        f.textContent =
+          `⚠️ Partial! You got ${found}/4 key words. Try again!`;
+
+        f.className = "feedback-msg show err";
+
       } else {
+
         soundWrong();
-        f.textContent = '❌ Listen again carefully and try once more.';
-        f.className = 'feedback-msg show err';
+
+        f.textContent =
+          "❌ Listen again carefully and try once more.";
+
+        f.className = "feedback-msg show err";
       }
-    }
-
-    /* ============================
-       LISTENING BLANKS
-    ============================ */
-    function checkListeningBlanks() {
-      const answers = { lb1: 'going', lb2: 'supermarket', lb3: 'milk', lb4: 'park' };
-      let score = 0;
-      Object.entries(answers).forEach(([id, ans]) => {
-        const el = document.getElementById(id);
-        if (el.value.toLowerCase().trim() === ans) {
-          el.classList.add('correct-blank');
-          score++;
-        } else {
-          el.classList.add('wrong-blank');
-        }
-      });
-      const f = document.getElementById('lBlankFeed');
-      if (score === 4) {
-        soundComplete();
-        f.textContent = '🎉 Perfect! All answers correct!';
-        f.className = 'feedback-msg show ok';
-        addXP(60, '🔊 Blanks +60 XP');
-      } else {
-        soundWrong();
-        f.textContent = `✏️ ${score}/4 correct. Review and try again!`;
-        f.className = 'feedback-msg show err';
-      }
-    }
-
-    /* ============================
-       IMAGE MATCH
-    ============================ */
-    let imgDone = false;
-
-    function pickImage(el, result) {
-      if (imgDone) return;
-      imgDone = true;
-      const f = document.getElementById('imgFeed');
-      el.classList.add(result);
-      if (result === 'correct') {
-        soundCorrect();
-        f.textContent = '✅ Correct! A woman reading in the park.';
-        f.className = 'feedback-msg show ok';
-        addXP(50, '🖼️ Image Match +50 XP');
-      } else {
-        soundWrong();
-        f.textContent = '❌ Wrong. Listen again!';
-        f.className = 'feedback-msg show err';
-      }
-    }
-
-    /* ============================
-       READING COMPREHENSION
-    ============================ */
-    const rQuestions = [
-      {
-        q: 'Q1: How many people live in New York City?',
-        opts: ['5 million', 'Over 8 million', '10 million', '3 million'],
-        correct: 1
-      },
-      {
-        q: 'Q2: How many boroughs does New York have?',
-        opts: ['Three', 'Four', 'Five', 'Six'],
-        correct: 2
-      },
-      {
-        q: 'Q3: When does the New York subway operate?',
-        opts: ['Only at night', '9AM–9PM', '24 hours, 7 days', 'Weekdays only'],
-        correct: 2
-      }
-    ];
-
-    let rqDone = [];
-
-    function answerReading(btn, result) {
-      if (rqDone[rqIndex]) return;
-      rqDone[rqIndex] = true;
-      btn.classList.add(result);
-      const f = document.getElementById('rFeed');
-      if (result === 'correct') {
-        soundCorrect();
-        f.textContent = '✅ Correct!';
-        f.className = 'feedback-msg show ok';
-      } else {
-        soundWrong();
-        f.textContent = '❌ Wrong. Read the text again.';
-        f.className = 'feedback-msg show err';
-      }
-      if (rqIndex < rQuestions.length - 1) {
-        setTimeout(() => {
-          rqIndex++;
-          loadRQ();
-          f.className = 'feedback-msg';
-        }, 1400);
-      } else {
-        setTimeout(() => {
-          soundComplete();
-          addXP(80, '📖 Reading Complete! +80 XP');
-        }, 1400);
-      }
-    }
-
-    function loadRQ() {
-      const q = rQuestions[rqIndex];
-      document.getElementById('rqText').textContent = q.q;
-      const opts = document.getElementById('rqOptions');
-      opts.innerHTML = '';
-      q.opts.forEach((o, i) => {
-        const b = document.createElement('button');
-        b.className = 'opt-btn';
-        b.textContent = o;
-        b.onclick = function () {
-          answerReading(this, i === q.correct ? 'correct' : 'wrong');
-        };
-        opts.appendChild(b);
-      });
-    }
-
-    /* ============================
-       READING BLANKS
-    ============================ */
-    function checkReadingBlanks() {
-      const answers = { rb1: 'wakes', rb2: 'breakfast', rb3: 'school', rb4: 'exercises', rb5: 'evening' };
-      let score = 0;
-      Object.entries(answers).forEach(([id, ans]) => {
-        const el = document.getElementById(id);
-        if (el.value.toLowerCase().trim() === ans) {
-          el.classList.add('correct-blank');
-          score++;
-        } else {
-          el.classList.add('wrong-blank');
-        }
-      });
-      const f = document.getElementById('rbFeed');
-      if (score === 5) {
-        soundComplete();
-        f.textContent = '🎉 Perfect! All 5 correct!';
-        f.className = 'feedback-msg show ok';
-        addXP(70, '✏️ Fill Blanks +70 XP');
-      } else {
-        soundWrong();
-        f.textContent = `📝 ${score}/5 correct. Try again!`;
-        f.className = 'feedback-msg show err';
-      }
-    }
-
-    /* ============================
-       PARAGRAPH ORDER
-    ============================ */
-    let dragSrc = null;
-
-    function initDrag() {
-      document.querySelectorAll('.paragraph-block').forEach(el => {
-        el.addEventListener('dragstart', e => { dragSrc = el; el.classList.add('dragging'); });
-        el.addEventListener('dragend', e => { el.classList.remove('dragging'); });
-        el.addEventListener('dragover', e => { e.preventDefault(); });
-        el.addEventListener('drop', e => {
-          e.preventDefault();
-          if (dragSrc !== el) {
-            const p = el.parentNode;
-            const allBlocks = [...p.querySelectorAll('.paragraph-block')];
-            const srcIdx = allBlocks.indexOf(dragSrc);
-            const tgtIdx = allBlocks.indexOf(el);
-            if (srcIdx < tgtIdx) p.insertBefore(dragSrc, el.nextSibling);
-            else p.insertBefore(dragSrc, el);
-            soundClick();
-          }
-        });
-      });
-    }
-
-    function checkOrder() {
-      const blocks = [...document.querySelectorAll('#paraContainer .paragraph-block')];
-      const orders = blocks.map(b => parseInt(b.dataset.order));
-      const correct = orders[0] === 1 && orders[1] === 2 && orders[2] === 3;
-      blocks.forEach((b, i) => b.querySelector('.para-num').textContent = i + 1);
-      const f = document.getElementById('orderFeed');
-      if (correct) {
-        soundComplete();
-        f.textContent = '🎉 Perfect order! Well done!';
-        f.className = 'feedback-msg show ok';
-        addXP(80, '🔀 Paragraph Order +80 XP');
-      } else {
-        soundWrong();
-        f.textContent = '❌ Not quite right. Try rearranging again!';
-        f.className = 'feedback-msg show err';
-      }
-    }
-
-    /* ============================
-       WRITING
-    ============================ */
-    function submitEmail() {
-      const to = document.getElementById('emailTo').value;
-      const subj = document.getElementById('emailSubject').value;
-      const body = document.getElementById('emailBody').value;
-      const f = document.getElementById('emailFeed');
-      if (body.length < 40 || !to || !subj) {
-        soundWrong();
-        f.textContent = '⚠️ Fill all fields with enough detail!';
-        f.className = 'feedback-msg show err';
-        return;
-      }
-      soundComplete();
-      f.textContent = '📧 Excellent email! Great structure and vocabulary!';
-      f.className = 'feedback-msg show ok';
-      addXP(80, '📧 Email Writing +80 XP');
-    }
-
-    function submitWriting() {
-      const text = document.getElementById('writingTask').value;
-      const f = document.getElementById('writingFeed');
-      if (text.length < 30) {
-        soundWrong();
-        f.textContent = '⚠️ Add more details (at least 5 sentences).';
-        f.className = 'feedback-msg show err';
-        return;
-      }
-      soundCorrect();
-      f.textContent = '✍️ Excellent writing! Great daily routine description!';
-      f.className = 'feedback-msg show ok';
-      addXP(70, '✍️ Writing +70 XP');
-    }
-
-    const opinionQs = [
-      'What is your favorite season and why? Describe at least 3 reasons.',
-      'Describe a memorable trip or vacation you have taken.',
-      'What would you do if you had one free week with no responsibilities?',
-      'What is your favorite food and how is it prepared?',
-      'Describe your dream home. Where is it and what does it look like?',
-    ];
-    let opinionIdx = 0;
-
-    function nextOpinionQ() {
-      opinionIdx = (opinionIdx + 1) % opinionQs.length;
-      document.getElementById('opinionQ').textContent = opinionQs[opinionIdx];
-      document.getElementById('opinionText').value = '';
-      document.getElementById('opinionFeed').className = 'feedback-msg';
-    }
-
-    function submitOpinion() {
-      const text = document.getElementById('opinionText').value;
-      const f = document.getElementById('opinionFeed');
-      if (text.length < 40) {
-        soundWrong();
-        f.textContent = '⚠️ Write a more detailed answer!';
-        f.className = 'feedback-msg show err';
-        return;
-      }
-      soundCorrect();
-      f.textContent = '💬 Great opinion! You expressed yourself clearly.';
-      f.className = 'feedback-msg show ok';
-      addXP(70, '💬 Opinion Writing +70 XP');
-    }
-
-    const images = ['🌅🏔️🌲', '🏖️🌊☀️', '🌆🌃🌉', '🌸🌿🦋', '🏡🌻🐕'];
-    let imgIdx = 0;
-
-    function nextImage() {
-      imgIdx = (imgIdx + 1) % images.length;
-      document.getElementById('imageToDescribe').textContent = images[imgIdx];
-      document.getElementById('imageDesc').value = '';
-      document.getElementById('imageFeed').className = 'feedback-msg';
-    }
-
-    function submitImageDesc() {
-      const text = document.getElementById('imageDesc').value;
-      const f = document.getElementById('imageFeed');
-      if (text.length < 40) {
-        soundWrong();
-        f.textContent = '⚠️ Be more descriptive! Use the vocabulary tips.';
-        f.className = 'feedback-msg show err';
-        return;
-      }
-      soundComplete();
-      f.textContent = '🖼️ Excellent description! Rich vocabulary!';
-      f.className = 'feedback-msg show ok';
-      addXP(70, '🖼️ Image Description +70 XP');
-    }
-
-    /* ============================
-       SPEAKING
-    ============================ */
-    const drillPhrases = [
-      '"Every morning I practice English and drink coffee."',
-      '"She sells seashells by the seashore."',
-      '"How much wood would a woodchuck chuck?"',
-      '"The weather is wonderful today."',
-      '"I would like to improve my English pronunciation."',
-    ];
-    let drillIdx = 0;
-
-    function nextDrill() {
-      drillIdx = (drillIdx + 1) % drillPhrases.length;
-      document.getElementById('drillText').textContent = drillPhrases[drillIdx];
-    }
-
-    function playPronunciation(text) {
-      speakText(text, 0.72);
-      showToast('🔊 Listen carefully!');
-    }
-
-    const qaQs = [
-      'What do you usually do on weekends?',
-      'Describe your best friend.',
-      'What is your favorite movie and why?',
-      'Tell me about your daily routine.',
-      'What are your goals for the next year?',
-    ];
-    let qaIdx = 0;
-
-    function nextQA() {
-      qaIdx = (qaIdx + 1) % qaQs.length;
-      document.getElementById('qaQuestion').textContent = qaQs[qaIdx];
-    }
-
-    const rolePlays = {
-      restaurant: 'You are at a restaurant. The waiter asks: "Good evening, are you ready to order?" — Respond naturally, order your meal and ask about the specials.',
-      interview: 'You are in a job interview. The interviewer says: "Tell me about yourself and why you want this position." — Give a confident, professional answer.',
-      airport: 'You are at the airport. The agent says: "May I see your passport and boarding pass? What is the purpose of your trip?" — Respond appropriately.',
-    };
-
-    function startRolePlay(btn, scenario) {
-      document.querySelectorAll('#roleScenarios .opt-btn').forEach(b => b.classList.remove('correct'));
-      btn.classList.add('correct');
-      document.getElementById('roleText').textContent = rolePlays[scenario];
-      document.getElementById('rolePrompt').style.display = 'block';
-      document.getElementById('micRing3').style.display = 'flex';
-      speakText(rolePlays[scenario].split('—')[0], 0.8);
-    }
-
-    const pressTopics = [
-      'Talk about your hometown: where it is, what it is like, and why you love it.',
-      'Explain the importance of learning a second language.',
-      'Describe your favorite hobby and how it has influenced your life.',
-      'Talk about a person who has inspired you and why.',
-      'What do you think about the impact of technology on education?',
-    ];
-    let pressIdx = 0;
-
-    function nextPressTopic() {
-      pressIdx = (pressIdx + 1) % pressTopics.length;
-      document.getElementById('pressTopic').textContent = pressTopics[pressIdx];
-    }
-
-    function submitMultimedia() {
-      const summary = document.getElementById('mmSummary').value;
-      const f = document.getElementById('mmFeed');
-      if (summary.length < 40) {
-        soundWrong();
-        f.textContent = '⚠️ Write a complete summary first!';
-        f.className = 'feedback-msg show err';
-        return;
-      }
-      soundComplete();
-      f.textContent = '🏆 Amazing project! Reading, listening and speaking combined!';
-      f.className = 'feedback-msg show ok';
-      addXP(150, '🎬 Multimedia Project +150 XP');
-    }
-
-    /* ============================
-       MIC
-    ============================ */
-    function toggleMic(ringId, resultId, context) {
-      if (!micStates[ringId]) {
-        micStates[ringId] = true;
-        const ring = document.getElementById(ringId);
-        ring.classList.add('recording');
-        ring.textContent = '⏹️';
-        document.getElementById(resultId).classList.remove('show');
-        micTimers[ringId] = setTimeout(() => stopMic(ringId, resultId, context), 3500);
-      } else {
-        clearTimeout(micTimers[ringId]);
-        stopMic(ringId, resultId, context);
-      }
-    }
-
-    function stopMic(ringId, resultId, context) {
-      micStates[ringId] = false;
-      const ring = document.getElementById(ringId);
-      ring.classList.remove('recording');
-      ring.textContent = '🎤';
-      const fbs = {
-        's-drill': ['Great pronunciation!', 'Excellent fluency!', 'Very natural English!', 'Almost perfect — try once more!'],
-        's-qa': ['Great answer!', 'Excellent response!', 'Very natural expression!', 'Good effort, keep going!'],
-        's-roleplay': ['Excellent role play!', 'Very realistic response!', 'Great vocabulary!'],
-        's-presentation': ['Impressive presentation!', 'Great fluency and detail!', 'Excellent topic development!'],
-        's-multimedia': ['Great oral opinion!', 'Excellent expression!', 'Very thoughtful response!'],
-      };
-      const list = fbs[context] || ['Great job!', 'Well done!', 'Keep it up!'];
-      const msg = list[Math.floor(Math.random() * list.length)];
-      const res = document.getElementById(resultId);
-      res.textContent = '🗣 ' + msg;
-      res.classList.add('show');
-      speakText(msg, 0.85);
-      soundCorrect();
-      addXP(50, '🎤 Speaking Practice +50 XP');
-    }
-
-    /* ============================
-       ARTICLE — DISCUSSION QUESTIONS
-    ============================ */
-    const aqFeedbacks = [
-      [
-        'Great thinking! You connected economic pressures to environmental decisions. Well done!',
-        'Good point! Consider also mentioning poverty and lack of alternatives as driving factors.',
-        'Excellent! You showed understanding of the social and economic tensions behind deforestation.',
-      ],
-      [
-        'Excellent global perspective! The Amazon truly affects weather and oxygen worldwide.',
-        'Great answer! You could also mention how it affects global temperatures and rainfall patterns.',
-        'Well done! You connected local deforestation to its worldwide climate consequences.',
-      ],
-      [
-        'Thoughtful response! You engaged seriously with this difficult ethical question.',
-        'Great balance! Sustainable development is indeed the key to both goals.',
-        'Excellent critical thinking! You considered multiple viewpoints on development vs. environment.',
-      ],
-      [
-        'Great solutions! Policy enforcement and education are indeed powerful tools.',
-        'Excellent! You proposed realistic and multi-level approaches to tackle deforestation.',
-        'Well done! You considered the roles of different actors in solving this problem.',
-      ],
-      [
-        'Powerful reflection! Future generations deserve a healthy Amazon.',
-        'Excellent! You connected present actions to long-term responsibility.',
-        'Well done! You showed empathy for future people and clear moral reasoning.',
-      ],
-    ];
-
-    function submitAQ(num) {
-      if (aqDone[num - 1]) return;
-      const text = document.getElementById('aq' + num).value.trim();
-      const f = document.getElementById('aqFeed' + num);
-      const wordCount = text.split(/\s+/).filter(w => w.length > 0).length;
-
-      if (wordCount < 15) {
-        soundWrong();
-        f.textContent = '⚠️ Please write a more complete answer (at least 15 words).';
-        f.className = 'article-q-feedback show err';
-        return;
-      }
-
-      aqDone[num - 1] = true;
-      aqCount++;
-
-      const feedList = aqFeedbacks[num - 1];
-      const msg = feedList[Math.floor(Math.random() * feedList.length)];
-
-      soundCorrect();
-      f.textContent = '✅ ' + msg;
-      f.className = 'article-q-feedback show ok';
-
-      document.getElementById('aq' + num).disabled = true;
-      const card = document.getElementById('aq-card-' + num);
-      card.style.borderLeftColor = 'var(--accent3)';
-      card.querySelector('.action-btn.btn-green').disabled = true;
-
-      const pct = (aqCount / 5) * 100;
-      document.getElementById('articleProgressBar').style.width = pct + '%';
-      document.getElementById('articleProgressCount').textContent = aqCount + '/5';
-
-      addXP(50, `🌿 Article Q${num} +50 XP`);
-
-      if (aqCount === 5) {
-        setTimeout(() => {
-          soundComplete();
-          document.getElementById('articleComplete').classList.add('show');
-          addXP(0, '🌿 Article Complete! All questions answered!');
-        }, 800);
-      }
-    }
-
-    /* ============================
-       ARTICLE — LISTEN
-    ============================ */
-    function listenArticle() {
-      const text = "Environmental Problem in Colombia: Deforestation in the Amazon Rainforest. One of the most serious environmental problems in Colombia is deforestation in the Amazon rainforest. The Colombian Amazon is one of the most biodiverse regions in the world and plays a crucial role in regulating the global climate. However, thousands of hectares of forest are lost every year due to illegal logging, cattle ranching, mining, road construction, and the expansion of agricultural activities. Deforestation has many negative consequences for both the environment and local communities. First, it destroys the natural habitats of countless plant and animal species, putting many of them at risk of extinction. Second, trees absorb carbon dioxide from the atmosphere, so when forests are cut down, more greenhouse gases are released, contributing to climate change. In addition, deforestation affects water cycles, soil quality, and air purity. Indigenous communities living in the Amazon are also affected because they depend on the forest for their culture, food, and livelihoods. The loss of forests threatens their traditional way of life and their connection to nature. To address this problem, the Colombian government, environmental organizations, and local communities are working together to promote sustainable land use, reforestation programs, environmental education, and stronger protection of natural areas. Reducing deforestation is essential for preserving biodiversity and ensuring a healthier future for Colombia and the planet.";
-      speakText(text, 0.82);
-      showToast('🔊 Listening to article...');
     }
 
     /* ============================
        INIT
     ============================ */
     window.onload = () => {
-      const saved = localStorage.getItem('yujujuXP');
+
+      const saved = localStorage.getItem("yujujuXP");
+
       if (saved) {
         xp = parseInt(saved);
-        document.getElementById('dashXP').textContent = xp;
+
+        document.getElementById("dashXP").textContent = xp;
+
         updateLevel();
       }
-      initDrag();
+
     };
   </script>
 </body>
