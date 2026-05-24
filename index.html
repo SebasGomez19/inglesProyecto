@@ -1,1433 +1,1411 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>YUJUJU 🚀</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <script src="https://code.responsivevoice.org/responsivevoice.js?key=FREE"></script>
-  <style>
-    :root {
-      --bg: #0f0e17;
-      --surface: #1a1830;
-      --card: #221f38;
-      --accent1: #ff6b6b;
-      --accent2: #ffd93d;
-      --accent3: #6bcb77;
-      --accent4: #4d96ff;
-      --accent5: #c77dff;
-      --text: #fffffe;
-      --muted: #a7a9be;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Nunito', sans-serif;
-      overflow-x: hidden;
-      min-height: 100vh;
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at 20% 20%, #ff6b6b22 0%, transparent 30%), radial-gradient(circle at 80% 80%, #4d96ff22 0%, transparent 30%);
-      z-index: -1;
-    }
-
-    .light-mode {
-      --bg: #f4f7ff;
-      --surface: #ffffff;
-      --card: #ffffff;
-      --text: #111;
-      --muted: #666;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 40px;
-      background: rgba(0, 0, 0, .25);
-      backdrop-filter: blur(10px);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-
-    .logo {
-      font-size: 2rem;
-      font-weight: 900;
-      background: linear-gradient(135deg, var(--accent2), var(--accent1));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .top-controls {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .theme-btn {
-      width: 45px;
-      height: 45px;
-      border: none;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 1rem;
-      background: linear-gradient(135deg, var(--accent5), var(--accent4));
-      color: white;
-    }
-
-    .level-box {
-      padding: 8px 14px;
-      border-radius: 30px;
-      font-weight: 900;
-      background: linear-gradient(135deg, var(--accent2), var(--accent1));
-      color: black;
-    }
-
-    .hero {
-      text-align: center;
-      padding: 80px 20px 50px;
-    }
-
-    .hero h1 {
-      font-size: clamp(2.5rem, 7vw, 5rem);
-      line-height: 1.1;
-      margin-bottom: 20px;
-    }
-
-    .hero h1 span {
-      background: linear-gradient(135deg, var(--accent2), var(--accent1));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .hero p {
-      max-width: 700px;
-      margin: auto;
-      color: var(--muted);
-      font-size: 1.1rem;
-    }
-
-    .dashboard {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      max-width: 1200px;
-      margin: auto;
-      padding: 0 20px 40px;
-    }
-
-    .stat-card {
-      background: var(--card);
-      border-radius: 18px;
-      padding: 24px;
-      text-align: center;
-    }
-
-    .stat-card h2 {
-      font-size: 2rem;
-      color: var(--accent2);
-    }
-
-    .tabs {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      padding: 20px;
-    }
-
-    .tab-btn {
-      border: none;
-      padding: 14px 26px;
-      border-radius: 40px;
-      background: var(--card);
-      color: var(--text);
-      font-weight: 800;
-      cursor: pointer;
-      transition: all .2s;
-    }
-
-    .tab-btn.active {
-      background: linear-gradient(135deg, var(--accent4), var(--accent5));
-    }
-
-    .tab-btn:hover {
-      transform: scale(1.05);
-    }
-
-    .section {
-      display: none;
-      max-width: 1100px;
-      margin: auto;
-      padding: 20px;
-    }
-
-    .section.active {
-      display: block;
-    }
-
-    .card {
-      background: var(--card);
-      padding: 28px;
-      border-radius: 20px;
-      margin-bottom: 24px;
-    }
-
-    .card-title {
-      font-size: 1.2rem;
-      font-weight: 900;
-      margin-bottom: 10px;
-    }
-
-    .card-sub {
-      color: var(--muted);
-      margin-bottom: 20px;
-    }
-
-    .sub-tabs {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 24px;
-    }
-
-    .sub-tab-btn {
-      border: none;
-      padding: 10px 20px;
-      border-radius: 30px;
-      background: var(--surface);
-      color: var(--text);
-      font-weight: 800;
-      cursor: pointer;
-      font-size: .85rem;
-      transition: all .2s;
-    }
-
-    .sub-tab-btn.active {
-      background: linear-gradient(135deg, var(--accent3), #39b36b);
-      color: black;
-    }
-
-    .sub-section {
-      display: none;
-    }
-
-    .sub-section.active {
-      display: block;
-    }
-
-    textarea {
-      width: 100%;
-      height: 120px;
-      background: var(--surface);
-      border: none;
-      border-radius: 14px;
-      padding: 16px;
-      color: var(--text);
-      resize: none;
-      font-family: 'Nunito', sans-serif;
-      font-size: 1rem;
-    }
-
-    .action-btn {
-      border: none;
-      cursor: pointer;
-      padding: 12px 24px;
-      border-radius: 30px;
-      font-weight: 900;
-      font-family: 'Nunito', sans-serif;
-      transition: transform .15s;
-    }
-
-    .action-btn:hover {
-      transform: scale(1.06);
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent4), var(--accent5));
-      color: white;
-    }
-
-    .btn-green {
-      background: linear-gradient(135deg, var(--accent3), #39b36b);
-      color: black;
-    }
-
-    .btn-red {
-      background: linear-gradient(135deg, var(--accent1), #ff914d);
-      color: white;
-    }
-
-    .btn-yellow {
-      background: linear-gradient(135deg, var(--accent2), #ffaa00);
-      color: black;
-    }
-
-    .quiz-question {
-      font-weight: 800;
-      margin-bottom: 16px;
-      font-size: 1.05rem;
-    }
-
-    .options-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .opt-btn {
-      border: 2px solid transparent;
-      background: var(--surface);
-      color: var(--text);
-      padding: 14px;
-      border-radius: 14px;
-      cursor: pointer;
-      font-weight: 700;
-      font-family: 'Nunito', sans-serif;
-      transition: all .2s;
-    }
-
-    .opt-btn:hover {
-      border-color: var(--accent4);
-      transform: scale(1.02);
-    }
-
-    .opt-btn.correct {
-      background: #6bcb7730 !important;
-      border-color: var(--accent3) !important;
-      color: var(--accent3) !important;
-    }
-
-    .opt-btn.wrong {
-      background: #ff6b6b30 !important;
-      border-color: var(--accent1) !important;
-      color: var(--accent1) !important;
-    }
-
-    .feedback-msg {
-      display: none;
-      margin-top: 16px;
-      padding: 12px;
-      border-radius: 12px;
-      font-weight: 700;
-    }
-
-    .feedback-msg.show {
-      display: block;
-    }
-
-    .ok {
-      background: #6bcb7720;
-      color: var(--accent3);
-    }
-
-    .err {
-      background: #ff6b6b20;
-      color: var(--accent1);
-    }
-
-    .audio-player {
-      background: var(--surface);
-      padding: 24px;
-      border-radius: 20px;
-      text-align: center;
-      margin-bottom: 24px;
-    }
-
-    .play-btn {
-      width: 90px;
-      height: 90px;
-      border: none;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent4), var(--accent5));
-      color: white;
-      font-size: 2rem;
-      cursor: pointer;
-      transition: transform .2s;
-    }
-
-    .play-btn:hover {
-      transform: scale(1.1);
-    }
-
-    .audio-wave {
-      display: flex;
-      justify-content: center;
-      gap: 5px;
-      margin-top: 20px;
-    }
-
-    .audio-wave span {
-      width: 6px;
-      height: 35px;
-      background: var(--accent4);
-      border-radius: 10px;
-      animation: wave 1s infinite ease-in-out;
-    }
-
-    .audio-wave.paused span {
-      animation-play-state: paused;
-    }
-
-    .audio-wave span:nth-child(2) {
-      animation-delay: .1s;
-    }
-
-    .audio-wave span:nth-child(3) {
-      animation-delay: .2s;
-    }
-
-    .audio-wave span:nth-child(4) {
-      animation-delay: .3s;
-    }
-
-    @keyframes wave {
-
-      0%,
-      100% {
-        transform: scaleY(.4);
-      }
-
-      50% {
-        transform: scaleY(1.2);
-      }
-    }
-
-    .prompt-card {
-      background: var(--surface);
-      padding: 20px;
-      border-radius: 16px;
-      margin-bottom: 20px;
-    }
-
-    .prompt-label {
-      color: var(--accent1);
-      font-weight: 900;
-      margin-bottom: 10px;
-    }
-
-    .prompt-text {
-      font-size: 1.2rem;
-      font-weight: 700;
-    }
-
-    .mic-ring {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent1), #ff914d);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 20px auto;
-      font-size: 2.5rem;
-      cursor: pointer;
-      transition: transform .2s;
-    }
-
-    .mic-ring:hover {
-      transform: scale(1.05);
-    }
-
-    .mic-ring.recording {
-      animation: pulse 1s infinite;
-    }
-
-    @keyframes pulse {
-      0% {
-        transform: scale(1);
-      }
-
-      50% {
-        transform: scale(1.08);
-      }
-
-      100% {
-        transform: scale(1);
-      }
-    }
-
-    .mic-result {
-      background: var(--surface);
-      padding: 16px;
-      border-radius: 14px;
-      display: none;
-      margin-top: 20px;
-      font-weight: 700;
-    }
-
-    .mic-result.show {
-      display: block;
-    }
-
-    .xp-toast {
-      position: fixed;
-      right: 30px;
-      bottom: 30px;
-      background: linear-gradient(135deg, var(--accent2), var(--accent1));
-      color: black;
-      padding: 14px 24px;
-      border-radius: 40px;
-      font-weight: 900;
-      display: none;
-      z-index: 9999;
-      animation: popIn .3s ease;
-    }
-
-    @keyframes popIn {
-      from {
-        transform: scale(.7);
-        opacity: 0;
-      }
-
-      to {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
-
-    .xp-toast.show {
-      display: block;
-    }
-
-    .reading-text {
-      background: var(--surface);
-      padding: 20px;
-      border-radius: 16px;
-      margin-bottom: 20px;
-      line-height: 1.8;
-      font-size: 1rem;
-    }
-
-    .blank-input {
-      background: transparent;
-      border: none;
-      border-bottom: 2px solid var(--accent4);
-      color: var(--text);
-      font-size: 1rem;
-      font-weight: 700;
-      width: 100px;
-      text-align: center;
-      padding: 2px 6px;
-      font-family: 'Nunito', sans-serif;
-    }
-
-    .blank-input:focus {
-      outline: none;
-      border-bottom-color: var(--accent2);
-    }
-
-    .blank-input.correct-blank {
-      border-bottom-color: var(--accent3);
-      color: var(--accent3);
-    }
-
-    .blank-input.wrong-blank {
-      border-bottom-color: var(--accent1);
-      color: var(--accent1);
-    }
-
-    .paragraph-block {
-      background: var(--surface);
-      padding: 16px;
-      border-radius: 14px;
-      margin-bottom: 10px;
-      cursor: grab;
-      font-size: .95rem;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      user-select: none;
-      border: 2px solid transparent;
-      transition: border-color .2s;
-    }
-
-    .paragraph-block:hover {
-      border-color: var(--accent4);
-    }
-
-    .paragraph-block.dragging {
-      opacity: .5;
-    }
-
-    .para-num {
-      background: linear-gradient(135deg, var(--accent4), var(--accent5));
-      color: white;
-      border-radius: 50%;
-      width: 32px;
-      height: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 900;
-      flex-shrink: 0;
-    }
-
-    .dictation-input {
-      width: 100%;
-      min-height: 80px;
-      background: var(--surface);
-      border: none;
-      border-radius: 14px;
-      padding: 16px;
-      color: var(--text);
-      resize: none;
-      font-family: 'Nunito', sans-serif;
-      font-size: 1rem;
-    }
-
-    .image-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-      margin-bottom: 20px;
-    }
-
-    .img-opt {
-      background: var(--surface);
-      border: 3px solid transparent;
-      border-radius: 16px;
-      padding: 20px;
-      text-align: center;
-      cursor: pointer;
-      font-size: 2.5rem;
-      font-weight: 900;
-      transition: all .2s;
-    }
-
-    .img-opt:hover {
-      border-color: var(--accent4);
-      transform: scale(1.03);
-    }
-
-    .img-opt.correct {
-      border-color: var(--accent3);
-      background: #6bcb7720;
-    }
-
-    .img-opt.wrong {
-      border-color: var(--accent1);
-      background: #ff6b6b20;
-    }
-
-    .email-fields {
-      display: grid;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .email-field {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .email-label {
-      font-weight: 900;
-      color: var(--accent2);
-      min-width: 50px;
-    }
-
-    .email-input {
-      flex: 1;
-      background: var(--surface);
-      border: none;
-      border-radius: 10px;
-      padding: 10px 14px;
-      color: var(--text);
-      font-family: 'Nunito', sans-serif;
-      font-size: .95rem;
-    }
-
-    .email-input:focus {
-      outline: 2px solid var(--accent4);
-    }
-
-    .progress-bar-wrap {
-      background: var(--surface);
-      border-radius: 30px;
-      height: 12px;
-      margin-top: 8px;
-      overflow: hidden;
-    }
-
-    .progress-bar {
-      height: 100%;
-      border-radius: 30px;
-      background: linear-gradient(135deg, var(--accent4), var(--accent5));
-      transition: width .5s ease;
-    }
-
-    /* ---- ARTICLE SECTION STYLES ---- */
-    .article-body {
-      background: var(--surface);
-      padding: 28px;
-      border-radius: 18px;
-      line-height: 2;
-      font-size: 1.05rem;
-      margin-bottom: 24px;
-      border-left: 4px solid var(--accent3);
-    }
-
-    .article-body h3 {
-      font-size: 1.4rem;
-      font-weight: 900;
-      margin-bottom: 16px;
-      background: linear-gradient(135deg, var(--accent3), var(--accent4));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .article-body p {
-      margin-bottom: 14px;
-      color: var(--text);
-    }
-
-    .article-listen-bar {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      background: var(--card);
-      padding: 16px 20px;
-      border-radius: 14px;
-      margin-bottom: 20px;
-    }
-
-    .article-listen-bar span {
-      font-weight: 800;
-      font-size: .95rem;
-      color: var(--muted);
-    }
-
-    .article-q-card {
-      background: var(--surface);
-      border-radius: 16px;
-      padding: 22px;
-      margin-bottom: 16px;
-      border-left: 4px solid var(--accent5);
-      transition: border-color .2s;
-    }
-
-    .article-q-card:hover {
-      border-left-color: var(--accent2);
-    }
-
-    .article-q-num {
-      display: inline-block;
-      background: linear-gradient(135deg, var(--accent5), var(--accent4));
-      color: white;
-      border-radius: 30px;
-      padding: 3px 14px;
-      font-size: .8rem;
-      font-weight: 900;
-      margin-bottom: 10px;
-    }
-
-    .article-q-text {
-      font-weight: 800;
-      font-size: 1rem;
-      margin-bottom: 14px;
-      line-height: 1.5;
-    }
-
-    .article-q-textarea {
-      width: 100%;
-      min-height: 90px;
-      background: var(--bg);
-      border: 2px solid transparent;
-      border-radius: 12px;
-      padding: 14px;
-      color: var(--text);
-      resize: none;
-      font-family: 'Nunito', sans-serif;
-      font-size: .95rem;
-      transition: border-color .2s;
-    }
-
-    .article-q-textarea:focus {
-      outline: none;
-      border-color: var(--accent4);
-    }
-
-    .article-q-feedback {
-      display: none;
-      margin-top: 10px;
-      padding: 10px 14px;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: .9rem;
-    }
-
-    .article-q-feedback.show {
-      display: block;
-    }
-
-    .article-submit-row {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      margin-top: 10px;
-      flex-wrap: wrap;
-    }
-
-    .article-progress {
-      background: var(--surface);
-      border-radius: 16px;
-      padding: 18px 22px;
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      gap: 18px;
-    }
-
-    .article-progress-label {
-      font-weight: 900;
-      font-size: .9rem;
-      color: var(--muted);
-      white-space: nowrap;
-    }
-
-    .article-progress-bar-wrap {
-      flex: 1;
-      background: var(--bg);
-      border-radius: 30px;
-      height: 14px;
-      overflow: hidden;
-    }
-
-    .article-progress-bar {
-      height: 100%;
-      border-radius: 30px;
-      background: linear-gradient(135deg, var(--accent3), var(--accent4));
-      transition: width .6s ease;
-    }
-
-    .article-progress-count {
-      font-weight: 900;
-      color: var(--accent2);
-      white-space: nowrap;
-    }
-
-    .article-vocab-pill {
-      display: inline-block;
-      background: linear-gradient(135deg, var(--accent4)22, var(--accent5)22);
-      border: 1px solid var(--accent4);
-      color: var(--accent4);
-      padding: 3px 12px;
-      border-radius: 20px;
-      font-size: .82rem;
-      font-weight: 800;
-      margin: 3px;
-    }
-
-    .article-complete-banner {
-      background: linear-gradient(135deg, var(--accent3)22, var(--accent4)22);
-      border: 2px solid var(--accent3);
-      border-radius: 18px;
-      padding: 28px;
-      text-align: center;
-      display: none;
-    }
-
-    .article-complete-banner.show {
-      display: block;
-    }
-
-    .article-complete-banner h2 {
-      font-size: 2rem;
-      margin-bottom: 8px;
-    }
-
-    .article-complete-banner p {
-      color: var(--muted);
-    }
-
-    @media(max-width:700px) {
-      .options-grid {
-        grid-template-columns: 1fr;
-      }
-
-      header {
-        padding: 16px;
-      }
-
-      .image-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .article-listen-bar {
-        flex-wrap: wrap;
-      }
-    }
-
-    /* ---- MIC BOX STYLES ---- */
-    .mic-box {
-      background: var(--surface);
-      border-radius: 20px;
-      padding: 24px;
-      text-align: center;
-    }
-
-    .mic-status {
-      font-size: .9rem;
-      color: var(--muted);
-      margin-bottom: 16px;
-      min-height: 22px;
-      font-weight: 700;
-    }
-
-    .mic-btn {
-      width: 110px;
-      height: 110px;
-      border: none;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent1), #ff914d);
-      color: white;
-      font-size: 2.8rem;
-      cursor: pointer;
-      transition: all .2s;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 20px #ff6b6b44;
-    }
-
-    .mic-btn:hover {
-      transform: scale(1.07);
-      box-shadow: 0 6px 28px #ff6b6b66;
-    }
-
-    .mic-btn.active {
-      background: linear-gradient(135deg, #ff3b3b, #ff6b6b);
-      animation: micPulse 1s infinite;
-      box-shadow: 0 0 0 0 #ff6b6b88;
-    }
-
-    @keyframes micPulse {
-      0% {
-        box-shadow: 0 0 0 0 #ff6b6b66;
-      }
-
-      70% {
-        box-shadow: 0 0 0 18px transparent;
-      }
-
-      100% {
-        box-shadow: 0 0 0 0 transparent;
-      }
-    }
-
-    .mic-canvas-wrap {
-      margin: 16px auto 0;
-      display: none;
-    }
-
-    .mic-canvas-wrap.show {
-      display: block;
-    }
-
-    .mic-canvas {
-      width: 100%;
-      max-width: 320px;
-      height: 48px;
-      border-radius: 10px;
-      background: var(--bg);
-    }
-
-    .mic-transcript {
-      background: var(--bg);
-      border-radius: 14px;
-      padding: 14px 16px;
-      margin-top: 14px;
-      font-size: .95rem;
-      font-weight: 700;
-      display: none;
-      text-align: left;
-      line-height: 1.6;
-    }
-
-    .mic-transcript.show {
-      display: block;
-    }
-
-    .mic-feedback {
-      border-radius: 14px;
-      padding: 14px 16px;
-      margin-top: 10px;
-      font-weight: 700;
-      display: none;
-      text-align: left;
-    }
-
-    .mic-feedback.show {
-      display: block;
-    }
-
-    .mic-hint {
-      font-size: .8rem;
-      color: var(--muted);
-      margin-top: 12px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YUJUJU 🚀</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://code.responsivevoice.org/responsivevoice.js?key=FREE"></script>
+<style>
+:root{
+  --bg:#0f0e17;
+  --surface:#1a1830;
+  --card:#221f38;
+  --accent1:#ff6b6b;
+  --accent2:#ffd93d;
+  --accent3:#6bcb77;
+  --accent4:#4d96ff;
+  --accent5:#c77dff;
+  --text:#fffffe;
+  --muted:#a7a9be;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;overflow-x:hidden;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle at 20% 20%,#ff6b6b22 0%,transparent 30%),radial-gradient(circle at 80% 80%,#4d96ff22 0%,transparent 30%);z-index:-1;}
+.light-mode{--bg:#f4f7ff;--surface:#ffffff;--card:#ffffff;--text:#111;--muted:#666;}
+header{display:flex;justify-content:space-between;align-items:center;padding:20px 40px;background:rgba(0,0,0,.25);backdrop-filter:blur(10px);position:sticky;top:0;z-index:1000;}
+.logo{font-size:2rem;font-weight:900;background:linear-gradient(135deg,var(--accent2),var(--accent1));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.top-controls{display:flex;align-items:center;gap:14px;}
+.theme-btn{width:45px;height:45px;border:none;border-radius:50%;cursor:pointer;font-size:1rem;background:linear-gradient(135deg,var(--accent5),var(--accent4));color:white;}
+.level-box{padding:8px 14px;border-radius:30px;font-weight:900;background:linear-gradient(135deg,var(--accent2),var(--accent1));color:black;}
+.hero{text-align:center;padding:80px 20px 50px;}
+.hero h1{font-size:clamp(2.5rem,7vw,5rem);line-height:1.1;margin-bottom:20px;}
+.hero h1 span{background:linear-gradient(135deg,var(--accent2),var(--accent1));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero p{max-width:700px;margin:auto;color:var(--muted);font-size:1.1rem;}
+.dashboard{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;max-width:1200px;margin:auto;padding:0 20px 40px;}
+.stat-card{background:var(--card);border-radius:18px;padding:24px;text-align:center;}
+.stat-card h2{font-size:2rem;color:var(--accent2);}
+.tabs{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;padding:20px;}
+.tab-btn{border:none;padding:14px 26px;border-radius:40px;background:var(--card);color:var(--text);font-weight:800;cursor:pointer;transition:all .2s;}
+.tab-btn.active{background:linear-gradient(135deg,var(--accent4),var(--accent5));}
+.tab-btn:hover{transform:scale(1.05);}
+.section{display:none;max-width:1100px;margin:auto;padding:20px;}
+.section.active{display:block;}
+.card{background:var(--card);padding:28px;border-radius:20px;margin-bottom:24px;}
+.card-title{font-size:1.2rem;font-weight:900;margin-bottom:10px;}
+.card-sub{color:var(--muted);margin-bottom:20px;}
+.sub-tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;}
+.sub-tab-btn{border:none;padding:10px 20px;border-radius:30px;background:var(--surface);color:var(--text);font-weight:800;cursor:pointer;font-size:.85rem;transition:all .2s;}
+.sub-tab-btn.active{background:linear-gradient(135deg,var(--accent3),#39b36b);color:black;}
+.sub-section{display:none;}
+.sub-section.active{display:block;}
+textarea{width:100%;height:120px;background:var(--surface);border:none;border-radius:14px;padding:16px;color:var(--text);resize:none;font-family:'Nunito',sans-serif;font-size:1rem;}
+.action-btn{border:none;cursor:pointer;padding:12px 24px;border-radius:30px;font-weight:900;font-family:'Nunito',sans-serif;transition:transform .15s;}
+.action-btn:hover{transform:scale(1.06);}
+.btn-primary{background:linear-gradient(135deg,var(--accent4),var(--accent5));color:white;}
+.btn-green{background:linear-gradient(135deg,var(--accent3),#39b36b);color:black;}
+.btn-red{background:linear-gradient(135deg,var(--accent1),#ff914d);color:white;}
+.btn-yellow{background:linear-gradient(135deg,var(--accent2),#ffaa00);color:black;}
+.quiz-question{font-weight:800;margin-bottom:16px;font-size:1.05rem;}
+.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.opt-btn{border:2px solid transparent;background:var(--surface);color:var(--text);padding:14px;border-radius:14px;cursor:pointer;font-weight:700;font-family:'Nunito',sans-serif;transition:all .2s;}
+.opt-btn:hover{border-color:var(--accent4);transform:scale(1.02);}
+.opt-btn.correct{background:#6bcb7730!important;border-color:var(--accent3)!important;color:var(--accent3)!important;}
+.opt-btn.wrong{background:#ff6b6b30!important;border-color:var(--accent1)!important;color:var(--accent1)!important;}
+.feedback-msg{display:none;margin-top:16px;padding:12px;border-radius:12px;font-weight:700;}
+.feedback-msg.show{display:block;}
+.ok{background:#6bcb7720;color:var(--accent3);}
+.err{background:#ff6b6b20;color:var(--accent1);}
+.audio-player{background:var(--surface);padding:24px;border-radius:20px;text-align:center;margin-bottom:24px;}
+.play-btn{width:90px;height:90px;border:none;border-radius:50%;background:linear-gradient(135deg,var(--accent4),var(--accent5));color:white;font-size:2rem;cursor:pointer;transition:transform .2s;}
+.play-btn:hover{transform:scale(1.1);}
+.audio-wave{display:flex;justify-content:center;gap:5px;margin-top:20px;}
+.audio-wave span{width:6px;height:35px;background:var(--accent4);border-radius:10px;animation:wave 1s infinite ease-in-out;}
+.audio-wave.paused span{animation-play-state:paused;}
+.audio-wave span:nth-child(2){animation-delay:.1s;}
+.audio-wave span:nth-child(3){animation-delay:.2s;}
+.audio-wave span:nth-child(4){animation-delay:.3s;}
+@keyframes wave{0%,100%{transform:scaleY(.4);}50%{transform:scaleY(1.2);}}
+.prompt-card{background:var(--surface);padding:20px;border-radius:16px;margin-bottom:20px;}
+.prompt-label{color:var(--accent1);font-weight:900;margin-bottom:10px;}
+.prompt-text{font-size:1.2rem;font-weight:700;}
+.mic-ring{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,var(--accent1),#ff914d);display:flex;align-items:center;justify-content:center;margin:20px auto;font-size:2.5rem;cursor:pointer;transition:transform .2s;}
+.mic-ring:hover{transform:scale(1.05);}
+.mic-ring.recording{animation:pulse 1s infinite;}
+@keyframes pulse{0%{transform:scale(1);}50%{transform:scale(1.08);}100%{transform:scale(1);}}
+.mic-result{background:var(--surface);padding:16px;border-radius:14px;display:none;margin-top:20px;font-weight:700;}
+.mic-result.show{display:block;}
+.xp-toast{position:fixed;right:30px;bottom:30px;background:linear-gradient(135deg,var(--accent2),var(--accent1));color:black;padding:14px 24px;border-radius:40px;font-weight:900;display:none;z-index:9999;animation:popIn .3s ease;}
+@keyframes popIn{from{transform:scale(.7);opacity:0;}to{transform:scale(1);opacity:1;}}
+.xp-toast.show{display:block;}
+.reading-text{background:var(--surface);padding:20px;border-radius:16px;margin-bottom:20px;line-height:1.8;font-size:1rem;}
+.blank-input{background:transparent;border:none;border-bottom:2px solid var(--accent4);color:var(--text);font-size:1rem;font-weight:700;width:100px;text-align:center;padding:2px 6px;font-family:'Nunito',sans-serif;}
+.blank-input:focus{outline:none;border-bottom-color:var(--accent2);}
+.blank-input.correct-blank{border-bottom-color:var(--accent3);color:var(--accent3);}
+.blank-input.wrong-blank{border-bottom-color:var(--accent1);color:var(--accent1);}
+.paragraph-block{background:var(--surface);padding:16px;border-radius:14px;margin-bottom:10px;cursor:grab;font-size:.95rem;display:flex;align-items:center;gap:12px;user-select:none;border:2px solid transparent;transition:border-color .2s;}
+.paragraph-block:hover{border-color:var(--accent4);}
+.paragraph-block.dragging{opacity:.5;}
+.para-num{background:linear-gradient(135deg,var(--accent4),var(--accent5));color:white;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-weight:900;flex-shrink:0;}
+.dictation-input{width:100%;min-height:80px;background:var(--surface);border:none;border-radius:14px;padding:16px;color:var(--text);resize:none;font-family:'Nunito',sans-serif;font-size:1rem;}
+.image-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:20px;}
+.img-opt{background:var(--surface);border:3px solid transparent;border-radius:16px;padding:20px;text-align:center;cursor:pointer;font-size:2.5rem;font-weight:900;transition:all .2s;}
+.img-opt:hover{border-color:var(--accent4);transform:scale(1.03);}
+.img-opt.correct{border-color:var(--accent3);background:#6bcb7720;}
+.img-opt.wrong{border-color:var(--accent1);background:#ff6b6b20;}
+.email-fields{display:grid;gap:12px;margin-bottom:16px;}
+.email-field{display:flex;align-items:center;gap:10px;}
+.email-label{font-weight:900;color:var(--accent2);min-width:50px;}
+.email-input{flex:1;background:var(--surface);border:none;border-radius:10px;padding:10px 14px;color:var(--text);font-family:'Nunito',sans-serif;font-size:.95rem;}
+.email-input:focus{outline:2px solid var(--accent4);}
+.progress-bar-wrap{background:var(--surface);border-radius:30px;height:12px;margin-top:8px;overflow:hidden;}
+.progress-bar{height:100%;border-radius:30px;background:linear-gradient(135deg,var(--accent4),var(--accent5));transition:width .5s ease;}
+
+/* ---- ARTICLE SECTION STYLES ---- */
+.article-body{background:var(--surface);padding:28px;border-radius:18px;line-height:2;font-size:1.05rem;margin-bottom:24px;border-left:4px solid var(--accent3);}
+.article-body h3{font-size:1.4rem;font-weight:900;margin-bottom:16px;background:linear-gradient(135deg,var(--accent3),var(--accent4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.article-body p{margin-bottom:14px;color:var(--text);}
+.article-listen-bar{display:flex;align-items:center;gap:14px;background:var(--card);padding:16px 20px;border-radius:14px;margin-bottom:20px;}
+.article-listen-bar span{font-weight:800;font-size:.95rem;color:var(--muted);}
+.article-q-card{background:var(--surface);border-radius:16px;padding:22px;margin-bottom:16px;border-left:4px solid var(--accent5);transition:border-color .2s;}
+.article-q-card:hover{border-left-color:var(--accent2);}
+.article-q-num{display:inline-block;background:linear-gradient(135deg,var(--accent5),var(--accent4));color:white;border-radius:30px;padding:3px 14px;font-size:.8rem;font-weight:900;margin-bottom:10px;}
+.article-q-text{font-weight:800;font-size:1rem;margin-bottom:14px;line-height:1.5;}
+.article-q-textarea{width:100%;min-height:90px;background:var(--bg);border:2px solid transparent;border-radius:12px;padding:14px;color:var(--text);resize:none;font-family:'Nunito',sans-serif;font-size:.95rem;transition:border-color .2s;}
+.article-q-textarea:focus{outline:none;border-color:var(--accent4);}
+.article-q-feedback{display:none;margin-top:10px;padding:10px 14px;border-radius:10px;font-weight:700;font-size:.9rem;}
+.article-q-feedback.show{display:block;}
+.article-submit-row{display:flex;gap:12px;align-items:center;margin-top:10px;flex-wrap:wrap;}
+.article-progress{background:var(--surface);border-radius:16px;padding:18px 22px;margin-bottom:20px;display:flex;align-items:center;gap:18px;}
+.article-progress-label{font-weight:900;font-size:.9rem;color:var(--muted);white-space:nowrap;}
+.article-progress-bar-wrap{flex:1;background:var(--bg);border-radius:30px;height:14px;overflow:hidden;}
+.article-progress-bar{height:100%;border-radius:30px;background:linear-gradient(135deg,var(--accent3),var(--accent4));transition:width .6s ease;}
+.article-progress-count{font-weight:900;color:var(--accent2);white-space:nowrap;}
+.article-vocab-pill{display:inline-block;background:linear-gradient(135deg,var(--accent4)22,var(--accent5)22);border:1px solid var(--accent4);color:var(--accent4);padding:3px 12px;border-radius:20px;font-size:.82rem;font-weight:800;margin:3px;}
+.article-complete-banner{background:linear-gradient(135deg,var(--accent3)22,var(--accent4)22);border:2px solid var(--accent3);border-radius:18px;padding:28px;text-align:center;display:none;}
+.article-complete-banner.show{display:block;}
+.article-complete-banner h2{font-size:2rem;margin-bottom:8px;}
+.article-complete-banner p{color:var(--muted);}
+
+@media(max-width:700px){.options-grid{grid-template-columns:1fr;}header{padding:16px;}.image-grid{grid-template-columns:1fr 1fr;}.article-listen-bar{flex-wrap:wrap;}}
+
+/* ---- MIC BOX STYLES ---- */
+.mic-box{background:var(--surface);border-radius:20px;padding:24px;text-align:center;}
+.mic-status{font-size:.9rem;color:var(--muted);margin-bottom:16px;min-height:22px;font-weight:700;}
+.mic-btn{width:110px;height:110px;border:none;border-radius:50%;background:linear-gradient(135deg,var(--accent1),#ff914d);color:white;font-size:2.8rem;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 4px 20px #ff6b6b44;}
+.mic-btn:hover{transform:scale(1.07);box-shadow:0 6px 28px #ff6b6b66;}
+.mic-btn.active{background:linear-gradient(135deg,#ff3b3b,#ff6b6b);animation:micPulse 1s infinite;box-shadow:0 0 0 0 #ff6b6b88;}
+@keyframes micPulse{0%{box-shadow:0 0 0 0 #ff6b6b66;}70%{box-shadow:0 0 0 18px transparent;}100%{box-shadow:0 0 0 0 transparent;}}
+.mic-canvas-wrap{margin:16px auto 0;display:none;}
+.mic-canvas-wrap.show{display:block;}
+.mic-canvas{width:100%;max-width:320px;height:48px;border-radius:10px;background:var(--bg);}
+.mic-transcript{background:var(--bg);border-radius:14px;padding:14px 16px;margin-top:14px;font-size:.95rem;font-weight:700;display:none;text-align:left;line-height:1.6;}
+.mic-transcript.show{display:block;}
+.mic-feedback{border-radius:14px;padding:14px 16px;margin-top:10px;font-weight:700;display:none;text-align:left;}
+.mic-feedback.show{display:block;}
+.mic-hint{font-size:.8rem;color:var(--muted);margin-top:12px;}
+
+</style>
 </head>
-
 <body>
-  <header>
-    <div class="logo">YUJUJU 🚀</div>
-    <div class="top-controls"> <button class="theme-btn" onclick="toggleTheme()">🌙</button>
-      <div class="level-box" id="levelBox">Beginner</div>
-    </div>
-  </header>
-  <div class="hero">
-    <h1>Learn <span>English</span><br>Like a Gamer 🎮</h1>
-    <p>Interactive listening, reading, writing, speaking and AI-powered English activities.</p>
-  </div>
-  <div class="dashboard">
-    <div class="stat-card">
-      <p>Total XP</p>
-      <h2 id="dashXP">0</h2>
-    </div>
-    <div class="stat-card">
-      <p>Level</p>
-      <h2 id="dashLevel">Beginner</h2>
-    </div>
-    <div class="stat-card">
-      <p>Completed</p>
-      <h2 id="completedTasks">0</h2>
-    </div>
-  </div>
-  <div class="tabs"> <button class="tab-btn active" onclick="switchTab('listening',this)">🎧 Listening</button> <button
-      class="tab-btn" onclick="switchTab('reading',this)">📖 Reading</button> <button class="tab-btn"
-      onclick="switchTab('writing',this)">✍️ Writing</button> <button class="tab-btn"
-      onclick="switchTab('speaking',this)">🎤 Speaking</button> <button class="tab-btn"
-      onclick="switchTab('article',this)">🌿 Article</button> </div> <!-- ============ LISTENING ============ -->
-  <section class="section active" id="listening">
-    <div class="sub-tabs"> <button class="sub-tab-btn active" onclick="switchSub('listening','l-main',this)">🎧 Audio
-        Quiz</button> <button class="sub-tab-btn" onclick="switchSub('listening','l-dictation',this)">📝
-        Dictation</button> <button class="sub-tab-btn" onclick="switchSub('listening','l-blanks',this)">🔊 Fill in the
-        Blanks</button> <button class="sub-tab-btn" onclick="switchSub('listening','l-images',this)">🖼️ Audio &
-        Image</button> </div>
-    <div class="sub-section active" id="l-main">
-      <div class="card">
-        <div class="card-title">🎧 Listening Audio Practice</div>
-        <div class="audio-player"> <button class="play-btn" id="playBtn" onclick="togglePlay()">▶️</button>
-          <div class="audio-wave paused" id="audioWave"><span></span><span></span><span></span><span></span></div>
-        </div>
-      </div>
-      <div class="card" id="lq1">
-        <div class="card-title">Question 1</div>
-        <div class="quiz-question">What time does Alex wake up?</div>
-        <div class="options-grid"> <button class="opt-btn" onclick="answerL(this,'wrong')">7:00 AM</button> <button
-            class="opt-btn" onclick="answerL(this,'correct')">6:30 AM</button> <button class="opt-btn"
-            onclick="answerL(this,'wrong')">8:00 AM</button> <button class="opt-btn"
-            onclick="answerL(this,'wrong')">9:00 AM</button> </div>
-        <div class="feedback-msg" id="lFeed1"></div>
-      </div>
-      <div class="card" id="lq2" style="display:none;">
-        <div class="card-title">Question 2</div>
-        <div class="quiz-question">How does Alex go to school?</div>
-        <div class="options-grid"> <button class="opt-btn" onclick="answerL2(this,'wrong')">By bike</button> <button
-            class="opt-btn" onclick="answerL2(this,'correct')">By bus</button> <button class="opt-btn"
-            onclick="answerL2(this,'wrong')">Walking</button> <button class="opt-btn"
-            onclick="answerL2(this,'wrong')">By car</button> </div>
-        <div class="feedback-msg" id="lFeed2"></div>
-      </div>
-      <div class="card" id="lq3" style="display:none;">
-        <div class="card-title">Question 3</div>
-        <div class="quiz-question">What does Alex do in the afternoon?</div>
-        <div class="options-grid"> <button class="opt-btn" onclick="answerL3(this,'correct')">Homework and
-            sports</button> <button class="opt-btn" onclick="answerL3(this,'wrong')">Watch TV</button> <button
-            class="opt-btn" onclick="answerL3(this,'wrong')">Sleep</button> <button class="opt-btn"
-            onclick="answerL3(this,'wrong')">Play games</button> </div>
-        <div class="feedback-msg" id="lFeed3"></div>
-      </div>
-      <div class="card" id="lComplete" style="display:none;">
-        <h2>🎉 Listening Complete!</h2>
-        <p>Excellent listening skills!</p>
-      </div>
-    </div>
-    <div class="sub-section" id="l-dictation">
-      <div class="card">
-        <div class="card-title">📝 Dictation interactivo</div>
-        <div class="card-sub">Listen to the audio and write exactly what you hear.</div>
-        <div class="audio-player"> <button class="play-btn"
-            onclick="speakText('My name is Sarah. I live in New York. Every morning I wake up at seven o clock and drink a cup of coffee before going to work.',0.75)">▶️</button>
-          <div class="audio-wave paused" id="dictWave"><span></span><span></span><span></span><span></span></div>
-        </div> <textarea class="dictation-input" id="dictationInput" placeholder="Write what you hear..."></textarea>
-        <br><br> <button class="action-btn btn-primary" onclick="checkDictation()">✅ Check Answer</button>
-        <div class="feedback-msg" id="dictFeed"></div>
-      </div>
-    </div>
-    <div class="sub-section" id="l-blanks">
-      <div class="card">
-        <div class="card-title">🔊 Fill in the Blanks</div>
-        <div class="card-sub">Listen to the conversation and fill in the missing words.</div>
-        <div class="audio-player"> <button class="play-btn"
-            onclick="speakText('Hi Tom, where are you going today? I am going to the supermarket to buy some apples and milk. After that I will visit my friend at the park.',0.78)">▶️</button>
-          <div class="audio-wave paused"><span></span><span></span><span></span><span></span></div>
-        </div>
-        <div class="reading-text"> Hi Tom, where are you going <input class="blank-input" id="lb1" placeholder="???">
-          today?<br><br> I am going to the <input class="blank-input" id="lb2" placeholder="???"> to buy some apples and
-          <input class="blank-input" id="lb3" placeholder="???">. After that I will visit my friend at the <input
-            class="blank-input" id="lb4" placeholder="???">. </div> <button class="action-btn btn-green"
-          onclick="checkListeningBlanks()">✅ Check</button>
-        <div class="feedback-msg" id="lBlankFeed"></div>
-      </div>
-    </div>
-    <div class="sub-section" id="l-images">
-      <div class="card">
-        <div class="card-title">🖼️ Match Audio to Image</div>
-        <div class="card-sub">Listen to the description and choose the correct image.</div>
-        <div class="audio-player"> <button class="play-btn"
-            onclick="speakText('A young woman is sitting on a bench in a sunny park, reading a book and drinking coffee.',0.78)">▶️</button>
-          <div class="audio-wave paused"><span></span><span></span><span></span><span></span></div>
-        </div>
-        <div class="image-grid" id="imageGrid">
-          <div class="img-opt" onclick="pickImage(this,'wrong')">🏊‍♂️<br><small>Man swimming</small></div>
-          <div class="img-opt" onclick="pickImage(this,'correct')">📖☕<br><small>Woman reading in park</small></div>
-          <div class="img-opt" onclick="pickImage(this,'wrong')">🍳<br><small>Person cooking</small></div>
-          <div class="img-opt" onclick="pickImage(this,'wrong')">🚴‍♀️<br><small>Woman cycling</small></div>
-        </div>
-        <div class="feedback-msg" id="imgFeed"></div>
-      </div>
-    </div>
-  </section> <!-- ============ READING ============ -->
-  <section class="section" id="reading">
-    <div class="sub-tabs"> <button class="sub-tab-btn active" onclick="switchSub('reading','r-comprehension',this)">📖
-        Comprehension</button> <button class="sub-tab-btn" onclick="switchSub('reading','r-blanks',this)">✏️ Fill in the
-        Info</button> <button class="sub-tab-btn" onclick="switchSub('reading','r-order',this)">🔀 Order
-        Paragraphs</button> </div>
-    <div class="sub-section active" id="r-comprehension">
-      <div class="card">
-        <div class="card-title">📖 Comprehension Questions</div>
-        <div class="reading-text"> <strong>The City of Wonders</strong><br><br> New York City is one of the most famous
-          cities in the world. It has a population of over 8 million people and is known for its iconic skyline,
-          including the Empire State Building and the Statue of Liberty. The city is divided into five boroughs:
-          Manhattan, Brooklyn, Queens, The Bronx, and Staten Island. New York is also famous for its cultural diversity
-          — people from over 200 countries live there. The subway system operates 24 hours a day, 7 days a week, making
-          it easy to travel around the city. </div>
-        <div id="rq-block">
-          <div class="quiz-question" id="rqText">Q1: How many people live in New York City?</div>
-          <div class="options-grid" id="rqOptions"> <button class="opt-btn" onclick="answerReading(this,'wrong')">5
-              million</button> <button class="opt-btn" onclick="answerReading(this,'correct')">Over 8 million</button>
-            <button class="opt-btn" onclick="answerReading(this,'wrong')">10 million</button> <button class="opt-btn"
-              onclick="answerReading(this,'wrong')">3 million</button> </div>
-          <!-- NOTE: rqIndex=0, correct=1 (Over 8 million) matches rQuestions[0].correct -->
-          <div class="feedback-msg" id="rFeed"></div>
-        </div>
-      </div>
-    </div>
-    <div class="sub-section" id="r-blanks">
-      <div class="card">
-        <div class="card-title">✏️ Fill in the Información</div>
-        <div class="card-sub">Read the text and fill in the blanks with the correct words.</div>
-        <div
-          style="background:var(--surface);padding:14px;border-radius:12px;margin-bottom:16px;font-weight:700;color:var(--accent2);">
-          Word bank: &nbsp; <span style="color:var(--text)">breakfast &nbsp;|&nbsp; wakes &nbsp;|&nbsp; school
-            &nbsp;|&nbsp; evening &nbsp;|&nbsp; exercises</span> </div>
-        <div class="reading-text"> Every morning, Maria <input class="blank-input" id="rb1" placeholder="???"> up at 6
-          AM. She eats <input class="blank-input" id="rb2" placeholder="???"> and then goes to <input
-            class="blank-input" id="rb3" placeholder="???"> by bike. In the afternoon she <input class="blank-input"
-            id="rb4" placeholder="???"> at the gym. In the <input class="blank-input" id="rb5" placeholder="???"> she
-          reads and prepares for the next day. </div> <button class="action-btn btn-green"
-          onclick="checkReadingBlanks()">✅ Check Answers</button>
-        <div class="feedback-msg" id="rbFeed"></div>
-      </div>
-    </div>
-    <div class="sub-section" id="r-order">
-      <div class="card">
-        <div class="card-title">🔀 Order Paragraphs</div>
-        <div class="card-sub">Drag the paragraphs to put them in the correct order.</div>
-        <div id="paraContainer">
-          <div class="paragraph-block" draggable="true" data-order="3">
-            <div class="para-num">?</div>
-            <div>Finally, after dinner, he watched a movie and went to bed at 10 PM feeling happy.</div>
-          </div>
-          <div class="paragraph-block" draggable="true" data-order="1">
-            <div class="para-num">?</div>
-            <div>One morning, James woke up early and decided to have a big breakfast with eggs and toast.</div>
-          </div>
-          <div class="paragraph-block" draggable="true" data-order="2">
-            <div class="para-num">?</div>
-            <div>After breakfast, he went to the park to exercise and met his friend Tom there.</div>
-          </div>
-        </div> <br> <button class="action-btn btn-yellow" onclick="checkOrder()">🔍 Check Order</button>
-        <div class="feedback-msg" id="orderFeed"></div>
-      </div>
-    </div>
-  </section> <!-- ============ WRITING ============ -->
-  <section class="section" id="writing">
-    <div class="sub-tabs"> <button class="sub-tab-btn active" onclick="switchSub('writing','w-email',this)">📧
-        Email</button> <button class="sub-tab-btn" onclick="switchSub('writing','w-routine',this)">📋 Daily
-        Routine</button> <button class="sub-tab-btn" onclick="switchSub('writing','w-opinion',this)">💬 Open
-        Questions</button> <button class="sub-tab-btn" onclick="switchSub('writing','w-image',this)">🖼️ Image
-        Description</button> </div>
-    <div class="sub-section active" id="w-email">
-      <div class="card">
-        <div class="card-title">📧 Write an Email</div>
-        <div class="card-sub">Write an email to your friend describing your vacation.</div>
-        <div class="email-fields">
-          <div class="email-field"> <span class="email-label">To:</span> <input class="email-input" id="emailTo"
-              placeholder="friend@example.com"> </div>
-          <div class="email-field"> <span class="email-label">Subject:</span> <input class="email-input"
-              id="emailSubject" placeholder="My wonderful vacation..."> </div>
-        </div> <textarea id="emailBody"
-          placeholder="Dear friend,&#10;&#10;I want to tell you about my vacation..."></textarea> <br><br> <button
-          class="action-btn btn-primary" onclick="submitEmail()">📤 Send Email</button>
-        <div class="feedback-msg" id="emailFeed"></div>
-      </div>
-    </div>
-    <div class="sub-section" id="w-routine">
-      <div class="card">
-        <div class="card-title">📋 Describe Your Daily Routine</div>
-        <div class="card-sub">Write at least 5 sentences about what you do every day.</div> <textarea id="writingTask"
-          placeholder="Every morning I wake up at..."></textarea> <br><br> <button class="action-btn btn-green"
-          onclick="submitWriting()">Submit Writing</button>
-        <div class="feedback-msg" id="writingFeed"></div>
-      </div>
-    </div>
-    <div class="sub-section" id="w-opinion">
-      <div class="card">
-        <div class="card-title">💬 Answer Open Questions</div>
-        <div class="prompt-card">
-          <div class="prompt-label">Question:</div>
-          <div class="prompt-text" id="opinionQ">What is your favorite season and why? Describe at least 3 reasons.
-          </div>
-        </div> <textarea id="opinionText" placeholder="My favorite season is..."></textarea> <br><br>
-        <div style="display:flex;gap:12px;flex-wrap:wrap;"> <button class="action-btn btn-green"
-            onclick="submitOpinion()">✅ Submit Answer</button> <button class="action-btn btn-yellow"
-            onclick="nextOpinionQ()">🔄 New Question</button> </div>
-        <div class="feedback-msg" id="opinionFeed"></div>
-      </div>
-    </div>
-    <div class="sub-section" id="w-image">
-      <div class="card">
-        <div class="card-title">🖼️ Image Description</div>
-        <div class="card-sub">Look at the image and write a detailed description.</div>
-        <div
-          style="background:var(--surface);border-radius:16px;padding:40px;text-align:center;font-size:5rem;margin-bottom:20px;"
-          id="imageToDescribe">🌅🏔️🌲</div>
-        <div
-          style="background:var(--surface);padding:12px;border-radius:12px;margin-bottom:16px;font-size:.9rem;color:var(--accent2);font-weight:700;">
-          💡 Use: there is/are, I can see, in the foreground/background, the scene shows... </div> <textarea
-          id="imageDesc" placeholder="In this image I can see..."></textarea> <br><br>
-        <div style="display:flex;gap:12px;flex-wrap:wrap;"> <button class="action-btn btn-primary"
-            onclick="submitImageDesc()">✅ Submit</button> <button class="action-btn btn-yellow" onclick="nextImage()">🔄
-            New Image</button> </div>
-        <div class="feedback-msg" id="imageFeed"></div>
-      </div>
-    </div>
-  </section> <!-- ============ SPEAKING ============ -->
-  <section class="section" id="speaking">
-    <div class="sub-tabs"> <button class="sub-tab-btn active" onclick="switchSub('speaking','s-drill',this)">🔊
-        Pronunciation</button> <button class="sub-tab-btn" onclick="switchSub('speaking','s-qa',this)">❓
-        Q&amp;A</button> <button class="sub-tab-btn" onclick="switchSub('speaking','s-roleplay',this)">🎭 Role
-        Play</button> <button class="sub-tab-btn" onclick="switchSub('speaking','s-presentation',this)">🎙️
-        Presentation</button> <button class="sub-tab-btn" onclick="switchSub('speaking','s-multimedia',this)">🎬
-        Multimedia</button> </div> <!-- SPEAKING: shared mic UI injected per section -->
-    <div class="sub-section active" id="s-drill">
-      <div class="card">
-        <div class="card-title">🎤 Pronunciation Drill</div>
-        <div class="prompt-card">
-          <div class="prompt-label">Repeat this phrase:</div>
-          <div class="prompt-text" id="drillText">"Every morning I practice English and drink coffee."</div>
-        </div>
-        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;"> <button class="action-btn btn-primary"
-            onclick="playPronunciation(document.getElementById('drillText').textContent)">🔊 Listen first</button>
-          <button class="action-btn btn-yellow" onclick="nextDrill()">🔄 New Phrase</button> </div>
-        <div id="micBox-drill"></div>
-      </div>
-    </div>
-    <div class="sub-section" id="s-qa">
-      <div class="card">
-        <div class="card-title">❓ Questions & Answers</div>
-        <div class="card-sub">Listen to the question and answer orally.</div>
-        <div class="prompt-card">
-          <div class="prompt-label">Question:</div>
-          <div class="prompt-text" id="qaQuestion">What do you usually do on weekends?</div>
-        </div>
-        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;"> <button class="action-btn btn-primary"
-            onclick="speakText(document.getElementById('qaQuestion').textContent,0.78)">🔊 Listen Question</button>
-          <button class="action-btn btn-yellow" onclick="nextQA()">🔄 New Question</button> </div>
-        <div id="micBox-qa"></div>
-      </div>
-    </div>
-    <div class="sub-section" id="s-roleplay">
-      <div class="card">
-        <div class="card-title">🎭 Role Play virtual</div>
-        <div class="card-sub">Select a situation and respond orally.</div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px;"
-          id="roleScenarios"> <button class="opt-btn" onclick="startRolePlay(this,'restaurant')">🍽️ En un
-            restaurante</button> <button class="opt-btn" onclick="startRolePlay(this,'interview')">💼 Entrevista de
-            trabajo</button> <button class="opt-btn" onclick="startRolePlay(this,'airport')">✈️ En el
-            aeropuerto</button> </div>
-        <div class="prompt-card" id="rolePrompt" style="display:none;">
-          <div class="prompt-label">Your situation:</div>
-          <div class="prompt-text" id="roleText"></div>
-        </div>
-        <div id="micBox-roleplay" style="display:none;"></div>
-      </div>
-    </div>
-    <div class="sub-section" id="s-presentation">
-      <div class="card">
-        <div class="card-title">🎙️ Presentation corta</div>
-        <div class="card-sub">Speak for 1 to 3 minutes about the assigned topic.</div>
-        <div class="prompt-card">
-          <div class="prompt-label">Your topic:</div>
-          <div class="prompt-text" id="pressTopic">Talk about your hometown: where it is, what it is like, and why you
-            love it.</div>
-        </div>
-        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;"> <button class="action-btn btn-yellow"
-            onclick="nextPressTopic()">🔄 New Topic</button> </div>
-        <div id="micBox-presentation"></div>
-      </div>
-    </div>
-    <div class="sub-section" id="s-multimedia">
-      <div class="card">
-        <div class="card-title">🎬 Multimedia Project</div>
-        <div class="card-sub">Complete all stages of the project.</div>
-        <div style="background:var(--surface);padding:20px;border-radius:16px;margin-bottom:16px;"> <strong>📌 Topic:
-            Climate Change and Our Future</strong><br><br> <em style="color:var(--muted);">Climate change refers to
-            long-term shifts in temperatures and weather patterns. Since the 1800s, human activities have been the main
-            driver of climate change, primarily due to burning fossil fuels. Rising temperatures cause melting ice caps,
-            rising sea levels, and more extreme weather events. However, renewable energy, reforestation, and individual
-            actions can make a difference.</em> </div>
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;"> <span
-            style="font-size:1.4rem;">1️⃣</span><span style="font-weight:800;">Listen to the topic</span> <button
-            class="action-btn btn-primary" style="padding:8px 16px;font-size:.85rem;"
-            onclick="speakText('Climate change refers to long-term shifts in temperatures and weather patterns. Since the 1800s, human activities have been the main driver of climate change.',0.8)">🔊</button>
-        </div>
-        <div style="margin-bottom:16px;">
-          <div style="font-weight:800;margin-bottom:6px;">2️⃣ Write a summary:</div> <textarea id="mmSummary"
-            placeholder="In my own words, climate change means..."></textarea>
-        </div>
-        <div style="font-weight:800;margin-bottom:10px;">3️⃣ Record your opinion:</div>
-        <div id="micBox-multimedia"></div> <br> <button class="action-btn btn-green" onclick="submitMultimedia()">🏆
-          Submit Project</button>
-        <div class="feedback-msg" id="mmFeed"></div>
-      </div>
-    </div>
-  </section> <!-- ============ ARTICLE ============ -->
-  <section class="section" id="article">
-    <div class="sub-tabs"> <button class="sub-tab-btn active" onclick="switchSub('article','a-read',this)">🌿 Read
-        Article</button> <button class="sub-tab-btn" onclick="switchSub('article','a-questions',this)">💬 Discussion
-        Questions</button> </div> <!-- Article text -->
-    <div class="sub-section active" id="a-read">
-      <div class="card">
-        <div class="card-title">🌿 Environmental Problem in Colombia: Deforestation in the Amazon Rainforest</div>
-        <div class="card-sub">Read carefully before answering the discussion questions. You can also listen to the
-          article.</div>
-        <div class="article-listen-bar"> <button class="play-btn" style="width:54px;height:54px;font-size:1.3rem;"
-            onclick="listenArticle()">🔊</button> <span>Listen to the full article read aloud</span> <button
-            class="action-btn btn-yellow" style="padding:8px 18px;font-size:.85rem;"
-            onclick="switchSub('article','a-questions', document.querySelectorAll('#article .sub-tab-btn')[1])">📝 Go to
-            Questions →</button> </div>
-        <div class="article-body">
-          <h3>🌳 The Amazon Under Threat</h3>
-          <p>One of the most serious environmental problems in Colombia is deforestation in the Amazon rainforest. The
-            Colombian Amazon is one of the most biodiverse regions in the world and plays a crucial role in regulating
-            the global climate. However, thousands of hectares of forest are lost every year due to illegal logging,
-            cattle ranching, mining, road construction, and the expansion of agricultural activities.</p>
-          <p>Deforestation has many negative consequences for both the environment and local communities. First, it
-            destroys the natural habitats of countless plant and animal species, putting many of them at risk of
-            extinction. Second, trees absorb carbon dioxide from the atmosphere, so when forests are cut down, more
-            greenhouse gases are released, contributing to climate change. In addition, deforestation affects water
-            cycles, soil quality, and air purity.</p>
-          <p>Indigenous communities living in the Amazon are also affected because they depend on the forest for their
-            culture, food, and livelihoods. The loss of forests threatens their traditional way of life and their
-            connection to nature.</p>
-          <p>To address this problem, the Colombian government, environmental organizations, and local communities are
-            working together to promote sustainable land use, reforestation programs, environmental education, and
-            stronger protection of natural areas. Reducing deforestation is essential for preserving biodiversity and
-            ensuring a healthier future for Colombia and the planet.</p>
-        </div>
-        <div style="margin-bottom:8px;font-weight:900;color:var(--accent2);">📚 Key Vocabulary</div>
-        <div> <span class="article-vocab-pill">deforestation</span> <span class="article-vocab-pill">biodiversity</span>
-          <span class="article-vocab-pill">greenhouse gases</span> <span class="article-vocab-pill">indigenous
-            communities</span> <span class="article-vocab-pill">sustainable land use</span> <span
-            class="article-vocab-pill">reforestation</span> <span class="article-vocab-pill">carbon dioxide</span> <span
-            class="article-vocab-pill">extinction</span> <span class="article-vocab-pill">livelihoods</span> </div>
-      </div>
-    </div> <!-- Discussion Questions -->
-    <div class="sub-section" id="a-questions">
-      <div class="article-progress"> <span class="article-progress-label">Progress</span>
-        <div class="article-progress-bar-wrap">
-          <div class="article-progress-bar" id="articleProgressBar" style="width:0%"></div>
-        </div> <span class="article-progress-count" id="articleProgressCount">0 / 5</span>
-      </div> <!-- Q1 -->
-      <div class="article-q-card" id="aq-card-1"> <span class="article-q-num">Question 1</span>
-        <div class="article-q-text">Why do you think some people continue to participate in activities that cause
-          deforestation despite knowing its environmental consequences?</div> <textarea class="article-q-textarea"
-          id="aq1" placeholder="Share your thoughts here... (minimum 30 words)"></textarea>
-        <div class="article-submit-row"> <button class="action-btn btn-green" onclick="submitAQ(1)">✅ Submit
-            Answer</button> <button class="action-btn btn-primary"
-            onclick="speakText('Why do you think some people continue to participate in activities that cause deforestation despite knowing its environmental consequences?', 0.8)">🔊
-            Hear question</button> </div>
-        <div class="article-q-feedback" id="aqFeed1"></div>
-      </div> <!-- Q2 -->
-      <div class="article-q-card" id="aq-card-2"> <span class="article-q-num">Question 2</span>
-        <div class="article-q-text">How might deforestation in the Colombian Amazon affect people who live in other
-          parts of the world?</div> <textarea class="article-q-textarea" id="aq2"
-          placeholder="Share your thoughts here... (minimum 30 words)"></textarea>
-        <div class="article-submit-row"> <button class="action-btn btn-green" onclick="submitAQ(2)">✅ Submit
-            Answer</button> <button class="action-btn btn-primary"
-            onclick="speakText('How might deforestation in the Colombian Amazon affect people who live in other parts of the world?', 0.8)">🔊
-            Hear question</button> </div>
-        <div class="article-q-feedback" id="aqFeed2"></div>
-      </div> <!-- Q3 -->
-      <div class="article-q-card" id="aq-card-3"> <span class="article-q-num">Question 3</span>
-        <div class="article-q-text">Do you think economic development should ever take priority over environmental
-          protection? Why or why not?</div> <textarea class="article-q-textarea" id="aq3"
-          placeholder="Share your thoughts here... (minimum 30 words)"></textarea>
-        <div class="article-submit-row"> <button class="action-btn btn-green" onclick="submitAQ(3)">✅ Submit
-            Answer</button> <button class="action-btn btn-primary"
-            onclick="speakText('Do you think economic development should ever take priority over environmental protection? Why or why not?', 0.8)">🔊
-            Hear question</button> </div>
-        <div class="article-q-feedback" id="aqFeed3"></div>
-      </div> <!-- Q4 -->
-      <div class="article-q-card" id="aq-card-4"> <span class="article-q-num">Question 4</span>
-        <div class="article-q-text">What actions can governments, companies, and individuals take to reduce
-          deforestation, and which do you think would be the most effective?</div> <textarea class="article-q-textarea"
-          id="aq4" placeholder="Share your thoughts here... (minimum 30 words)"></textarea>
-        <div class="article-submit-row"> <button class="action-btn btn-green" onclick="submitAQ(4)">✅ Submit
-            Answer</button> <button class="action-btn btn-primary"
-            onclick="speakText('What actions can governments, companies, and individuals take to reduce deforestation, and which do you think would be the most effective?', 0.8)">🔊
-            Hear question</button> </div>
-        <div class="article-q-feedback" id="aqFeed4"></div>
-      </div> <!-- Q5 -->
-      <div class="article-q-card" id="aq-card-5"> <span class="article-q-num">Question 5</span>
-        <div class="article-q-text">How could the loss of the Amazon rainforest impact future generations, and what
-          responsibilities do we have to prevent this from happening?</div> <textarea class="article-q-textarea"
-          id="aq5" placeholder="Share your thoughts here... (minimum 30 words)"></textarea>
-        <div class="article-submit-row"> <button class="action-btn btn-green" onclick="submitAQ(5)">✅ Submit
-            Answer</button> <button class="action-btn btn-primary"
-            onclick="speakText('How could the loss of the Amazon rainforest impact future generations, and what responsibilities do we have to prevent this from happening?', 0.8)">🔊
-            Hear question</button> </div>
-        <div class="article-q-feedback" id="aqFeed5"></div>
-      </div> <!-- Completion banner -->
-      <div class="article-complete-banner" id="articleComplete">
-        <h2>🌿 Outstanding Work!</h2>
-        <p style="font-size:1.1rem;margin:10px 0;">You completed all 5 discussion questions about deforestation in
-          Colombia.</p>
-        <p style="color:var(--accent2);font-weight:900;font-size:1.3rem;margin-top:14px;">+250 XP earned! 🎉</p>
-      </div>
-    </div>
-  </section>
-  <div class="xp-toast" id="toast">+50 XP</div>
-  <script> /* ============================ GLOBAL STATE ============================ */ let xp = 0; let completed = 0; let playing = false; let playTimer; let lScore = 0; let lDone = [false, false, false]; let micTimers = {}; let micStates = {}; let rqIndex = 0; const synth = window.speechSynthesis; let aqDone = [false, false, false, false, false]; let aqCount = 0; /* ============================ AUDIO CONTEXT FOR SOUNDS ============================ */ let audioCtx; function getCtx() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); return audioCtx; } function playBeep(freq, type, duration, vol, delay = 0) { try { const ctx = getCtx(); const osc = ctx.createOscillator(); const gain = ctx.createGain(); osc.connect(gain); gain.connect(ctx.destination); osc.type = type; osc.frequency.setValueAtTime(freq, ctx.currentTime + delay); gain.gain.setValueAtTime(vol, ctx.currentTime + delay); gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + delay + duration); osc.start(ctx.currentTime + delay); osc.stop(ctx.currentTime + delay + duration); } catch (e) { } } function soundClick() { playBeep(800, 'sine', 0.08, 0.3); } function soundCorrect() { playBeep(523, 'sine', 0.12, 0.4); playBeep(659, 'sine', 0.12, 0.4, 0.13); playBeep(784, 'sine', 0.18, 0.5, 0.26); } function soundWrong() { playBeep(300, 'sawtooth', 0.12, 0.35); playBeep(220, 'sawtooth', 0.15, 0.35, 0.13); } function soundComplete() { [523, 587, 659, 698, 784, 880].forEach((f, i) => { playBeep(f, 'sine', 0.15, 0.45, i * 0.1); }); } function soundXP() { playBeep(880, 'sine', 0.1, 0.4); playBeep(1047, 'sine', 0.12, 0.5, 0.12); } function soundClick2() { playBeep(600, 'triangle', 0.06, 0.25); } document.addEventListener('click', e => { if (e.target.tagName === 'BUTTON') soundClick2(); }); /* ============================ THEME ============================ */ function toggleTheme() { document.body.classList.toggle('light-mode'); } /* ============================ TABS ============================ */ function switchTab(id, btn) { document.querySelectorAll('.section').forEach(s => s.classList.remove('active')); document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); document.getElementById(id).classList.add('active'); btn.classList.add('active'); } function switchSub(section, id, btn) { const sec = document.getElementById(section); sec.querySelectorAll('.sub-section').forEach(s => s.classList.remove('active')); sec.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active')); document.getElementById(id).classList.add('active'); if (btn) btn.classList.add('active'); } /* ============================ TOAST & XP ============================ */ function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); soundXP(); setTimeout(() => t.classList.remove('show'), 2500); } function addXP(pts, msg) { xp += pts; completed++; document.getElementById('dashXP').textContent = xp; document.getElementById('completedTasks').textContent = completed; updateLevel(); showToast(msg); localStorage.setItem('yujujuXP', xp); } function updateLevel() { let lv = 'Beginner'; if (xp >= 100) lv = 'Intermediate'; if (xp >= 250) lv = 'Advanced'; if (xp >= 400) lv = 'Master'; document.getElementById('levelBox').textContent = lv; document.getElementById('dashLevel').textContent = lv; } /* ============================ SPEECH — ResponsiveVoice (human-like) ============================ */ // ResponsiveVoice: free library with natural-sounding voices // Voices available: US English Female, US English Male, UK English Female, etc. const RV_VOICE = 'US English Female'; // warm, clear, natural function speakText(text, speed=0.88){ // Stop any current speech if(window.responsiveVoice && responsiveVoice.isPlaying()){ responsiveVoice.cancel(); } synth.cancel(); if(window.responsiveVoice){ responsiveVoice.speak(text, RV_VOICE, { rate: speed, pitch: 1, volume: 1, onstart: ()=>{}, onerror: ()=>_wsFallback(text, speed) }); } else { _wsFallback(text, speed); } } function _wsFallback(text, speed){ synth.cancel(); setTimeout(()=>{ const u = new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=speed; u.pitch=1.0; u.volume=1; const voices = synth.getVoices(); const best = voices.find(v=>v.name.includes('Google')&&v.lang.startsWith('en')) || voices.find(v=>v.lang==='en-US') || voices.find(v=>v.lang.startsWith('en')); if(best) u.voice=best; synth.speak(u); }, 80); } /* ============================ LISTENING ============================ */ function togglePlay(){ const text=Hi! My name is Alex. Every day I wake up at 6:30 in the morning. First, I brush my teeth and take a shower. Then I eat breakfast, usually cereal and orange juice. After that, I go to school by bus. Classes start at 8 o'clock. In the afternoon, I do my homework and practice sports. At night, I read a book before I go to sleep at 10 PM.; const btn=document.getElementById('playBtn'); const wave=document.getElementById('audioWave'); if(!playing){ playing=true;btn.textContent='⏸';wave.classList.remove('paused'); speakText(text,0.82); playTimer=setTimeout(()=>{playing=false;btn.textContent='▶️';wave.classList.add('paused');},21000); }else{ playing=false;btn.textContent='▶️';wave.classList.add('paused'); synth.cancel();clearTimeout(playTimer); } } function answerL(btn,result){ if(lDone[0]) return;lDone[0]=true;btn.classList.add(result); const f=document.getElementById('lFeed1'); if(result==='correct'){soundCorrect();f.textContent='✅ Correct! Alex wakes up at 6:30 AM.';f.className='feedback-msg show ok';} else{soundWrong();f.textContent='❌ Wrong. The answer is 6:30 AM.';f.className='feedback-msg show err';} setTimeout(()=>{document.getElementById('lq1').style.display='none';document.getElementById('lq2').style.display='block';},1400); } function answerL2(btn,result){ if(lDone[1]) return;lDone[1]=true;btn.classList.add(result); const f=document.getElementById('lFeed2'); if(result==='correct'){soundCorrect();f.textContent='✅ Correct! He goes by bus.';f.className='feedback-msg show ok';} else{soundWrong();f.textContent='❌ Wrong. He goes by bus.';f.className='feedback-msg show err';} setTimeout(()=>{document.getElementById('lq2').style.display='none';document.getElementById('lq3').style.display='block';},1400); } function answerL3(btn,result){ if(lDone[2]) return;lDone[2]=true;btn.classList.add(result); const f=document.getElementById('lFeed3'); if(result==='correct'){soundCorrect();f.textContent='✅ Correct!';f.className='feedback-msg show ok';} else{soundWrong();f.textContent='❌ Wrong. Homework and sports.';f.className='feedback-msg show err';} setTimeout(()=>{document.getElementById('lq3').style.display='none';document.getElementById('lComplete').style.display='block';soundComplete();addXP(100,'🎧 Listening Complete! +100 XP');},1400); } /* ============================ DICTATION ============================ */ function checkDictation(){ const ans=document.getElementById('dictationInput').value.toLowerCase().trim(); const f=document.getElementById('dictFeed'); const keywords=['sarah','new york','seven','coffee']; const found=keywords.filter(k=>ans.includes(k)).length; if(found>=3){soundCorrect();f.textContent='✅ Excellent! You got the main ideas!';f.className='feedback-msg show ok';addXP(60,'📝 Dictation +60 XP');} else if(found>=1){soundWrong();f.textContent=⚠️ Partial! You got ${found}/4 key words. Try again!;f.className='feedback-msg show err';} else{soundWrong();f.textContent='❌ Listen again carefully and try once more.';f.className='feedback-msg show err';} } /* ============================ LISTENING BLANKS ============================ */ function checkListeningBlanks(){ const answers={lb1:'going',lb2:'supermarket',lb3:'milk',lb4:'park'}; let score=0; Object.entries(answers).forEach(([id,ans])=>{ const el=document.getElementById(id); if(el.value.toLowerCase().trim()===ans){el.classList.add('correct-blank');score++;} else{el.classList.add('wrong-blank');} }); const f=document.getElementById('lBlankFeed'); if(score===4){soundComplete();f.textContent='🎉 Perfect! All answers correct!';f.className='feedback-msg show ok';addXP(60,'🔊 Blanks +60 XP');} else{soundWrong();f.textContent=✏️ ${score}/4 correct. Review and try again!;f.className='feedback-msg show err';} } /* ============================ IMAGE MATCH ============================ */ let imgDone=false; function pickImage(el,result){ if(imgDone) return;imgDone=true; const f=document.getElementById('imgFeed'); el.classList.add(result); if(result==='correct'){soundCorrect();f.textContent='✅ Correct! A woman reading in the park.';f.className='feedback-msg show ok';addXP(50,'🖼️ Image Match +50 XP');} else{soundWrong();f.textContent='❌ Wrong. Listen again!';f.className='feedback-msg show err';} } /* ============================ READING COMPREHENSION ============================ */ const rQuestions=[ {q:'Q1: How many people live in New York City?',opts:['5 million','Over 8 million','10 million','3 million'],correct:1}, {q:'Q2: How many boroughs does New York have?',opts:['Three','Four','Five','Six'],correct:2}, {q:'Q3: When does the New York subway operate?',opts:['Only at night','9AM–9PM','24 hours, 7 days','Weekdays only'],correct:2}, ]; let rqDone=[]; function answerReading(btn,result){ if(rqDone[rqIndex]) return; rqDone[rqIndex]=true; // Disable all buttons and reveal correct/wrong const allBtns=document.querySelectorAll('#rqOptions .opt-btn'); const q=rQuestions[rqIndex]; allBtns.forEach((b,i)=>{ b.disabled=true; b.style.pointerEvents='none'; if(i===q.correct){b.classList.add('correct');} else if(b===btn && result==='wrong'){b.classList.add('wrong');} }); const f=document.getElementById('rFeed'); if(result==='correct'){ soundCorrect(); f.textContent='✅ Correct! Well done!'; f.className='feedback-msg show ok'; }else{ soundWrong(); f.textContent='❌ Wrong — the correct answer is highlighted in green.'; f.className='feedback-msg show err'; } if(rqIndex<rQuestions.length-1){ setTimeout(()=>{rqIndex++;loadRQ();f.className='feedback-msg';},1800); }else{ setTimeout(()=>{soundComplete();addXP(80,'📖 Reading Complete! +80 XP');},1800); } } function loadRQ(){ const q=rQuestions[rqIndex]; document.getElementById('rqText').textContent=q.q; const opts=document.getElementById('rqOptions'); opts.innerHTML=''; q.opts.forEach((o,i)=>{ const b=document.createElement('button'); b.className='opt-btn'; b.textContent=o; b.onclick=function(){answerReading(this,i===q.correct?'correct':'wrong');}; opts.appendChild(b); }); } /* ============================ READING BLANKS ============================ */ function checkReadingBlanks(){ const answers={rb1:'wakes',rb2:'breakfast',rb3:'school',rb4:'exercises',rb5:'evening'}; let score=0; Object.entries(answers).forEach(([id,ans])=>{ const el=document.getElementById(id); if(el.value.toLowerCase().trim()===ans){el.classList.add('correct-blank');score++;} else{el.classList.add('wrong-blank');} }); const f=document.getElementById('rbFeed'); if(score===5){soundComplete();f.textContent='🎉 Perfect! All 5 correct!';f.className='feedback-msg show ok';addXP(70,'✏️ Fill Blanks +70 XP');} else{soundWrong();f.textContent=📝 ${score}/5 correct. Try again!;f.className='feedback-msg show err';} } /* ============================ PARAGRAPH ORDER ============================ */ let dragSrc=null; function initDrag(){ document.querySelectorAll('.paragraph-block').forEach(el=>{ el.addEventListener('dragstart',e=>{dragSrc=el;el.classList.add('dragging');}); el.addEventListener('dragend',e=>{el.classList.remove('dragging');}); el.addEventListener('dragover',e=>{e.preventDefault();}); el.addEventListener('drop',e=>{ e.preventDefault(); if(dragSrc!==el){ const p=el.parentNode; const allBlocks=[...p.querySelectorAll('.paragraph-block')]; const srcIdx=allBlocks.indexOf(dragSrc); const tgtIdx=allBlocks.indexOf(el); if(srcIdx<tgtIdx) p.insertBefore(dragSrc,el.nextSibling); else p.insertBefore(dragSrc,el); soundClick(); } }); }); } function checkOrder(){ const blocks=[...document.querySelectorAll('#paraContainer .paragraph-block')]; const orders=blocks.map(b=>parseInt(b.dataset.order)); const correct=orders[0]===1&&orders[1]===2&&orders[2]===3; blocks.forEach((b,i)=>b.querySelector('.para-num').textContent=i+1); const f=document.getElementById('orderFeed'); if(correct){soundComplete();f.textContent='🎉 Perfect order! Well done!';f.className='feedback-msg show ok';addXP(80,'🔀 Paragraph Order +80 XP');} else{soundWrong();f.textContent='❌ Not quite right. Try rearranging again!';f.className='feedback-msg show err';} } /* ============================ WRITING ============================ */ function submitEmail(){ const to=document.getElementById('emailTo').value; const subj=document.getElementById('emailSubject').value; const body=document.getElementById('emailBody').value; const f=document.getElementById('emailFeed'); if(body.length<40||!to||!subj){soundWrong();f.textContent='⚠️ Fill all fields with enough detail!';f.className='feedback-msg show err';return;} soundComplete();f.textContent='📧 Excellent email! Great structure and vocabulary!';f.className='feedback-msg show ok'; addXP(80,'📧 Email Writing +80 XP'); } function submitWriting(){ const text=document.getElementById('writingTask').value; const f=document.getElementById('writingFeed'); if(text.length<30){soundWrong();f.textContent='⚠️ Add more details (at least 5 sentences).';f.className='feedback-msg show err';return;} soundCorrect();f.textContent='✍️ Excellent writing! Great daily routine description!';f.className='feedback-msg show ok'; addXP(70,'✍️ Writing +70 XP'); } const opinionQs=[ 'What is your favorite season and why? Describe at least 3 reasons.', 'Describe a memorable trip or vacation you have taken.', 'What would you do if you had one free week with no responsibilities?', 'What is your favorite food and how is it prepared?', 'Describe your dream home. Where is it and what does it look like?', ]; let opinionIdx=0; function nextOpinionQ(){ opinionIdx=(opinionIdx+1)%opinionQs.length; document.getElementById('opinionQ').textContent=opinionQs[opinionIdx]; document.getElementById('opinionText').value=''; document.getElementById('opinionFeed').className='feedback-msg'; } function submitOpinion(){ const text=document.getElementById('opinionText').value; const f=document.getElementById('opinionFeed'); if(text.length<40){soundWrong();f.textContent='⚠️ Write a more detailed answer!';f.className='feedback-msg show err';return;} soundCorrect();f.textContent='💬 Great opinion! You expressed yourself clearly.';f.className='feedback-msg show ok'; addXP(70,'💬 Opinion Writing +70 XP'); } const images=['🌅🏔️🌲','🏖️🌊☀️','🌆🌃🌉','🌸🌿🦋','🏡🌻🐕']; let imgIdx=0; function nextImage(){ imgIdx=(imgIdx+1)%images.length; document.getElementById('imageToDescribe').textContent=images[imgIdx]; document.getElementById('imageDesc').value=''; document.getElementById('imageFeed').className='feedback-msg'; } function submitImageDesc(){ const text=document.getElementById('imageDesc').value; const f=document.getElementById('imageFeed'); if(text.length<40){soundWrong();f.textContent='⚠️ Be more descriptive! Use the vocabulary tips.';f.className='feedback-msg show err';return;} soundComplete();f.textContent='🖼️ Excellent description! Rich vocabulary!';f.className='feedback-msg show ok'; addXP(70,'🖼️ Image Description +70 XP'); } /* ============================ SPEAKING ============================ */ const drillPhrases=[ '"Every morning I practice English and drink coffee."', '"She sells seashells by the seashore."', '"How much wood would a woodchuck chuck?"', '"The weather is wonderful today."', '"I would like to improve my English pronunciation."', ]; let drillIdx=0; function nextDrill(){drillIdx=(drillIdx+1)%drillPhrases.length;document.getElementById('drillText').textContent=drillPhrases[drillIdx];} function playPronunciation(text){speakText(text,0.72);showToast('🔊 Listen carefully!');} const qaQs=[ 'What do you usually do on weekends?', 'Describe your best friend.', 'What is your favorite movie and why?', 'Tell me about your daily routine.', 'What are your goals for the next year?', ]; let qaIdx=0; function nextQA(){qaIdx=(qaIdx+1)%qaQs.length;document.getElementById('qaQuestion').textContent=qaQs[qaIdx];} const rolePlays={ restaurant:'You are at a restaurant. The waiter asks: "Good evening, are you ready to order?" — Respond naturally, order your meal and ask about the specials.', interview:'You are in a job interview. The interviewer says: "Tell me about yourself and why you want this position." — Give a confident, professional answer.', airport:'You are at the airport. The agent says: "May I see your passport and boarding pass? What is the purpose of your trip?" — Respond appropriately.', }; function startRolePlay(btn,scenario){ document.querySelectorAll('#roleScenarios .opt-btn').forEach(b=>b.classList.remove('correct')); btn.classList.add('correct'); document.getElementById('roleText').textContent=rolePlays[scenario]; document.getElementById('rolePrompt').style.display='block'; document.getElementById('micBox-roleplay').style.display='block'; speakText(rolePlays[scenario].split('—')[0],0.8); } const pressTopics=[ 'Talk about your hometown: where it is, what it is like, and why you love it.', 'Explain the importance of learning a second language.', 'Describe your favorite hobby and how it has influenced your life.', 'Talk about a person who has inspired you and why.', 'What do you think about the impact of technology on education?', ]; let pressIdx=0; function nextPressTopic(){pressIdx=(pressIdx+1)%pressTopics.length;document.getElementById('pressTopic').textContent=pressTopics[pressIdx];} function submitMultimedia(){ const summary=document.getElementById('mmSummary').value; const f=document.getElementById('mmFeed'); if(summary.length<40){soundWrong();f.textContent='⚠️ Write a complete summary first!';f.className='feedback-msg show err';return;} soundComplete();f.textContent='🏆 Amazing project! Reading, listening and speaking combined!';f.className='feedback-msg show ok'; addXP(150,'🎬 Multimedia Project +150 XP'); } /* ============================ MIC — Universal (MediaRecorder + SpeechRecognition fallback) Works in file://, localhost, and HTTPS ============================ */ const MIC_CONTEXTS = { 'drill': { label:'Pronunciation Drill', prompt: ()=>document.getElementById('drillText').textContent }, 'qa': { label:'Q&A Response', prompt: ()=>document.getElementById('qaQuestion').textContent }, 'roleplay': { label:'Role Play', prompt: ()=>document.getElementById('roleText').textContent }, 'presentation': { label:'Short Presentation', prompt: ()=>document.getElementById('pressTopic').textContent }, 'multimedia': { label:'Multimedia Opinion', prompt: ()=>'Share your opinion on climate change.' }, }; // Build mic UI boxes on page load function buildMicBoxes(){ Object.keys(MIC_CONTEXTS).forEach(ctx=>{ const box = document.getElementById('micBox-'+ctx); if(!box) return; box.innerHTML = <div class="mic-box"> <div class="mic-status" id="micStatus-${ctx}">Press the microphone to start recording</div> <button class="mic-btn" id="micBtn-${ctx}" onclick="toggleMicBox('${ctx}')">🎤</button> <div class="mic-canvas-wrap" id="micWrap-${ctx}"> <canvas class="mic-canvas" id="micCanvas-${ctx}" width="320" height="48"></canvas> </div> <div class="mic-transcript" id="micTranscript-${ctx}"></div> <div class="mic-feedback" id="micFeedback-${ctx}"></div> <div class="mic-hint">🔒 If mic is blocked: click the lock icon 🔒 in your browser address bar → allow microphone</div> </div>; }); } // Per-context state const micBoxState = {}; function toggleMicBox(ctx){ if(micBoxState[ctx] && micBoxState[ctx].recording){ stopMicBox(ctx); } else { startMicBox(ctx); } } function startMicBox(ctx){ const btn = document.getElementById('micBtn-'+ctx); const status = document.getElementById('micStatus-'+ctx); const wrap = document.getElementById('micWrap-'+ctx); const trans = document.getElementById('micTranscript-'+ctx); const feed = document.getElementById('micFeedback-'+ctx); trans.classList.remove('show'); feed.classList.remove('show'); trans.innerHTML = ''; feed.innerHTML = ''; navigator.mediaDevices.getUserMedia({ audio: true, video: false }) .then(stream => { btn.classList.add('active'); btn.textContent = '⏹️'; status.textContent = '🔴 Recording… press ⏹️ to stop'; wrap.classList.add('show'); // Waveform visualiser const audioCtxVis = new (window.AudioContext || window.webkitAudioContext)(); const analyser = audioCtxVis.createAnalyser(); const source = audioCtxVis.createMediaStreamSource(stream); source.connect(analyser); analyser.fftSize = 256; const bufLen = analyser.frequencyBinCount; const dataArr = new Uint8Array(bufLen); const canvas = document.getElementById('micCanvas-'+ctx); const canCtx = canvas.getContext('2d'); let animId; function drawWave(){ animId = requestAnimationFrame(drawWave); analyser.getByteTimeDomainData(dataArr); canCtx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--bg') || '#0f0e17'; canCtx.fillRect(0,0,canvas.width,canvas.height); canCtx.lineWidth = 2; canCtx.strokeStyle = '#4d96ff'; canCtx.beginPath(); const sliceW = canvas.width / bufLen; let x = 0; for(let i=0;i<bufLen;i++){ const v = dataArr[i]/128; const y = v * canvas.height/2; if(i===0) canCtx.moveTo(x,y); else canCtx.lineTo(x,y); x += sliceW; } canCtx.lineTo(canvas.width, canvas.height/2); canCtx.stroke(); } drawWave(); // Record with MediaRecorder const mediaRec = new MediaRecorder(stream); const chunks = []; mediaRec.ondataavailable = e => { if(e.data.size>0) chunks.push(e.data); }; mediaRec.onstop = () => { cancelAnimationFrame(animId); audioCtxVis.close(); stream.getTracks().forEach(t=>t.stop()); wrap.classList.remove('show'); btn.classList.remove('active'); btn.textContent = '🎤'; status.textContent = '⏳ Analyzing your speech with AI…'; // Also try SpeechRecognition for transcript const SR = window.SpeechRecognition || window.webkitSpeechRecognition; const transcript = micBoxState[ctx].liveTranscript || ''; // Send to AI for feedback evaluateSpeech(ctx, transcript, chunks).then(()=>{ status.textContent = 'Press the microphone to record again'; }); }; mediaRec.start(100); micBoxState[ctx] = { recording: true, mediaRec, stream, liveTranscript: '' }; // Also run SpeechRecognition in parallel if available (for transcript) const SR = window.SpeechRecognition || window.webkitSpeechRecognition; if(SR){ const recog = new SR(); recog.lang = 'en-US'; recog.continuous = true; recog.interimResults = true; recog.onresult = e => { let txt = ''; for(let i=0;i<e.results.length;i++) txt += e.results[i][0].transcript + ' '; micBoxState[ctx].liveTranscript = txt.trim(); trans.innerHTML = '🗣 <em>"' + txt.trim() + '"</em>'; trans.classList.add('show'); }; recog.onerror = ()=>{}; try{ recog.start(); micBoxState[ctx].recog = recog; } catch(e){} } }) .catch(err => { status.innerHTML = '🚫 Microphone access denied.<br><small style="font-weight:400">Click the 🔒 lock in the address bar → Site settings → Allow microphone.</small>'; btn.textContent = '🎤'; }); } function stopMicBox(ctx){ const state = micBoxState[ctx]; if(!state || !state.recording) return; state.recording = false; if(state.recog){ try{ state.recog.stop(); }catch(e){} } if(state.mediaRec && state.mediaRec.state !== 'inactive'){ state.mediaRec.stop(); } } async function evaluateSpeech(ctx, transcript, audioChunks){ const feed = document.getElementById('micFeedback-'+ctx); const ctxInfo = MIC_CONTEXTS[ctx]; const prompt = ctxInfo ? ctxInfo.prompt() : ''; feed.className = 'mic-feedback show'; feed.style.background = 'var(--surface)'; feed.style.color = 'var(--muted)'; feed.innerHTML = '⏳ Getting AI feedback…'; let userMessage = ''; if(transcript && transcript.length > 5){ userMessage = The student was asked to do a speaking exercise: "${prompt}" This is what they said (transcribed): "${transcript}" Give brief, encouraging feedback in 2-3 sentences. Mention what they did well and one specific tip to improve. Be warm and motivating like a good English teacher.; } else { // No transcript — give general encouragement based on context userMessage = A student just completed a speaking exercise for: "${prompt}". No transcript was captured. Give a short, warm, encouraging message (2 sentences) as an English teacher, and remind them to speak clearly near their microphone.; } try { const resp = await fetch('https://api.anthropic.com/v1/messages', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 150, messages: [{ role: 'user', content: userMessage }] }) }); const data = await resp.json(); const msg = data.content?.[0]?.text || 'Great effort! Keep practicing your English speaking skills.'; feed.style.background = '#6bcb7720'; feed.style.color = 'var(--accent3)'; feed.innerHTML = '✅ ' + msg; soundCorrect(); speakText(msg, 0.88); addXP(50, '🎤 Speaking Practice +50 XP'); } catch(e) { // API not available — use local feedback const localFeedbacks = [ 'Great effort! Your speaking is improving with every practice.', 'Well done! Keep practicing and your fluency will grow.', 'Good job recording yourself — that takes courage! Keep going.', ]; const msg = localFeedbacks[Math.floor(Math.random()*localFeedbacks.length)]; feed.style.background = '#6bcb7720'; feed.style.color = 'var(--accent3)'; feed.innerHTML = '✅ ' + msg; soundCorrect(); addXP(50, '🎤 Speaking Practice +50 XP'); } } /* ============================ ARTICLE — DISCUSSION QUESTIONS ============================ */ const aqFeedbacks = [ [ 'Great thinking! You connected economic pressures to environmental decisions. Well done!', 'Good point! Consider also mentioning poverty and lack of alternatives as driving factors.', 'Excellent! You showed understanding of the social and economic tensions behind deforestation.', ], [ 'Excellent global perspective! The Amazon truly affects weather and oxygen worldwide.', 'Great answer! You could also mention how it affects global temperatures and rainfall patterns.', 'Well done! You connected local deforestation to its worldwide climate consequences.', ], [ 'Thoughtful response! You engaged seriously with this difficult ethical question.', 'Great balance! Sustainable development is indeed the key to both goals.', 'Excellent critical thinking! You considered multiple viewpoints on development vs. environment.', ], [ 'Great solutions! Policy enforcement and education are indeed powerful tools.', 'Excellent! You proposed realistic and multi-level approaches to tackle deforestation.', 'Well done! You considered the roles of different actors in solving this problem.', ], [ 'Powerful reflection! Future generations deserve a healthy Amazon.', 'Excellent! You connected present actions to long-term responsibility.', 'Well done! You showed empathy for future people and clear moral reasoning.', ], ]; function submitAQ(num){ if(aqDone[num-1]) return; const text = document.getElementById('aq'+num).value.trim(); const f = document.getElementById('aqFeed'+num); const wordCount = text.split(/\s+/).filter(w=>w.length>0).length; if(wordCount < 15){ soundWrong(); f.textContent = '⚠️ Please write a more complete answer (at least 15 words).'; f.className = 'article-q-feedback show err'; return; } aqDone[num-1] = true; aqCount++; // Pick a random positive feedback const feedList = aqFeedbacks[num-1]; const msg = feedList[Math.floor(Math.random()*feedList.length)]; soundCorrect(); f.textContent = '✅ ' + msg; f.className = 'article-q-feedback show ok'; // Disable textarea and button document.getElementById('aq'+num).disabled = true; const card = document.getElementById('aq-card-'+num); card.style.borderLeftColor = 'var(--accent3)'; card.querySelector('.action-btn.btn-green').disabled = true; // Update progress bar const pct = (aqCount/5)*100; document.getElementById('articleProgressBar').style.width = pct+'%'; document.getElementById('articleProgressCount').textContent = aqCount+' / 5'; // XP per question addXP(50, '🌿 Article Q'+num+' +50 XP'); // If all done if(aqCount === 5){ setTimeout(()=>{ soundComplete(); document.getElementById('articleComplete').classList.add('show'); addXP(0,'🌿 Article Complete! All questions answered!'); }, 800); } } /* ============================ ARTICLE — LISTEN ============================ */ function listenArticle(){ const text = Environmental Problem in Colombia: Deforestation in the Amazon Rainforest. One of the most serious environmental problems in Colombia is deforestation in the Amazon rainforest. The Colombian Amazon is one of the most biodiverse regions in the world and plays a crucial role in regulating the global climate. However, thousands of hectares of forest are lost every year due to illegal logging, cattle ranching, mining, road construction, and the expansion of agricultural activities. Deforestation has many negative consequences for both the environment and local communities. First, it destroys the natural habitats of countless plant and animal species, putting many of them at risk of extinction. Second, trees absorb carbon dioxide from the atmosphere, so when forests are cut down, more greenhouse gases are released, contributing to climate change. In addition, deforestation affects water cycles, soil quality, and air purity. Indigenous communities living in the Amazon are also affected because they depend on the forest for their culture, food, and livelihoods. The loss of forests threatens their traditional way of life and their connection to nature. To address this problem, the Colombian government, environmental organizations, and local communities are working together to promote sustainable land use, reforestation programs, environmental education, and stronger protection of natural areas. Reducing deforestation is essential for preserving biodiversity and ensuring a healthier future for Colombia and the planet.; speakText(text, 0.82); showToast('🔊 Listening to article...'); } /* ============================ INIT ============================ */ window.onload=()=>{ const saved=localStorage.getItem('yujujuXP'); if(saved){xp=parseInt(saved);document.getElementById('dashXP').textContent=xp;updateLevel();} initDrag(); buildMicBoxes(); }; </script>
-</body>
 
+<header>
+  <div class="logo">YUJUJU 🚀</div>
+  <div class="top-controls">
+    <button class="theme-btn" onclick="toggleTheme()">🌙</button>
+    <div class="level-box" id="levelBox">Beginner</div>
+  </div>
+</header>
+
+<div class="hero">
+  <h1>Learn <span>English</span><br>Like a Gamer 🎮</h1>
+  <p>Interactive listening, reading, writing, speaking and AI-powered English activities.</p>
+</div>
+
+<div class="dashboard">
+  <div class="stat-card"><p>Total XP</p><h2 id="dashXP">0</h2></div>
+  <div class="stat-card"><p>Level</p><h2 id="dashLevel">Beginner</h2></div>
+  <div class="stat-card"><p>Completed</p><h2 id="completedTasks">0</h2></div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('listening',this)">🎧 Listening</button>
+  <button class="tab-btn" onclick="switchTab('reading',this)">📖 Reading</button>
+  <button class="tab-btn" onclick="switchTab('writing',this)">✍️ Writing</button>
+  <button class="tab-btn" onclick="switchTab('speaking',this)">🎤 Speaking</button>
+  <button class="tab-btn" onclick="switchTab('article',this)">🌿 Article</button>
+</div>
+
+<!-- ============ LISTENING ============ -->
+<section class="section active" id="listening">
+  <div class="sub-tabs">
+    <button class="sub-tab-btn active" onclick="switchSub('listening','l-main',this)">🎧 Audio Quiz</button>
+    <button class="sub-tab-btn" onclick="switchSub('listening','l-dictation',this)">📝 Dictation</button>
+    <button class="sub-tab-btn" onclick="switchSub('listening','l-blanks',this)">🔊 Fill in the Blanks</button>
+    <button class="sub-tab-btn" onclick="switchSub('listening','l-images',this)">🖼️ Audio & Image</button>
+  </div>
+
+  <div class="sub-section active" id="l-main">
+    <div class="card">
+      <div class="card-title">🎧 Listening Audio Practice</div>
+      <div class="audio-player">
+        <button class="play-btn" id="playBtn" onclick="togglePlay()">▶️</button>
+        <div class="audio-wave paused" id="audioWave"><span></span><span></span><span></span><span></span></div>
+      </div>
+    </div>
+    <div class="card" id="lq1">
+      <div class="card-title">Question 1</div>
+      <div class="quiz-question">What time does Alex wake up?</div>
+      <div class="options-grid">
+        <button class="opt-btn" onclick="answerL(this,'wrong')">7:00 AM</button>
+        <button class="opt-btn" onclick="answerL(this,'correct')">6:30 AM</button>
+        <button class="opt-btn" onclick="answerL(this,'wrong')">8:00 AM</button>
+        <button class="opt-btn" onclick="answerL(this,'wrong')">9:00 AM</button>
+      </div>
+      <div class="feedback-msg" id="lFeed1"></div>
+    </div>
+    <div class="card" id="lq2" style="display:none;">
+      <div class="card-title">Question 2</div>
+      <div class="quiz-question">How does Alex go to school?</div>
+      <div class="options-grid">
+        <button class="opt-btn" onclick="answerL2(this,'wrong')">By bike</button>
+        <button class="opt-btn" onclick="answerL2(this,'correct')">By bus</button>
+        <button class="opt-btn" onclick="answerL2(this,'wrong')">Walking</button>
+        <button class="opt-btn" onclick="answerL2(this,'wrong')">By car</button>
+      </div>
+      <div class="feedback-msg" id="lFeed2"></div>
+    </div>
+    <div class="card" id="lq3" style="display:none;">
+      <div class="card-title">Question 3</div>
+      <div class="quiz-question">What does Alex do in the afternoon?</div>
+      <div class="options-grid">
+        <button class="opt-btn" onclick="answerL3(this,'correct')">Homework and sports</button>
+        <button class="opt-btn" onclick="answerL3(this,'wrong')">Watch TV</button>
+        <button class="opt-btn" onclick="answerL3(this,'wrong')">Sleep</button>
+        <button class="opt-btn" onclick="answerL3(this,'wrong')">Play games</button>
+      </div>
+      <div class="feedback-msg" id="lFeed3"></div>
+    </div>
+    <div class="card" id="lComplete" style="display:none;"><h2>🎉 Listening Complete!</h2><p>Excellent listening skills!</p></div>
+  </div>
+
+  <div class="sub-section" id="l-dictation">
+    <div class="card">
+      <div class="card-title">📝 Dictation interactivo</div>
+      <div class="card-sub">Listen to the audio and write exactly what you hear.</div>
+      <div class="audio-player">
+        <button class="play-btn" onclick="speakText('My name is Sarah. I live in New York. Every morning I wake up at seven o clock and drink a cup of coffee before going to work.',0.75)">▶️</button>
+        <div class="audio-wave paused" id="dictWave"><span></span><span></span><span></span><span></span></div>
+      </div>
+      <textarea class="dictation-input" id="dictationInput" placeholder="Write what you hear..."></textarea>
+      <br><br>
+      <button class="action-btn btn-primary" onclick="checkDictation()">✅ Check Answer</button>
+      <div class="feedback-msg" id="dictFeed"></div>
+    </div>
+  </div>
+
+  <div class="sub-section" id="l-blanks">
+    <div class="card">
+      <div class="card-title">🔊 Fill in the Blanks</div>
+      <div class="card-sub">Listen to the conversation and fill in the missing words.</div>
+      <div class="audio-player">
+        <button class="play-btn" onclick="speakText('Hi Tom, where are you going today? I am going to the supermarket to buy some apples and milk. After that I will visit my friend at the park.',0.78)">▶️</button>
+        <div class="audio-wave paused"><span></span><span></span><span></span><span></span></div>
+      </div>
+      <div class="reading-text">
+        Hi Tom, where are you going <input class="blank-input" id="lb1" placeholder="???"> today?<br><br>
+        I am going to the <input class="blank-input" id="lb2" placeholder="???"> to buy some apples and <input class="blank-input" id="lb3" placeholder="???">.
+        After that I will visit my friend at the <input class="blank-input" id="lb4" placeholder="???">.
+      </div>
+      <button class="action-btn btn-green" onclick="checkListeningBlanks()">✅ Check</button>
+      <div class="feedback-msg" id="lBlankFeed"></div>
+    </div>
+  </div>
+
+  <div class="sub-section" id="l-images">
+    <div class="card">
+      <div class="card-title">🖼️ Match Audio to Image</div>
+      <div class="card-sub">Listen to the description and choose the correct image.</div>
+      <div class="audio-player">
+        <button class="play-btn" onclick="speakText('A young woman is sitting on a bench in a sunny park, reading a book and drinking coffee.',0.78)">▶️</button>
+        <div class="audio-wave paused"><span></span><span></span><span></span><span></span></div>
+      </div>
+      <div class="image-grid" id="imageGrid">
+        <div class="img-opt" onclick="pickImage(this,'wrong')">🏊‍♂️<br><small>Man swimming</small></div>
+        <div class="img-opt" onclick="pickImage(this,'correct')">📖☕<br><small>Woman reading in park</small></div>
+        <div class="img-opt" onclick="pickImage(this,'wrong')">🍳<br><small>Person cooking</small></div>
+        <div class="img-opt" onclick="pickImage(this,'wrong')">🚴‍♀️<br><small>Woman cycling</small></div>
+      </div>
+      <div class="feedback-msg" id="imgFeed"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ READING ============ -->
+<section class="section" id="reading">
+  <div class="sub-tabs">
+    <button class="sub-tab-btn active" onclick="switchSub('reading','r-comprehension',this)">📖 Comprehension</button>
+    <button class="sub-tab-btn" onclick="switchSub('reading','r-blanks',this)">✏️ Fill in the Info</button>
+    <button class="sub-tab-btn" onclick="switchSub('reading','r-order',this)">🔀 Order Paragraphs</button>
+  </div>
+
+  <div class="sub-section active" id="r-comprehension">
+    <div class="card">
+      <div class="card-title">📖 Comprehension Questions</div>
+      <div class="reading-text">
+        <strong>The City of Wonders</strong><br><br>
+        New York City is one of the most famous cities in the world. It has a population of over 8 million people and is known for its iconic skyline, including the Empire State Building and the Statue of Liberty. 
+        The city is divided into five boroughs: Manhattan, Brooklyn, Queens, The Bronx, and Staten Island. 
+        New York is also famous for its cultural diversity — people from over 200 countries live there. 
+        The subway system operates 24 hours a day, 7 days a week, making it easy to travel around the city.
+      </div>
+      <div id="rq-block">
+        <div class="quiz-question" id="rqText">Q1: How many people live in New York City?</div>
+        <div class="options-grid" id="rqOptions">
+          <button class="opt-btn" onclick="answerReading(this,'wrong')">5 million</button>
+          <button class="opt-btn" onclick="answerReading(this,'correct')">Over 8 million</button>
+          <button class="opt-btn" onclick="answerReading(this,'wrong')">10 million</button>
+          <button class="opt-btn" onclick="answerReading(this,'wrong')">3 million</button>
+        </div>
+        <!-- NOTE: rqIndex=0, correct=1 (Over 8 million) matches rQuestions[0].correct -->
+        <div class="feedback-msg" id="rFeed"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub-section" id="r-blanks">
+    <div class="card">
+      <div class="card-title">✏️ Fill in the Información</div>
+      <div class="card-sub">Read the text and fill in the blanks with the correct words.</div>
+      <div style="background:var(--surface);padding:14px;border-radius:12px;margin-bottom:16px;font-weight:700;color:var(--accent2);">
+        Word bank: &nbsp; <span style="color:var(--text)">breakfast &nbsp;|&nbsp; wakes &nbsp;|&nbsp; school &nbsp;|&nbsp; evening &nbsp;|&nbsp; exercises</span>
+      </div>
+      <div class="reading-text">
+        Every morning, Maria <input class="blank-input" id="rb1" placeholder="???"> up at 6 AM. 
+        She eats <input class="blank-input" id="rb2" placeholder="???"> and then goes to <input class="blank-input" id="rb3" placeholder="???"> by bike. 
+        In the afternoon she <input class="blank-input" id="rb4" placeholder="???"> at the gym. 
+        In the <input class="blank-input" id="rb5" placeholder="???"> she reads and prepares for the next day.
+      </div>
+      <button class="action-btn btn-green" onclick="checkReadingBlanks()">✅ Check Answers</button>
+      <div class="feedback-msg" id="rbFeed"></div>
+    </div>
+  </div>
+
+  <div class="sub-section" id="r-order">
+    <div class="card">
+      <div class="card-title">🔀 Order Paragraphs</div>
+      <div class="card-sub">Drag the paragraphs to put them in the correct order.</div>
+      <div id="paraContainer">
+        <div class="paragraph-block" draggable="true" data-order="3">
+          <div class="para-num">?</div>
+          <div>Finally, after dinner, he watched a movie and went to bed at 10 PM feeling happy.</div>
+        </div>
+        <div class="paragraph-block" draggable="true" data-order="1">
+          <div class="para-num">?</div>
+          <div>One morning, James woke up early and decided to have a big breakfast with eggs and toast.</div>
+        </div>
+        <div class="paragraph-block" draggable="true" data-order="2">
+          <div class="para-num">?</div>
+          <div>After breakfast, he went to the park to exercise and met his friend Tom there.</div>
+        </div>
+      </div>
+      <br>
+      <button class="action-btn btn-yellow" onclick="checkOrder()">🔍 Check Order</button>
+      <div class="feedback-msg" id="orderFeed"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WRITING ============ -->
+<section class="section" id="writing">
+  <div class="sub-tabs">
+    <button class="sub-tab-btn active" onclick="switchSub('writing','w-email',this)">📧 Email</button>
+    <button class="sub-tab-btn" onclick="switchSub('writing','w-routine',this)">📋 Daily Routine</button>
+    <button class="sub-tab-btn" onclick="switchSub('writing','w-opinion',this)">💬 Open Questions</button>
+    <button class="sub-tab-btn" onclick="switchSub('writing','w-image',this)">🖼️ Image Description</button>
+  </div>
+
+  <div class="sub-section active" id="w-email">
+    <div class="card">
+      <div class="card-title">📧 Write an Email</div>
+      <div class="card-sub">Write an email to your friend describing your vacation.</div>
+      <div class="email-fields">
+        <div class="email-field">
+          <span class="email-label">To:</span>
+          <input class="email-input" id="emailTo" placeholder="friend@example.com">
+        </div>
+        <div class="email-field">
+          <span class="email-label">Subject:</span>
+          <input class="email-input" id="emailSubject" placeholder="My wonderful vacation...">
+        </div>
+      </div>
+      <textarea id="emailBody" placeholder="Dear friend,&#10;&#10;I want to tell you about my vacation..."></textarea>
+      <br><br>
+      <button class="action-btn btn-primary" onclick="submitEmail()">📤 Send Email</button>
+      <div class="feedback-msg" id="emailFeed"></div>
+    </div>
+  </div>
+
+  <div class="sub-section" id="w-routine">
+    <div class="card">
+      <div class="card-title">📋 Describe Your Daily Routine</div>
+      <div class="card-sub">Write at least 5 sentences about what you do every day.</div>
+      <textarea id="writingTask" placeholder="Every morning I wake up at..."></textarea>
+      <br><br>
+      <button class="action-btn btn-green" onclick="submitWriting()">Submit Writing</button>
+      <div class="feedback-msg" id="writingFeed"></div>
+    </div>
+  </div>
+
+  <div class="sub-section" id="w-opinion">
+    <div class="card">
+      <div class="card-title">💬 Answer Open Questions</div>
+      <div class="prompt-card">
+        <div class="prompt-label">Question:</div>
+        <div class="prompt-text" id="opinionQ">What is your favorite season and why? Describe at least 3 reasons.</div>
+      </div>
+      <textarea id="opinionText" placeholder="My favorite season is..."></textarea>
+      <br><br>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <button class="action-btn btn-green" onclick="submitOpinion()">✅ Submit Answer</button>
+        <button class="action-btn btn-yellow" onclick="nextOpinionQ()">🔄 New Question</button>
+      </div>
+      <div class="feedback-msg" id="opinionFeed"></div>
+    </div>
+  </div>
+
+  <div class="sub-section" id="w-image">
+    <div class="card">
+      <div class="card-title">🖼️ Image Description</div>
+      <div class="card-sub">Look at the image and write a detailed description.</div>
+      <div style="background:var(--surface);border-radius:16px;padding:40px;text-align:center;font-size:5rem;margin-bottom:20px;" id="imageToDescribe">🌅🏔️🌲</div>
+      <div style="background:var(--surface);padding:12px;border-radius:12px;margin-bottom:16px;font-size:.9rem;color:var(--accent2);font-weight:700;">
+        💡 Use: there is/are, I can see, in the foreground/background, the scene shows...
+      </div>
+      <textarea id="imageDesc" placeholder="In this image I can see..."></textarea>
+      <br><br>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <button class="action-btn btn-primary" onclick="submitImageDesc()">✅ Submit</button>
+        <button class="action-btn btn-yellow" onclick="nextImage()">🔄 New Image</button>
+      </div>
+      <div class="feedback-msg" id="imageFeed"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SPEAKING ============ -->
+<section class="section" id="speaking">
+  <div class="sub-tabs">
+    <button class="sub-tab-btn active" onclick="switchSub('speaking','s-drill',this)">🔊 Pronunciation</button>
+    <button class="sub-tab-btn" onclick="switchSub('speaking','s-qa',this)">❓ Q&amp;A</button>
+    <button class="sub-tab-btn" onclick="switchSub('speaking','s-roleplay',this)">🎭 Role Play</button>
+    <button class="sub-tab-btn" onclick="switchSub('speaking','s-presentation',this)">🎙️ Presentation</button>
+    <button class="sub-tab-btn" onclick="switchSub('speaking','s-multimedia',this)">🎬 Multimedia</button>
+  </div>
+
+  <!-- SPEAKING: shared mic UI injected per section -->
+
+  <div class="sub-section active" id="s-drill">
+    <div class="card">
+      <div class="card-title">🎤 Pronunciation Drill</div>
+      <div class="prompt-card">
+        <div class="prompt-label">Repeat this phrase:</div>
+        <div class="prompt-text" id="drillText">"Every morning I practice English and drink coffee."</div>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;">
+        <button class="action-btn btn-primary" onclick="playPronunciation(document.getElementById('drillText').textContent)">🔊 Listen first</button>
+        <button class="action-btn btn-yellow" onclick="nextDrill()">🔄 New Phrase</button>
+      </div>
+      <div id="micBox-drill"></div>
+    </div>
+  </div>
+
+  <div class="sub-section" id="s-qa">
+    <div class="card">
+      <div class="card-title">❓ Questions & Answers</div>
+      <div class="card-sub">Listen to the question and answer orally.</div>
+      <div class="prompt-card">
+        <div class="prompt-label">Question:</div>
+        <div class="prompt-text" id="qaQuestion">What do you usually do on weekends?</div>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;">
+        <button class="action-btn btn-primary" onclick="speakText(document.getElementById('qaQuestion').textContent,0.78)">🔊 Listen Question</button>
+        <button class="action-btn btn-yellow" onclick="nextQA()">🔄 New Question</button>
+      </div>
+      <div id="micBox-qa"></div>
+    </div>
+  </div>
+
+  <div class="sub-section" id="s-roleplay">
+    <div class="card">
+      <div class="card-title">🎭 Role Play virtual</div>
+      <div class="card-sub">Select a situation and respond orally.</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px;" id="roleScenarios">
+        <button class="opt-btn" onclick="startRolePlay(this,'restaurant')">🍽️ En un restaurante</button>
+        <button class="opt-btn" onclick="startRolePlay(this,'interview')">💼 Entrevista de trabajo</button>
+        <button class="opt-btn" onclick="startRolePlay(this,'airport')">✈️ En el aeropuerto</button>
+      </div>
+      <div class="prompt-card" id="rolePrompt" style="display:none;">
+        <div class="prompt-label">Your situation:</div>
+        <div class="prompt-text" id="roleText"></div>
+      </div>
+      <div id="micBox-roleplay" style="display:none;"></div>
+    </div>
+  </div>
+
+  <div class="sub-section" id="s-presentation">
+    <div class="card">
+      <div class="card-title">🎙️ Presentation corta</div>
+      <div class="card-sub">Speak for 1 to 3 minutes about the assigned topic.</div>
+      <div class="prompt-card">
+        <div class="prompt-label">Your topic:</div>
+        <div class="prompt-text" id="pressTopic">Talk about your hometown: where it is, what it is like, and why you love it.</div>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;">
+        <button class="action-btn btn-yellow" onclick="nextPressTopic()">🔄 New Topic</button>
+      </div>
+      <div id="micBox-presentation"></div>
+    </div>
+  </div>
+
+  <div class="sub-section" id="s-multimedia">
+    <div class="card">
+      <div class="card-title">🎬 Multimedia Project</div>
+      <div class="card-sub">Complete all stages of the project.</div>
+      <div style="background:var(--surface);padding:20px;border-radius:16px;margin-bottom:16px;">
+        <strong>📌 Topic: Climate Change and Our Future</strong><br><br>
+        <em style="color:var(--muted);">Climate change refers to long-term shifts in temperatures and weather patterns. Since the 1800s, human activities have been the main driver of climate change, primarily due to burning fossil fuels. Rising temperatures cause melting ice caps, rising sea levels, and more extreme weather events. However, renewable energy, reforestation, and individual actions can make a difference.</em>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+        <span style="font-size:1.4rem;">1️⃣</span><span style="font-weight:800;">Listen to the topic</span>
+        <button class="action-btn btn-primary" style="padding:8px 16px;font-size:.85rem;" onclick="speakText('Climate change refers to long-term shifts in temperatures and weather patterns. Since the 1800s, human activities have been the main driver of climate change.',0.8)">🔊</button>
+      </div>
+      <div style="margin-bottom:16px;">
+        <div style="font-weight:800;margin-bottom:6px;">2️⃣ Write a summary:</div>
+        <textarea id="mmSummary" placeholder="In my own words, climate change means..."></textarea>
+      </div>
+      <div style="font-weight:800;margin-bottom:10px;">3️⃣ Record your opinion:</div>
+      <div id="micBox-multimedia"></div>
+      <br>
+      <button class="action-btn btn-green" onclick="submitMultimedia()">🏆 Submit Project</button>
+      <div class="feedback-msg" id="mmFeed"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ARTICLE ============ -->
+<section class="section" id="article">
+  <div class="sub-tabs">
+    <button class="sub-tab-btn active" onclick="switchSub('article','a-read',this)">🌿 Read Article</button>
+    <button class="sub-tab-btn" onclick="switchSub('article','a-questions',this)">💬 Discussion Questions</button>
+  </div>
+
+  <!-- Article text -->
+  <div class="sub-section active" id="a-read">
+    <div class="card">
+      <div class="card-title">🌿 Environmental Problem in Colombia: Deforestation in the Amazon Rainforest</div>
+      <div class="card-sub">Read carefully before answering the discussion questions. You can also listen to the article.</div>
+
+      <div class="article-listen-bar">
+        <button class="play-btn" style="width:54px;height:54px;font-size:1.3rem;" onclick="listenArticle()">🔊</button>
+        <span>Listen to the full article read aloud</span>
+        <button class="action-btn btn-yellow" style="padding:8px 18px;font-size:.85rem;" onclick="switchSub('article','a-questions', document.querySelectorAll('#article .sub-tab-btn')[1])">📝 Go to Questions →</button>
+      </div>
+
+      <div class="article-body">
+        <h3>🌳 The Amazon Under Threat</h3>
+        <p>One of the most serious environmental problems in Colombia is deforestation in the Amazon rainforest. The Colombian Amazon is one of the most biodiverse regions in the world and plays a crucial role in regulating the global climate. However, thousands of hectares of forest are lost every year due to illegal logging, cattle ranching, mining, road construction, and the expansion of agricultural activities.</p>
+
+        <p>Deforestation has many negative consequences for both the environment and local communities. First, it destroys the natural habitats of countless plant and animal species, putting many of them at risk of extinction. Second, trees absorb carbon dioxide from the atmosphere, so when forests are cut down, more greenhouse gases are released, contributing to climate change. In addition, deforestation affects water cycles, soil quality, and air purity.</p>
+
+        <p>Indigenous communities living in the Amazon are also affected because they depend on the forest for their culture, food, and livelihoods. The loss of forests threatens their traditional way of life and their connection to nature.</p>
+
+        <p>To address this problem, the Colombian government, environmental organizations, and local communities are working together to promote sustainable land use, reforestation programs, environmental education, and stronger protection of natural areas. Reducing deforestation is essential for preserving biodiversity and ensuring a healthier future for Colombia and the planet.</p>
+      </div>
+
+      <div style="margin-bottom:8px;font-weight:900;color:var(--accent2);">📚 Key Vocabulary</div>
+      <div>
+        <span class="article-vocab-pill">deforestation</span>
+        <span class="article-vocab-pill">biodiversity</span>
+        <span class="article-vocab-pill">greenhouse gases</span>
+        <span class="article-vocab-pill">indigenous communities</span>
+        <span class="article-vocab-pill">sustainable land use</span>
+        <span class="article-vocab-pill">reforestation</span>
+        <span class="article-vocab-pill">carbon dioxide</span>
+        <span class="article-vocab-pill">extinction</span>
+        <span class="article-vocab-pill">livelihoods</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Discussion Questions -->
+  <div class="sub-section" id="a-questions">
+    <div class="article-progress">
+      <span class="article-progress-label">Progress</span>
+      <div class="article-progress-bar-wrap">
+        <div class="article-progress-bar" id="articleProgressBar" style="width:0%"></div>
+      </div>
+      <span class="article-progress-count" id="articleProgressCount">0 / 5</span>
+    </div>
+
+    <!-- Q1 -->
+    <div class="article-q-card" id="aq-card-1">
+      <span class="article-q-num">Question 1</span>
+      <div class="article-q-text">Why do you think some people continue to participate in activities that cause deforestation despite knowing its environmental consequences?</div>
+      <textarea class="article-q-textarea" id="aq1" placeholder="Share your thoughts here... (minimum 30 words)"></textarea>
+      <div class="article-submit-row">
+        <button class="action-btn btn-green" onclick="submitAQ(1)">✅ Submit Answer</button>
+        <button class="action-btn btn-primary" onclick="speakText('Why do you think some people continue to participate in activities that cause deforestation despite knowing its environmental consequences?', 0.8)">🔊 Hear question</button>
+      </div>
+      <div class="article-q-feedback" id="aqFeed1"></div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="article-q-card" id="aq-card-2">
+      <span class="article-q-num">Question 2</span>
+      <div class="article-q-text">How might deforestation in the Colombian Amazon affect people who live in other parts of the world?</div>
+      <textarea class="article-q-textarea" id="aq2" placeholder="Share your thoughts here... (minimum 30 words)"></textarea>
+      <div class="article-submit-row">
+        <button class="action-btn btn-green" onclick="submitAQ(2)">✅ Submit Answer</button>
+        <button class="action-btn btn-primary" onclick="speakText('How might deforestation in the Colombian Amazon affect people who live in other parts of the world?', 0.8)">🔊 Hear question</button>
+      </div>
+      <div class="article-q-feedback" id="aqFeed2"></div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="article-q-card" id="aq-card-3">
+      <span class="article-q-num">Question 3</span>
+      <div class="article-q-text">Do you think economic development should ever take priority over environmental protection? Why or why not?</div>
+      <textarea class="article-q-textarea" id="aq3" placeholder="Share your thoughts here... (minimum 30 words)"></textarea>
+      <div class="article-submit-row">
+        <button class="action-btn btn-green" onclick="submitAQ(3)">✅ Submit Answer</button>
+        <button class="action-btn btn-primary" onclick="speakText('Do you think economic development should ever take priority over environmental protection? Why or why not?', 0.8)">🔊 Hear question</button>
+      </div>
+      <div class="article-q-feedback" id="aqFeed3"></div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="article-q-card" id="aq-card-4">
+      <span class="article-q-num">Question 4</span>
+      <div class="article-q-text">What actions can governments, companies, and individuals take to reduce deforestation, and which do you think would be the most effective?</div>
+      <textarea class="article-q-textarea" id="aq4" placeholder="Share your thoughts here... (minimum 30 words)"></textarea>
+      <div class="article-submit-row">
+        <button class="action-btn btn-green" onclick="submitAQ(4)">✅ Submit Answer</button>
+        <button class="action-btn btn-primary" onclick="speakText('What actions can governments, companies, and individuals take to reduce deforestation, and which do you think would be the most effective?', 0.8)">🔊 Hear question</button>
+      </div>
+      <div class="article-q-feedback" id="aqFeed4"></div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="article-q-card" id="aq-card-5">
+      <span class="article-q-num">Question 5</span>
+      <div class="article-q-text">How could the loss of the Amazon rainforest impact future generations, and what responsibilities do we have to prevent this from happening?</div>
+      <textarea class="article-q-textarea" id="aq5" placeholder="Share your thoughts here... (minimum 30 words)"></textarea>
+      <div class="article-submit-row">
+        <button class="action-btn btn-green" onclick="submitAQ(5)">✅ Submit Answer</button>
+        <button class="action-btn btn-primary" onclick="speakText('How could the loss of the Amazon rainforest impact future generations, and what responsibilities do we have to prevent this from happening?', 0.8)">🔊 Hear question</button>
+      </div>
+      <div class="article-q-feedback" id="aqFeed5"></div>
+    </div>
+
+    <!-- Completion banner -->
+    <div class="article-complete-banner" id="articleComplete">
+      <h2>🌿 Outstanding Work!</h2>
+      <p style="font-size:1.1rem;margin:10px 0;">You completed all 5 discussion questions about deforestation in Colombia.</p>
+      <p style="color:var(--accent2);font-weight:900;font-size:1.3rem;margin-top:14px;">+250 XP earned! 🎉</p>
+    </div>
+  </div>
+</section>
+
+<div class="xp-toast" id="toast">+50 XP</div>
+
+<script>
+/* ============================
+   GLOBAL STATE
+   ============================ */
+let xp = 0;
+let completed = 0;
+let playing = false;
+let playTimer;
+let lScore = 0;
+let lDone = [false,false,false];
+let micTimers = {};
+let micStates = {};
+let rqIndex = 0;
+const synth = window.speechSynthesis;
+let aqDone = [false,false,false,false,false];
+let aqCount = 0;
+
+/* ============================
+   AUDIO CONTEXT FOR SOUNDS
+   ============================ */
+let audioCtx;
+function getCtx(){
+  if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+  return audioCtx;
+}
+function playBeep(freq,type,duration,vol,delay=0){
+  try{
+    const ctx=getCtx();
+    const osc=ctx.createOscillator();
+    const gain=ctx.createGain();
+    osc.connect(gain);gain.connect(ctx.destination);
+    osc.type=type;
+    osc.frequency.setValueAtTime(freq,ctx.currentTime+delay);
+    gain.gain.setValueAtTime(vol,ctx.currentTime+delay);
+    gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+delay+duration);
+    osc.start(ctx.currentTime+delay);
+    osc.stop(ctx.currentTime+delay+duration);
+  }catch(e){}
+}
+function soundClick(){playBeep(800,'sine',0.08,0.3);}
+function soundCorrect(){playBeep(523,'sine',0.12,0.4);playBeep(659,'sine',0.12,0.4,0.13);playBeep(784,'sine',0.18,0.5,0.26);}
+function soundWrong(){playBeep(300,'sawtooth',0.12,0.35);playBeep(220,'sawtooth',0.15,0.35,0.13);}
+function soundComplete(){[523,587,659,698,784,880].forEach((f,i)=>{playBeep(f,'sine',0.15,0.45,i*0.1);});}
+function soundXP(){playBeep(880,'sine',0.1,0.4);playBeep(1047,'sine',0.12,0.5,0.12);}
+function soundClick2(){playBeep(600,'triangle',0.06,0.25);}
+document.addEventListener('click',e=>{if(e.target.tagName==='BUTTON') soundClick2();});
+
+/* ============================
+   THEME
+   ============================ */
+function toggleTheme(){document.body.classList.toggle('light-mode');}
+
+/* ============================
+   TABS
+   ============================ */
+function switchTab(id,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+function switchSub(section,id,btn){
+  const sec=document.getElementById(section);
+  sec.querySelectorAll('.sub-section').forEach(s=>s.classList.remove('active'));
+  sec.querySelectorAll('.sub-tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(btn) btn.classList.add('active');
+}
+
+/* ============================
+   TOAST & XP
+   ============================ */
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  soundXP();
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+function addXP(pts,msg){
+  xp+=pts;completed++;
+  document.getElementById('dashXP').textContent=xp;
+  document.getElementById('completedTasks').textContent=completed;
+  updateLevel();
+  showToast(msg);
+  localStorage.setItem('yujujuXP',xp);
+}
+function updateLevel(){
+  let lv='Beginner';
+  if(xp>=100) lv='Intermediate';
+  if(xp>=250) lv='Advanced';
+  if(xp>=400) lv='Master';
+  document.getElementById('levelBox').textContent=lv;
+  document.getElementById('dashLevel').textContent=lv;
+}
+
+/* ============================
+   SPEECH — ResponsiveVoice (human-like)
+   ============================ */
+// ResponsiveVoice: free library with natural-sounding voices
+// Voices available: US English Female, US English Male, UK English Female, etc.
+const RV_VOICE = 'US English Female'; // warm, clear, natural
+
+function speakText(text, speed=0.88){
+  // Stop any current speech
+  if(window.responsiveVoice && responsiveVoice.isPlaying()){
+    responsiveVoice.cancel();
+  }
+  synth.cancel();
+
+  if(window.responsiveVoice){
+    responsiveVoice.speak(text, RV_VOICE, {
+      rate: speed,
+      pitch: 1,
+      volume: 1,
+      onstart: ()=>{},
+      onerror: ()=>_wsFallback(text, speed)
+    });
+  } else {
+    _wsFallback(text, speed);
+  }
+}
+
+function _wsFallback(text, speed){
+  synth.cancel();
+  setTimeout(()=>{
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang='en-US'; u.rate=speed; u.pitch=1.0; u.volume=1;
+    const voices = synth.getVoices();
+    const best = voices.find(v=>v.name.includes('Google')&&v.lang.startsWith('en'))
+              || voices.find(v=>v.lang==='en-US')
+              || voices.find(v=>v.lang.startsWith('en'));
+    if(best) u.voice=best;
+    synth.speak(u);
+  }, 80);
+}
+
+/* ============================
+   LISTENING
+   ============================ */
+function togglePlay(){
+  const text=`Hi! My name is Alex. Every day I wake up at 6:30 in the morning. First, I brush my teeth and take a shower. Then I eat breakfast, usually cereal and orange juice. After that, I go to school by bus. Classes start at 8 o'clock. In the afternoon, I do my homework and practice sports. At night, I read a book before I go to sleep at 10 PM.`;
+  const btn=document.getElementById('playBtn');
+  const wave=document.getElementById('audioWave');
+  if(!playing){
+    playing=true;btn.textContent='⏸';wave.classList.remove('paused');
+    speakText(text,0.82);
+    playTimer=setTimeout(()=>{playing=false;btn.textContent='▶️';wave.classList.add('paused');},21000);
+  }else{
+    playing=false;btn.textContent='▶️';wave.classList.add('paused');
+    synth.cancel();clearTimeout(playTimer);
+  }
+}
+function answerL(btn,result){
+  if(lDone[0]) return;lDone[0]=true;btn.classList.add(result);
+  const f=document.getElementById('lFeed1');
+  if(result==='correct'){soundCorrect();f.textContent='✅ Correct! Alex wakes up at 6:30 AM.';f.className='feedback-msg show ok';}
+  else{soundWrong();f.textContent='❌ Wrong. The answer is 6:30 AM.';f.className='feedback-msg show err';}
+  setTimeout(()=>{document.getElementById('lq1').style.display='none';document.getElementById('lq2').style.display='block';},1400);
+}
+function answerL2(btn,result){
+  if(lDone[1]) return;lDone[1]=true;btn.classList.add(result);
+  const f=document.getElementById('lFeed2');
+  if(result==='correct'){soundCorrect();f.textContent='✅ Correct! He goes by bus.';f.className='feedback-msg show ok';}
+  else{soundWrong();f.textContent='❌ Wrong. He goes by bus.';f.className='feedback-msg show err';}
+  setTimeout(()=>{document.getElementById('lq2').style.display='none';document.getElementById('lq3').style.display='block';},1400);
+}
+function answerL3(btn,result){
+  if(lDone[2]) return;lDone[2]=true;btn.classList.add(result);
+  const f=document.getElementById('lFeed3');
+  if(result==='correct'){soundCorrect();f.textContent='✅ Correct!';f.className='feedback-msg show ok';}
+  else{soundWrong();f.textContent='❌ Wrong. Homework and sports.';f.className='feedback-msg show err';}
+  setTimeout(()=>{document.getElementById('lq3').style.display='none';document.getElementById('lComplete').style.display='block';soundComplete();addXP(100,'🎧 Listening Complete! +100 XP');},1400);
+}
+
+/* ============================
+   DICTATION
+   ============================ */
+function checkDictation(){
+  const ans=document.getElementById('dictationInput').value.toLowerCase().trim();
+  const f=document.getElementById('dictFeed');
+  const keywords=['sarah','new york','seven','coffee'];
+  const found=keywords.filter(k=>ans.includes(k)).length;
+  if(found>=3){soundCorrect();f.textContent='✅ Excellent! You got the main ideas!';f.className='feedback-msg show ok';addXP(60,'📝 Dictation +60 XP');}
+  else if(found>=1){soundWrong();f.textContent=`⚠️ Partial! You got ${found}/4 key words. Try again!`;f.className='feedback-msg show err';}
+  else{soundWrong();f.textContent='❌ Listen again carefully and try once more.';f.className='feedback-msg show err';}
+}
+
+/* ============================
+   LISTENING BLANKS
+   ============================ */
+function checkListeningBlanks(){
+  const answers={lb1:'going',lb2:'supermarket',lb3:'milk',lb4:'park'};
+  let score=0;
+  Object.entries(answers).forEach(([id,ans])=>{
+    const el=document.getElementById(id);
+    if(el.value.toLowerCase().trim()===ans){el.classList.add('correct-blank');score++;}
+    else{el.classList.add('wrong-blank');}
+  });
+  const f=document.getElementById('lBlankFeed');
+  if(score===4){soundComplete();f.textContent='🎉 Perfect! All answers correct!';f.className='feedback-msg show ok';addXP(60,'🔊 Blanks +60 XP');}
+  else{soundWrong();f.textContent=`✏️ ${score}/4 correct. Review and try again!`;f.className='feedback-msg show err';}
+}
+
+/* ============================
+   IMAGE MATCH
+   ============================ */
+let imgDone=false;
+function pickImage(el,result){
+  if(imgDone) return;imgDone=true;
+  const f=document.getElementById('imgFeed');
+  el.classList.add(result);
+  if(result==='correct'){soundCorrect();f.textContent='✅ Correct! A woman reading in the park.';f.className='feedback-msg show ok';addXP(50,'🖼️ Image Match +50 XP');}
+  else{soundWrong();f.textContent='❌ Wrong. Listen again!';f.className='feedback-msg show err';}
+}
+
+/* ============================
+   READING COMPREHENSION
+   ============================ */
+const rQuestions=[
+  {q:'Q1: How many people live in New York City?',opts:['5 million','Over 8 million','10 million','3 million'],correct:1},
+  {q:'Q2: How many boroughs does New York have?',opts:['Three','Four','Five','Six'],correct:2},
+  {q:'Q3: When does the New York subway operate?',opts:['Only at night','9AM–9PM','24 hours, 7 days','Weekdays only'],correct:2},
+];
+let rqDone=[];
+function answerReading(btn,result){
+  if(rqDone[rqIndex]) return;
+  rqDone[rqIndex]=true;
+  // Disable all buttons and reveal correct/wrong
+  const allBtns=document.querySelectorAll('#rqOptions .opt-btn');
+  const q=rQuestions[rqIndex];
+  allBtns.forEach((b,i)=>{
+    b.disabled=true;
+    b.style.pointerEvents='none';
+    if(i===q.correct){b.classList.add('correct');}
+    else if(b===btn && result==='wrong'){b.classList.add('wrong');}
+  });
+  const f=document.getElementById('rFeed');
+  if(result==='correct'){
+    soundCorrect();
+    f.textContent='✅ Correct! Well done!';
+    f.className='feedback-msg show ok';
+  }else{
+    soundWrong();
+    f.textContent='❌ Wrong — the correct answer is highlighted in green.';
+    f.className='feedback-msg show err';
+  }
+  if(rqIndex<rQuestions.length-1){
+    setTimeout(()=>{rqIndex++;loadRQ();f.className='feedback-msg';},1800);
+  }else{
+    setTimeout(()=>{soundComplete();addXP(80,'📖 Reading Complete! +80 XP');},1800);
+  }
+}
+function loadRQ(){
+  const q=rQuestions[rqIndex];
+  document.getElementById('rqText').textContent=q.q;
+  const opts=document.getElementById('rqOptions');
+  opts.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const b=document.createElement('button');
+    b.className='opt-btn';
+    b.textContent=o;
+    b.onclick=function(){answerReading(this,i===q.correct?'correct':'wrong');};
+    opts.appendChild(b);
+  });
+}
+
+/* ============================
+   READING BLANKS
+   ============================ */
+function checkReadingBlanks(){
+  const answers={rb1:'wakes',rb2:'breakfast',rb3:'school',rb4:'exercises',rb5:'evening'};
+  let score=0;
+  Object.entries(answers).forEach(([id,ans])=>{
+    const el=document.getElementById(id);
+    if(el.value.toLowerCase().trim()===ans){el.classList.add('correct-blank');score++;}
+    else{el.classList.add('wrong-blank');}
+  });
+  const f=document.getElementById('rbFeed');
+  if(score===5){soundComplete();f.textContent='🎉 Perfect! All 5 correct!';f.className='feedback-msg show ok';addXP(70,'✏️ Fill Blanks +70 XP');}
+  else{soundWrong();f.textContent=`📝 ${score}/5 correct. Try again!`;f.className='feedback-msg show err';}
+}
+
+/* ============================
+   PARAGRAPH ORDER
+   ============================ */
+let dragSrc=null;
+function initDrag(){
+  document.querySelectorAll('.paragraph-block').forEach(el=>{
+    el.addEventListener('dragstart',e=>{dragSrc=el;el.classList.add('dragging');});
+    el.addEventListener('dragend',e=>{el.classList.remove('dragging');});
+    el.addEventListener('dragover',e=>{e.preventDefault();});
+    el.addEventListener('drop',e=>{
+      e.preventDefault();
+      if(dragSrc!==el){
+        const p=el.parentNode;
+        const allBlocks=[...p.querySelectorAll('.paragraph-block')];
+        const srcIdx=allBlocks.indexOf(dragSrc);
+        const tgtIdx=allBlocks.indexOf(el);
+        if(srcIdx<tgtIdx) p.insertBefore(dragSrc,el.nextSibling);
+        else p.insertBefore(dragSrc,el);
+        soundClick();
+      }
+    });
+  });
+}
+function checkOrder(){
+  const blocks=[...document.querySelectorAll('#paraContainer .paragraph-block')];
+  const orders=blocks.map(b=>parseInt(b.dataset.order));
+  const correct=orders[0]===1&&orders[1]===2&&orders[2]===3;
+  blocks.forEach((b,i)=>b.querySelector('.para-num').textContent=i+1);
+  const f=document.getElementById('orderFeed');
+  if(correct){soundComplete();f.textContent='🎉 Perfect order! Well done!';f.className='feedback-msg show ok';addXP(80,'🔀 Paragraph Order +80 XP');}
+  else{soundWrong();f.textContent='❌ Not quite right. Try rearranging again!';f.className='feedback-msg show err';}
+}
+
+/* ============================
+   WRITING
+   ============================ */
+function submitEmail(){
+  const to=document.getElementById('emailTo').value;
+  const subj=document.getElementById('emailSubject').value;
+  const body=document.getElementById('emailBody').value;
+  const f=document.getElementById('emailFeed');
+  if(body.length<40||!to||!subj){soundWrong();f.textContent='⚠️ Fill all fields with enough detail!';f.className='feedback-msg show err';return;}
+  soundComplete();f.textContent='📧 Excellent email! Great structure and vocabulary!';f.className='feedback-msg show ok';
+  addXP(80,'📧 Email Writing +80 XP');
+}
+function submitWriting(){
+  const text=document.getElementById('writingTask').value;
+  const f=document.getElementById('writingFeed');
+  if(text.length<30){soundWrong();f.textContent='⚠️ Add more details (at least 5 sentences).';f.className='feedback-msg show err';return;}
+  soundCorrect();f.textContent='✍️ Excellent writing! Great daily routine description!';f.className='feedback-msg show ok';
+  addXP(70,'✍️ Writing +70 XP');
+}
+const opinionQs=[
+  'What is your favorite season and why? Describe at least 3 reasons.',
+  'Describe a memorable trip or vacation you have taken.',
+  'What would you do if you had one free week with no responsibilities?',
+  'What is your favorite food and how is it prepared?',
+  'Describe your dream home. Where is it and what does it look like?',
+];
+let opinionIdx=0;
+function nextOpinionQ(){
+  opinionIdx=(opinionIdx+1)%opinionQs.length;
+  document.getElementById('opinionQ').textContent=opinionQs[opinionIdx];
+  document.getElementById('opinionText').value='';
+  document.getElementById('opinionFeed').className='feedback-msg';
+}
+function submitOpinion(){
+  const text=document.getElementById('opinionText').value;
+  const f=document.getElementById('opinionFeed');
+  if(text.length<40){soundWrong();f.textContent='⚠️ Write a more detailed answer!';f.className='feedback-msg show err';return;}
+  soundCorrect();f.textContent='💬 Great opinion! You expressed yourself clearly.';f.className='feedback-msg show ok';
+  addXP(70,'💬 Opinion Writing +70 XP');
+}
+const images=['🌅🏔️🌲','🏖️🌊☀️','🌆🌃🌉','🌸🌿🦋','🏡🌻🐕'];
+let imgIdx=0;
+function nextImage(){
+  imgIdx=(imgIdx+1)%images.length;
+  document.getElementById('imageToDescribe').textContent=images[imgIdx];
+  document.getElementById('imageDesc').value='';
+  document.getElementById('imageFeed').className='feedback-msg';
+}
+function submitImageDesc(){
+  const text=document.getElementById('imageDesc').value;
+  const f=document.getElementById('imageFeed');
+  if(text.length<40){soundWrong();f.textContent='⚠️ Be more descriptive! Use the vocabulary tips.';f.className='feedback-msg show err';return;}
+  soundComplete();f.textContent='🖼️ Excellent description! Rich vocabulary!';f.className='feedback-msg show ok';
+  addXP(70,'🖼️ Image Description +70 XP');
+}
+
+/* ============================
+   SPEAKING
+   ============================ */
+const drillPhrases=[
+  '"Every morning I practice English and drink coffee."',
+  '"She sells seashells by the seashore."',
+  '"How much wood would a woodchuck chuck?"',
+  '"The weather is wonderful today."',
+  '"I would like to improve my English pronunciation."',
+];
+let drillIdx=0;
+function nextDrill(){drillIdx=(drillIdx+1)%drillPhrases.length;document.getElementById('drillText').textContent=drillPhrases[drillIdx];}
+function playPronunciation(text){speakText(text,0.72);showToast('🔊 Listen carefully!');}
+const qaQs=[
+  'What do you usually do on weekends?',
+  'Describe your best friend.',
+  'What is your favorite movie and why?',
+  'Tell me about your daily routine.',
+  'What are your goals for the next year?',
+];
+let qaIdx=0;
+function nextQA(){qaIdx=(qaIdx+1)%qaQs.length;document.getElementById('qaQuestion').textContent=qaQs[qaIdx];}
+const rolePlays={
+  restaurant:'You are at a restaurant. The waiter asks: "Good evening, are you ready to order?" — Respond naturally, order your meal and ask about the specials.',
+  interview:'You are in a job interview. The interviewer says: "Tell me about yourself and why you want this position." — Give a confident, professional answer.',
+  airport:'You are at the airport. The agent says: "May I see your passport and boarding pass? What is the purpose of your trip?" — Respond appropriately.',
+};
+function startRolePlay(btn,scenario){
+  document.querySelectorAll('#roleScenarios .opt-btn').forEach(b=>b.classList.remove('correct'));
+  btn.classList.add('correct');
+  document.getElementById('roleText').textContent=rolePlays[scenario];
+  document.getElementById('rolePrompt').style.display='block';
+  document.getElementById('micBox-roleplay').style.display='block';
+  speakText(rolePlays[scenario].split('—')[0],0.8);
+}
+const pressTopics=[
+  'Talk about your hometown: where it is, what it is like, and why you love it.',
+  'Explain the importance of learning a second language.',
+  'Describe your favorite hobby and how it has influenced your life.',
+  'Talk about a person who has inspired you and why.',
+  'What do you think about the impact of technology on education?',
+];
+let pressIdx=0;
+function nextPressTopic(){pressIdx=(pressIdx+1)%pressTopics.length;document.getElementById('pressTopic').textContent=pressTopics[pressIdx];}
+function submitMultimedia(){
+  const summary=document.getElementById('mmSummary').value;
+  const f=document.getElementById('mmFeed');
+  if(summary.length<40){soundWrong();f.textContent='⚠️ Write a complete summary first!';f.className='feedback-msg show err';return;}
+  soundComplete();f.textContent='🏆 Amazing project! Reading, listening and speaking combined!';f.className='feedback-msg show ok';
+  addXP(150,'🎬 Multimedia Project +150 XP');
+}
+
+/* ============================
+   MIC — Universal (MediaRecorder + SpeechRecognition fallback)
+   Works in file://, localhost, and HTTPS
+   ============================ */
+
+const MIC_CONTEXTS = {
+  'drill':        { label:'Pronunciation Drill',   prompt: ()=>document.getElementById('drillText').textContent },
+  'qa':           { label:'Q&A Response',          prompt: ()=>document.getElementById('qaQuestion').textContent },
+  'roleplay':     { label:'Role Play',             prompt: ()=>document.getElementById('roleText').textContent },
+  'presentation': { label:'Short Presentation',    prompt: ()=>document.getElementById('pressTopic').textContent },
+  'multimedia':   { label:'Multimedia Opinion',    prompt: ()=>'Share your opinion on climate change.' },
+};
+
+// Build mic UI boxes on page load
+function buildMicBoxes(){
+  Object.keys(MIC_CONTEXTS).forEach(ctx=>{
+    const box = document.getElementById('micBox-'+ctx);
+    if(!box) return;
+    box.innerHTML = `
+      <div class="mic-box">
+        <div class="mic-status" id="micStatus-${ctx}">Press the microphone to start recording</div>
+        <button class="mic-btn" id="micBtn-${ctx}" onclick="toggleMicBox('${ctx}')">🎤</button>
+        <div class="mic-canvas-wrap" id="micWrap-${ctx}">
+          <canvas class="mic-canvas" id="micCanvas-${ctx}" width="320" height="48"></canvas>
+        </div>
+        <div class="mic-transcript" id="micTranscript-${ctx}"></div>
+        <div class="mic-feedback" id="micFeedback-${ctx}"></div>
+        <div class="mic-hint">🔒 If mic is blocked: click the lock icon 🔒 in your browser address bar → allow microphone</div>
+      </div>`;
+  });
+}
+
+// Per-context state
+const micBoxState = {};
+
+function toggleMicBox(ctx){
+  if(micBoxState[ctx] && micBoxState[ctx].recording){
+    stopMicBox(ctx);
+  } else {
+    startMicBox(ctx);
+  }
+}
+
+function startMicBox(ctx){
+  const btn    = document.getElementById('micBtn-'+ctx);
+  const status = document.getElementById('micStatus-'+ctx);
+  const wrap   = document.getElementById('micWrap-'+ctx);
+  const trans  = document.getElementById('micTranscript-'+ctx);
+  const feed   = document.getElementById('micFeedback-'+ctx);
+
+  trans.classList.remove('show');
+  feed.classList.remove('show');
+  trans.innerHTML = '';
+  feed.innerHTML  = '';
+
+  navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+  .then(stream => {
+    btn.classList.add('active');
+    btn.textContent = '⏹️';
+    status.textContent = '🔴 Recording… press ⏹️ to stop';
+    wrap.classList.add('show');
+
+    // Waveform visualiser
+    const audioCtxVis = new (window.AudioContext || window.webkitAudioContext)();
+    const analyser = audioCtxVis.createAnalyser();
+    const source   = audioCtxVis.createMediaStreamSource(stream);
+    source.connect(analyser);
+    analyser.fftSize = 256;
+    const bufLen = analyser.frequencyBinCount;
+    const dataArr = new Uint8Array(bufLen);
+    const canvas  = document.getElementById('micCanvas-'+ctx);
+    const canCtx  = canvas.getContext('2d');
+    let animId;
+
+    function drawWave(){
+      animId = requestAnimationFrame(drawWave);
+      analyser.getByteTimeDomainData(dataArr);
+      canCtx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--bg') || '#0f0e17';
+      canCtx.fillRect(0,0,canvas.width,canvas.height);
+      canCtx.lineWidth   = 2;
+      canCtx.strokeStyle = '#4d96ff';
+      canCtx.beginPath();
+      const sliceW = canvas.width / bufLen;
+      let x = 0;
+      for(let i=0;i<bufLen;i++){
+        const v = dataArr[i]/128;
+        const y = v * canvas.height/2;
+        if(i===0) canCtx.moveTo(x,y);
+        else canCtx.lineTo(x,y);
+        x += sliceW;
+      }
+      canCtx.lineTo(canvas.width, canvas.height/2);
+      canCtx.stroke();
+    }
+    drawWave();
+
+    // Record with MediaRecorder
+    const mediaRec = new MediaRecorder(stream);
+    const chunks   = [];
+    mediaRec.ondataavailable = e => { if(e.data.size>0) chunks.push(e.data); };
+    mediaRec.onstop = () => {
+      cancelAnimationFrame(animId);
+      audioCtxVis.close();
+      stream.getTracks().forEach(t=>t.stop());
+      wrap.classList.remove('show');
+      btn.classList.remove('active');
+      btn.textContent = '🎤';
+      status.textContent = '⏳ Analyzing your speech with AI…';
+
+      // Also try SpeechRecognition for transcript
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const transcript = micBoxState[ctx].liveTranscript || '';
+
+      // Send to AI for feedback
+      evaluateSpeech(ctx, transcript, chunks).then(()=>{
+        status.textContent = 'Press the microphone to record again';
+      });
+    };
+
+    mediaRec.start(100);
+    micBoxState[ctx] = { recording: true, mediaRec, stream, liveTranscript: '' };
+
+    // Also run SpeechRecognition in parallel if available (for transcript)
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if(SR){
+      const recog = new SR();
+      recog.lang = 'en-US';
+      recog.continuous = true;
+      recog.interimResults = true;
+      recog.onresult = e => {
+        let txt = '';
+        for(let i=0;i<e.results.length;i++) txt += e.results[i][0].transcript + ' ';
+        micBoxState[ctx].liveTranscript = txt.trim();
+        trans.innerHTML = '🗣 <em>"' + txt.trim() + '"</em>';
+        trans.classList.add('show');
+      };
+      recog.onerror = ()=>{};
+      try{ recog.start(); micBoxState[ctx].recog = recog; } catch(e){}
+    }
+
+  })
+  .catch(err => {
+    status.innerHTML = '🚫 Microphone access denied.<br><small style="font-weight:400">Click the 🔒 lock in the address bar → Site settings → Allow microphone.</small>';
+    btn.textContent = '🎤';
+  });
+}
+
+function stopMicBox(ctx){
+  const state = micBoxState[ctx];
+  if(!state || !state.recording) return;
+  state.recording = false;
+  if(state.recog){ try{ state.recog.stop(); }catch(e){} }
+  if(state.mediaRec && state.mediaRec.state !== 'inactive'){
+    state.mediaRec.stop();
+  }
+}
+
+async function evaluateSpeech(ctx, transcript, audioChunks){
+  const feed    = document.getElementById('micFeedback-'+ctx);
+  const ctxInfo = MIC_CONTEXTS[ctx];
+  const prompt  = ctxInfo ? ctxInfo.prompt() : '';
+
+  feed.className = 'mic-feedback show';
+  feed.style.background = 'var(--surface)';
+  feed.style.color = 'var(--muted)';
+  feed.innerHTML = '⏳ Getting AI feedback…';
+
+  let userMessage = '';
+  if(transcript && transcript.length > 5){
+    userMessage = `The student was asked to do a speaking exercise: "${prompt}"
+
+This is what they said (transcribed): "${transcript}"
+
+Give brief, encouraging feedback in 2-3 sentences. Mention what they did well and one specific tip to improve. Be warm and motivating like a good English teacher.`;
+  } else {
+    // No transcript — give general encouragement based on context
+    userMessage = `A student just completed a speaking exercise for: "${prompt}". No transcript was captured. Give a short, warm, encouraging message (2 sentences) as an English teacher, and remind them to speak clearly near their microphone.`;
+  }
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 150,
+        messages: [{ role: 'user', content: userMessage }]
+      })
+    });
+    const data = await resp.json();
+    const msg  = data.content?.[0]?.text || 'Great effort! Keep practicing your English speaking skills.';
+    feed.style.background = '#6bcb7720';
+    feed.style.color = 'var(--accent3)';
+    feed.innerHTML = '✅ ' + msg;
+    soundCorrect();
+    speakText(msg, 0.88);
+    addXP(50, '🎤 Speaking Practice +50 XP');
+  } catch(e) {
+    // API not available — use local feedback
+    const localFeedbacks = [
+      'Great effort! Your speaking is improving with every practice.',
+      'Well done! Keep practicing and your fluency will grow.',
+      'Good job recording yourself — that takes courage! Keep going.',
+    ];
+    const msg = localFeedbacks[Math.floor(Math.random()*localFeedbacks.length)];
+    feed.style.background = '#6bcb7720';
+    feed.style.color = 'var(--accent3)';
+    feed.innerHTML = '✅ ' + msg;
+    soundCorrect();
+    addXP(50, '🎤 Speaking Practice +50 XP');
+  }
+}
+
+/* ============================
+   ARTICLE — DISCUSSION QUESTIONS
+   ============================ */
+const aqFeedbacks = [
+  [
+    'Great thinking! You connected economic pressures to environmental decisions. Well done!',
+    'Good point! Consider also mentioning poverty and lack of alternatives as driving factors.',
+    'Excellent! You showed understanding of the social and economic tensions behind deforestation.',
+  ],
+  [
+    'Excellent global perspective! The Amazon truly affects weather and oxygen worldwide.',
+    'Great answer! You could also mention how it affects global temperatures and rainfall patterns.',
+    'Well done! You connected local deforestation to its worldwide climate consequences.',
+  ],
+  [
+    'Thoughtful response! You engaged seriously with this difficult ethical question.',
+    'Great balance! Sustainable development is indeed the key to both goals.',
+    'Excellent critical thinking! You considered multiple viewpoints on development vs. environment.',
+  ],
+  [
+    'Great solutions! Policy enforcement and education are indeed powerful tools.',
+    'Excellent! You proposed realistic and multi-level approaches to tackle deforestation.',
+    'Well done! You considered the roles of different actors in solving this problem.',
+  ],
+  [
+    'Powerful reflection! Future generations deserve a healthy Amazon.',
+    'Excellent! You connected present actions to long-term responsibility.',
+    'Well done! You showed empathy for future people and clear moral reasoning.',
+  ],
+];
+
+function submitAQ(num){
+  if(aqDone[num-1]) return;
+  const text = document.getElementById('aq'+num).value.trim();
+  const f = document.getElementById('aqFeed'+num);
+  const wordCount = text.split(/\s+/).filter(w=>w.length>0).length;
+
+  if(wordCount < 15){
+    soundWrong();
+    f.textContent = '⚠️ Please write a more complete answer (at least 15 words).';
+    f.className = 'article-q-feedback show err';
+    return;
+  }
+
+  aqDone[num-1] = true;
+  aqCount++;
+
+  // Pick a random positive feedback
+  const feedList = aqFeedbacks[num-1];
+  const msg = feedList[Math.floor(Math.random()*feedList.length)];
+  soundCorrect();
+  f.textContent = '✅ ' + msg;
+  f.className = 'article-q-feedback show ok';
+
+  // Disable textarea and button
+  document.getElementById('aq'+num).disabled = true;
+  const card = document.getElementById('aq-card-'+num);
+  card.style.borderLeftColor = 'var(--accent3)';
+  card.querySelector('.action-btn.btn-green').disabled = true;
+
+  // Update progress bar
+  const pct = (aqCount/5)*100;
+  document.getElementById('articleProgressBar').style.width = pct+'%';
+  document.getElementById('articleProgressCount').textContent = aqCount+' / 5';
+
+  // XP per question
+  addXP(50, '🌿 Article Q'+num+' +50 XP');
+
+  // If all done
+  if(aqCount === 5){
+    setTimeout(()=>{
+      soundComplete();
+      document.getElementById('articleComplete').classList.add('show');
+      addXP(0,'🌿 Article Complete! All questions answered!');
+    }, 800);
+  }
+}
+
+/* ============================
+   ARTICLE — LISTEN
+   ============================ */
+function listenArticle(){
+  const text = `Environmental Problem in Colombia: Deforestation in the Amazon Rainforest.
+One of the most serious environmental problems in Colombia is deforestation in the Amazon rainforest. The Colombian Amazon is one of the most biodiverse regions in the world and plays a crucial role in regulating the global climate. However, thousands of hectares of forest are lost every year due to illegal logging, cattle ranching, mining, road construction, and the expansion of agricultural activities.
+Deforestation has many negative consequences for both the environment and local communities. First, it destroys the natural habitats of countless plant and animal species, putting many of them at risk of extinction. Second, trees absorb carbon dioxide from the atmosphere, so when forests are cut down, more greenhouse gases are released, contributing to climate change. In addition, deforestation affects water cycles, soil quality, and air purity.
+Indigenous communities living in the Amazon are also affected because they depend on the forest for their culture, food, and livelihoods. The loss of forests threatens their traditional way of life and their connection to nature.
+To address this problem, the Colombian government, environmental organizations, and local communities are working together to promote sustainable land use, reforestation programs, environmental education, and stronger protection of natural areas. Reducing deforestation is essential for preserving biodiversity and ensuring a healthier future for Colombia and the planet.`;
+  speakText(text, 0.82);
+  showToast('🔊 Listening to article...');
+}
+
+/* ============================
+   INIT
+   ============================ */
+window.onload=()=>{
+  const saved=localStorage.getItem('yujujuXP');
+  if(saved){xp=parseInt(saved);document.getElementById('dashXP').textContent=xp;updateLevel();}
+  initDrag();
+  buildMicBoxes();
+};
+</script>
+</body>
 </html>
